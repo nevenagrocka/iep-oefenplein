@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IEP Oefenplein</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: speelplein-achtergrond met kleurvlakken; één witte "werkkaart" per scherm, grote knoppen voor kinderen. Bewust één (lichte, kleurrijke) look. */
+:root{
+  --ink:#1F1A3D; --ink-2:#5B5680; --paper:#FFFFFF; --mist:#F4F2FF; --line:#E4E0F5;
+  --taal:#FF5D73; --taal-2:#FF9A5C; --reken:#2BB3E8; --reken-2:#5B6CFF;
+  --sun:#FFC83D; --mint:#2FCB8A; --grape:#8A5CFF;
+  --good:#16A36A; --good-bg:#E3F8EE; --bad:#E0364F; --bad-bg:#FFE7EA; --warn:#D98A00; --warn-bg:#FFF3D6;
+  --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:22px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;font-family:var(--body);font-size:16px;color:var(--ink);background:#7FD6F5;
+  background:
+   radial-gradient(60vmax 60vmax at -10% -10%, #FFD45C 0, transparent 60%),
+   radial-gradient(55vmax 55vmax at 110% 0%, #FF7FA0 0, transparent 60%),
+   radial-gradient(60vmax 60vmax at 100% 110%, #8E7BFF 0, transparent 60%),
+   radial-gradient(55vmax 55vmax at -5% 105%, #46D9A4 0, transparent 60%),
+   #7FD6F5;
+  background-attachment:fixed;
+}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.confetti i{position:absolute;display:block;border-radius:6px;opacity:.55;animation:float 14s ease-in-out infinite alternate}
+@keyframes float{to{transform:translateY(-40px) rotate(160deg)}}
+@media (prefers-reduced-motion:reduce){.confetti i{animation:none}*{transition:none!important}}
+.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:14px 48px}
+header.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--ink);background:none;border:0;cursor:pointer;padding:0}
+.logo b{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:var(--ink);color:var(--sun);font-size:1.3rem;transform:rotate(-6deg)}
+.top .sp{flex:1}
+.chip{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:7px 14px 7px 7px;background:rgba(255,255,255,.9);color:var(--ink);font:700 .95rem var(--body);cursor:pointer;box-shadow:0 3px 0 rgba(31,26,61,.15)}
+.chip.plain{padding:9px 16px}
+.chip:hover{background:#fff}
+.av{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;font:800 .95rem var(--display);flex:none}
+.av.lg{width:54px;height:54px;font-size:1.5rem}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.card{background:var(--paper);border-radius:var(--r);padding:22px;box-shadow:0 8px 0 rgba(31,26,61,.12),0 18px 40px rgba(31,26,61,.12)}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0;text-wrap:balance}
+h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800}
+h2{font-size:1.7rem;font-weight:800}
+h3{font-size:1.2rem;font-weight:700}
+.muted{color:var(--ink-2)}
+.hero{text-align:center;margin:18px 0 26px;color:var(--ink)}
+.hero p{font-size:1.15rem;font-weight:700;margin:8px 0 0}
+.big2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media (max-width:640px){.big2{grid-template-columns:1fr}}
+.bigbtn{position:relative;overflow:hidden;border:0;border-radius:32px;padding:28px 24px 26px;min-height:240px;color:#fff;cursor:pointer;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
+  box-shadow:0 10px 0 rgba(31,26,61,.25);transition:transform .15s, box-shadow .15s}
+.bigbtn:hover{transform:translateY(-4px);box-shadow:0 14px 0 rgba(31,26,61,.25)}
+.bigbtn:active{transform:translateY(6px);box-shadow:0 4px 0 rgba(31,26,61,.25)}
+.bigbtn.taal{background:linear-gradient(135deg,var(--taal),var(--taal-2))}
+.bigbtn.reken{background:linear-gradient(135deg,var(--reken),var(--reken-2))}
+.bigbtn .glyph{position:absolute;top:10px;right:18px;font:800 6.5rem/1 var(--display);opacity:.28;letter-spacing:-.04em}
+.bigbtn .lbl{font:800 3rem/1 var(--display)}
+.bigbtn .sub{font-weight:700;opacity:.95}
+.qstrip{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.qpill{background:rgba(255,255,255,.25);border-radius:10px;padding:3px 9px;font:700 .82rem var(--body)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:16px;padding:13px 22px;font:800 1.05rem var(--body);cursor:pointer;background:var(--ink);color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.btn.ghost{background:var(--mist);color:var(--ink);box-shadow:0 4px 0 var(--line)}
+.btn.taal{background:var(--taal)} .btn.reken{background:var(--reken-2)}
+.btn.danger{background:var(--bad)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px}
+.qcard{border:3px solid var(--line);border-radius:20px;padding:18px;background:var(--paper);display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:border-color .15s, transform .15s}
+.qcard:hover{transform:translateY(-3px)}
+.qcard .qn{font:800 2.4rem/1 var(--display)}
+.qcard.taal:hover{border-color:var(--taal)} .qcard.reken:hover{border-color:var(--reken-2)}
+.qcard.taal .qn{color:var(--taal)} .qcard.reken .qn{color:var(--reken-2)}
+.best{margin-top:auto;font-weight:800;font-size:.9rem}
+.seg{display:inline-flex;background:var(--mist);border-radius:14px;padding:4px;gap:4px;flex-wrap:wrap}
+.seg button{border:0;background:none;border-radius:10px;padding:9px 14px;font:800 .95rem var(--body);color:var(--ink-2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:0 2px 0 var(--line)}
+/* test */
+.testbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.prog{flex:1;min-width:140px;height:14px;border-radius:99px;background:rgba(255,255,255,.6);overflow:hidden}
+.prog i{display:block;height:100%;border-radius:99px;background:var(--ink);transition:width .3s}
+.tag{display:inline-block;border-radius:999px;padding:4px 12px;font:800 .78rem var(--body);letter-spacing:.06em;text-transform:uppercase;background:var(--mist);color:var(--ink-2)}
+.tag.taal{background:#FFE5E9;color:#B8233A} .tag.reken{background:#E3EEFF;color:#2F3FC4}
+.prompt{font-size:1.3rem;font-weight:700;line-height:1.45;margin:14px 0 18px}
+.prompt .sum{font:800 1.7rem var(--display);white-space:nowrap}
+.prompt .zin{display:block;margin-top:8px;padding:12px 16px;border-radius:14px;background:var(--mist);font-weight:700}
+.prompt em{font-style:normal;background:var(--sun);padding:0 6px;border-radius:6px}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;font-weight:800;margin:0 2px}
+.frac span:first-child{border-bottom:2px solid currentColor;padding:0 3px 2px}
+.frac span:last-child{padding-top:2px}
+.text{max-height:46vh;overflow:auto;border-radius:16px;background:#FFFBEA;border:2px solid #F6E6A6;padding:16px 18px;line-height:1.7;font-size:1.02rem;margin-top:12px}
+.text h4{margin:0 0 6px;font:800 1.15rem var(--display)}
+.text p{margin:0 0 10px;max-width:68ch}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;border:3px solid var(--line);background:var(--paper);border-radius:16px;padding:12px 14px;font:700 1.05rem var(--body);color:var(--ink);cursor:pointer}
+.opt .k{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--mist);font:800 .95rem var(--display)}
+.opt:hover{border-color:var(--ink-2)}
+.opt[aria-pressed="true"]{border-color:var(--ink);background:var(--mist)}
+.opt[aria-pressed="true"] .k{background:var(--ink);color:#fff}
+.opt.ok{border-color:var(--good);background:var(--good-bg)} .opt.ok .k{background:var(--good);color:#fff}
+.opt.no{border-color:var(--bad);background:var(--bad-bg)} .opt.no .k{background:var(--bad);color:#fff}
+.ansrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ansrow input{font:800 1.5rem var(--display);padding:10px 16px;border-radius:16px;border:3px solid var(--line);width:min(260px,100%);color:var(--ink);background:#fff}
+.ansrow input:focus{border-color:var(--ink);outline:none}
+.ansrow .unit{font:800 1.3rem var(--display);color:var(--ink-2)}
+.hint{font-size:.88rem;color:var(--ink-2);margin-top:8px}
+.fb{margin-top:16px;border-radius:16px;padding:14px 16px;font-weight:700;line-height:1.5}
+.fb.ok{background:var(--good-bg);color:#0C6B45} .fb.no{background:var(--bad-bg);color:#9C1C30}
+.fb strong{font-family:var(--display);font-size:1.25rem;display:block}
+.actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+svg text{font-family:var(--body);font-weight:700;fill:var(--ink)}
+.fig{margin:6px 0 4px;max-width:100%;overflow-x:auto}
+table.tt{border-collapse:collapse;font-variant-numeric:tabular-nums;margin-top:8px}
+table.tt th,table.tt td{border:2px solid var(--line);padding:6px 12px;text-align:center}
+table.tt th{background:var(--mist)}
+/* results */
+.resgrid{display:grid;grid-template-columns:240px 1fr;gap:22px;align-items:start}
+@media (max-width:720px){.resgrid{grid-template-columns:1fr}}
+.grade{display:grid;place-items:center;width:190px;height:190px;border-radius:50%;margin:0 auto;color:#fff;text-align:center}
+.grade .g{font:800 4.4rem/1 var(--display)}
+.grade small{font-weight:800;opacity:.9}
+.pill{display:inline-block;border-radius:999px;padding:5px 12px;font:800 .85rem var(--body)}
+.pill.good{background:var(--good-bg);color:#0C6B45} .pill.warn{background:var(--warn-bg);color:#8A5600} .pill.bad{background:var(--bad-bg);color:#9C1C30}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(120px,190px) 1fr 54px;gap:10px;align-items:center;font-weight:700}
+.bar .tr{height:14px;background:var(--mist);border-radius:99px;overflow:hidden}
+.bar .tr i{display:block;height:100%;border-radius:99px}
+.bar .v{text-align:right;font-variant-numeric:tabular-nums}
+.review{display:grid;gap:10px;margin-top:10px}
+.ri{border-radius:14px;padding:12px 14px;border:2px solid var(--line);display:grid;grid-template-columns:34px 1fr;gap:10px}
+.ri .n{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;color:#fff;font:800 .9rem var(--display)}
+.ri.ok .n{background:var(--good)} .ri.no .n{background:var(--bad)}
+.ri .p{font-weight:700;min-width:0}
+.ri .a{font-size:.93rem;margin-top:4px}
+.ri .e{font-size:.9rem;color:var(--ink-2);margin-top:4px}
+/* board */
+.tablewrap{overflow-x:auto;margin-top:14px}
+table.board{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums;min-width:720px}
+table.board th{font:800 .78rem var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);text-align:center;padding:8px 6px;border-bottom:2px solid var(--line)}
+table.board th.l, table.board td.l{text-align:left}
+table.board td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:center;font-weight:700}
+table.board tr.click{cursor:pointer} table.board tr.click:hover td{background:var(--mist)}
+.sc{display:inline-block;min-width:44px;border-radius:10px;padding:4px 6px;font:800 .95rem var(--display)}
+.sc.g{background:var(--good-bg);color:#0C6B45} .sc.w{background:var(--warn-bg);color:#8A5600} .sc.b{background:var(--bad-bg);color:#9C1C30} .sc.e{color:#B9B4D6}
+th.grp{color:var(--ink)!important}
+.who{display:flex;align-items:center;gap:10px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--mist);border-radius:16px;padding:12px 14px}
+.stat b{display:block;font:800 1.8rem var(--display)}
+.stat span{font-size:.85rem;font-weight:700;color:var(--ink-2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+.hist{display:grid;gap:6px;margin-top:8px}
+.hrow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--mist);font-weight:700;font-size:.95rem}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(31,26,61,.45);display:grid;place-items:center;z-index:20;padding:16px}
+.modal .card{width:min(560px,100%);max-height:90vh;overflow:auto}
+.ulist{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;margin:16px 0}
+.utile{border:3px solid var(--line);border-radius:18px;background:#fff;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;font:800 1rem var(--body);color:var(--ink)}
+.utile[aria-pressed="true"]{border-color:var(--ink)}
+.field{display:flex;flex-direction:column;gap:6px;font-weight:800}
+.field input{font:700 1.1rem var(--body);padding:11px 14px;border-radius:14px;border:3px solid var(--line)}
+.field input:focus{border-color:var(--ink);outline:none}
+.colors{display:flex;gap:8px;flex-wrap:wrap}
+.colors button{width:36px;height:36px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line);cursor:pointer}
+.colors button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;z-index:30;max-width:calc(100% - 32px)}
+.store{font-size:.8rem;font-weight:700;color:var(--ink);background:rgba(255,255,255,.6);border-radius:999px;padding:4px 10px}
+.empty{text-align:center;padding:30px 10px}
+.confirm{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--bad-bg);display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="confetti" aria-hidden="true" id="confetti"></div>
+<div class="wrap">
+  <header class="top">
+    <button class="logo" id="homeBtn" type="button"><b>8</b>IEP Oefenplein</button>
+    <span class="sp"></span>
+    <span class="store" id="storeBadge">Laden…</span>
+    <button class="chip plain" id="boardBtn" type="button">Voortgang</button>
+    <button class="chip" id="userBtn" type="button"></button>
+  </header>
+  <main id="app"></main>
+</div>
+<div id="modalRoot"></div>
+
+<script>
+(() => {
+"use strict";
+/* ============ helpers ============ */
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const rnd=(x,d=6)=>Math.round(x*10**d)/10**d;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const strip=h=>String(h).replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+function nf(n,d=3){n=rnd(n,d);const neg=n<0;n=Math.abs(n);let [i,f]=String(n).split(".");i=i.replace(/\B(?=(\d{3})+(?!\d))/g,".");return (neg?"−":"")+i+(f?","+f:"")}
+const eur=n=>{const [i,f=""]=nf(n,2).split(",");return "€ "+i+","+(f+"00").slice(0,2)};
+const dur=m=>{const h=Math.floor(m/60),r=m%60;return h&&r?`${h} uur en ${r} minuten`:h?`${h} uur`:`${r} minuten`};
+const fr=(n,d)=>`<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
+const hm=m=>{m=((m%1440)+1440)%1440;return Math.floor(m/60)+"."+String(m%60).padStart(2,"0")};
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const comma=x=>String(x).replace(".",",");
+function parseNums(s){
+  s=String(s).trim().replace(/−/g,"-").replace(/\s/g,"").replace(/[^\d.,\-]/g,"");
+  if(!s||s==="-")return [];
+  const out=[];
+  if(s.includes(",")){out.push(+s.replace(/\./g,"").replace(",","."))}
+  else{out.push(+s);out.push(+s.replace(/\./g,""))}
+  return out.filter(x=>Number.isFinite(x));
+}
+function parseFrac(s){
+  s=String(s).trim().replace(/\s+/g," ");
+  let m=s.match(/^(-?\d+) (\d+)\/(\d+)$/); if(m){const w=+m[1],n=+m[2],d=+m[3];if(!d)return null;return {n:w*d+n,d}}
+  m=s.match(/^(-?\d+)\s?\/\s?(\d+)$/); if(m){if(!+m[2])return null;return {n:+m[1],d:+m[2]}}
+  const v=parseNums(s); if(v.length) return {n:v[0],d:1};
+  return null;
+}
+function parseTime(s){
+  const m=String(s).trim().match(/^(\d{1,2})\s?[.:,u]\s?(\d{2})(\s?uur)?$/i); if(!m)return null;
+  const h=+m[1],mi=+m[2]; if(h>23||mi>59)return null; return h*60+mi;
+}
+
+/* ============ REKENEN generators ============ */
+const RK={};
+RK.getallen=[
+ q=>{ // optellen / aftrekken
+  const d=[0,4,5,5,6][q]; const dec=q>=3&&Math.random()<.5;
+  let a=R(10**(d-1),10**d-1), b=R(10**(d-2),10**d-1);
+  if(dec){a/=100;b/=100}
+  const plus=Math.random()<.5; if(!plus&&b>a)[a,b]=[b,a];
+  const ans=rnd(plus?a+b:a-b,2);
+  return {kind:"num",prompt:`Reken uit:<br><span class="sum">${nf(a)} ${plus?"+":"−"} ${nf(b)} =</span>`,answer:ans,
+   explain:`${nf(a)} ${plus?"+":"−"} ${nf(b)} = ${nf(ans)}. Zet de getallen netjes onder elkaar${dec?", komma onder komma":""}.`};
+ },
+ q=>{ // vermenigvuldigen
+  let a,b,ans;
+  if(q===1){a=R(12,98);b=R(3,9)} else if(q===2){a=R(13,89);b=R(12,49)} else if(q===3){a=R(105,489);b=R(12,38)} else {a=R(12,95)/10;b=R(14,48)}
+  ans=rnd(a*b,2);
+  return {kind:"num",prompt:`Reken uit:<br><span class="sum">${nf(a)} × ${nf(b)} =</span>`,answer:ans,
+   explain:`${nf(a)} × ${nf(b)} = ${nf(ans)}. Tip: splits het getal, bijvoorbeeld ${nf(b)} = ${Math.floor(b/10)*10} + ${rnd(b%10,2)}.`};
+ },
+ q=>{ // delen
+  let b,c;
+  if(q===1){b=R(3,9);c=R(12,99)} else if(q===2){b=pick([12,15,16,25]);c=R(12,60)} else if(q===3){b=R(13,32);c=R(21,120)} else {b=pick([4,5,8]);c=0}
+  let a=b*c; if(q===4){a=R(101,499);c=rnd(a/b,3)}
+  return {kind:"num",prompt:`Reken uit:<br><span class="sum">${nf(a)} : ${b} =</span>`,answer:rnd(c,3),
+   explain:`${nf(a)} : ${b} = ${nf(c)}. Controle: ${nf(c)} × ${b} = ${nf(a)}.`};
+ },
+ q=>{ // volgorde van bewerkingen
+  if(q===1) return RK.getallen[0](q);
+  let p,ans,e;
+  if(q===2){const a=R(2,20),b=R(2,9),c=R(2,9);p=`${a} + ${b} × ${c}`;ans=a+b*c;e=`Eerst keer: ${b} × ${c} = ${b*c}, dan ${a} + ${b*c} = ${ans}.`}
+  else if(q===3){const a=R(2,12),b=R(2,9),c=R(2,6),d=R(1,10);p=`(${a} + ${b}) × ${c} − ${d}`;ans=(a+b)*c-d;e=`Eerst haakjes: ${a+b}. Dan × ${c} = ${(a+b)*c}. Dan − ${d} = ${ans}.`}
+  else{const c=R(2,6),k=R(2,9),b=c*k,a=R(10,60),d=R(2,5),f=R(2,8);p=`${a} − ${b} : ${c} + ${d} × ${f}`;ans=a-k+d*f;e=`Eerst delen en keer: ${b} : ${c} = ${k} en ${d} × ${f} = ${d*f}. Dan ${a} − ${k} + ${d*f} = ${ans}.`}
+  return {kind:"num",prompt:`Reken uit. Let op de volgorde!<br><span class="sum">${p} =</span>`,answer:ans,explain:e};
+ },
+ q=>{ // afronden
+  if(q<=2){const n=R(1000,99999);const t=pick([10,100,1000]);const nm={10:"tientallen",100:"honderdtallen",1000:"duizendtallen"}[t];const ans=Math.round(n/t)*t;
+   return {kind:"num",prompt:`Rond <em>${nf(n)}</em> af op ${nm}.`,answer:ans,explain:`Kijk naar het cijfer rechts van de ${nm.slice(0,-1)}: 5 of hoger = naar boven. ${nf(n)} ≈ ${nf(ans)}.`}}
+  const n=R(10000,99999)/1000; const d=pick([0,1,2]); const ans=rnd(Math.round(n*10**d)/10**d,3);
+  const nm=["op een heel getal","op één decimaal","op twee decimalen"][d];
+  return {kind:"num",prompt:`Rond <em>${nf(n)}</em> af ${nm}.`,answer:ans,explain:`Kijk naar het eerstvolgende cijfer: 5 of hoger = naar boven. ${nf(n)} ≈ ${nf(ans)}.`};
+ },
+ q=>{ // verhaalsom
+  if(q<=2){const k=R(6,18),n=R(21,32);return {kind:"num",prompt:`Een school heeft ${k} klassen met elk ${n} leerlingen. Hoeveel leerlingen zitten er op school?`,answer:k*n,unit:"leerlingen",explain:`${k} × ${n} = ${k*n}.`}}
+  const cap=pick([48,52,56,60]),tot=R(3,9)*cap+R(5,cap-5);const ans=Math.ceil(tot/cap);
+  return {kind:"num",prompt:`Er gaan ${tot} leerlingen op schoolreis. Eén bus heeft ${cap} zitplaatsen. Hoeveel bussen zijn er minstens nodig?`,answer:ans,unit:"bussen",
+   explain:`${tot} : ${cap} = ${nf(tot/cap,2)}. Je kunt geen halve bus nemen, dus naar boven: ${ans} bussen.`};
+ },
+ q=>{ // negatieve getallen
+  if(q<3) return RK.getallen[5](q);
+  if(Math.random()<.5){const s=-R(2,12),w=R(5,18);return {kind:"num",prompt:`'s Nachts is het ${nf(s)} °C. Overdag wordt het ${w} graden warmer. Hoe warm is het overdag?`,answer:s+w,unit:"°C",explain:`${nf(s)} + ${w} = ${nf(s+w)} °C.`}}
+  const a=-R(3,15),b=R(2,14);return {kind:"num",prompt:`In Oslo is het ${nf(a)} °C en in Rome ${b} °C. Hoeveel graden is het verschil?`,answer:b-a,unit:"graden",explain:`Van ${nf(a)} naar 0 is ${-a} graden, van 0 naar ${b} is ${b}. Samen ${b-a} graden.`};
+ }
+];
+RK.verhoudingen=[
+ q=>{ // breuk van een getal
+  const d=pick(q===1?[2,4,5,10]:[3,4,5,6,8]); const n=q===1?1:R(2,d-1); const k=R(q===1?3:4,q>=3?40:15); const tot=d*k;
+  if(gcd(n,d)!==1) return RK.verhoudingen[0](q);
+  return {kind:"num",prompt:`Hoeveel is ${fr(n,d)} van ${tot}?`,answer:n*k,explain:`${tot} : ${d} = ${k}. En ${n} × ${k} = ${n*k}.`};
+ },
+ q=>{ // procent van
+  const P=[[50,25,10],[20,75,10,25],[15,35,5,40],[12.5,15,35,60]][q-1]; const p=pick(P);
+  const base=pick([40,60,80,120,160,200,240,320,400,480,600,800]); const ans=rnd(base*p/100,2);
+  return {kind:"num",prompt:`Hoeveel is <em>${comma(p)}%</em> van ${base}?`,answer:ans,explain:`1% van ${base} = ${nf(base/100)}. Dus ${comma(p)}% = ${comma(p)} × ${nf(base/100)} = ${nf(ans)}.`};
+ },
+ q=>{ // korting
+  const item=pick(["jas","fiets","spelcomputer","tent","skateboard"]); const p=pick(q<=2?[10,20,25,50]:[15,30,35,40]);
+  const price=pick(q<=2?[40,60,80,120,200]:[60,80,120,160,240,360]); const ans=rnd(price*(100-p)/100,2);
+  return {kind:"num",prompt:`Een ${item} kost ${eur(price)}. In de uitverkoop krijg je <em>${p}% korting</em>. Hoeveel moet je nog betalen?`,answer:ans,unit:"euro",
+   explain:`${p}% van ${eur(price)} is ${eur(price*p/100)}. ${eur(price)} − ${eur(price*p/100)} = ${eur(ans)}.`};
+ },
+ q=>{ // verhoudingstabel
+  const prod=pick([["pakken sap","pak"],["schriften","schrift"],["broodjes","broodje"],["kaartjes","kaartje"]]);
+  const unit=R(q===1?2:5,q===1?6:30)/(q===1?1:10); const n1=R(2,5); let n2=R(6,12); if(n2===n1)n2++;
+  const ans=rnd(unit*n2,2);
+  return {kind:"num",prompt:`${n1} ${prod[0]} kosten samen ${eur(unit*n1)}. Hoeveel kosten ${n2} ${prod[0]}?`,answer:ans,unit:"euro",
+   explain:`Eén ${prod[1]} kost ${eur(unit*n1)} : ${n1} = ${eur(unit)}. ${n2} × ${eur(unit)} = ${eur(ans)}.`};
+ },
+ q=>{ // schaal
+  if(q===1) return RK.verhoudingen[3](q);
+  const sc=pick([10000,20000,25000,50000,100000]);
+  if(q<4||Math.random()<.5){const cm=pick([2,3,4,5,6,8,10,12]);const km=rnd(cm*sc/100000,3);
+   return {kind:"num",prompt:`Op een kaart met schaal <em>1 : ${nf(sc)}</em> liggen twee dorpen ${cm} cm uit elkaar. Hoeveel kilometer is dat in het echt?`,answer:km,unit:"km",
+    explain:`1 cm op de kaart = ${nf(sc)} cm = ${nf(sc/100000)} km in het echt. ${cm} × ${nf(sc/100000)} = ${nf(km)} km.`}}
+  const km=pick([1,2,3,4,5,6]); const cm=rnd(km*100000/sc,2);
+  return {kind:"num",prompt:`Twee steden liggen ${km} km uit elkaar. Hoeveel cm is dat op een kaart met schaal <em>1 : ${nf(sc)}</em>?`,answer:cm,unit:"cm",
+   explain:`${km} km = ${nf(km*100000)} cm. ${nf(km*100000)} : ${nf(sc)} = ${nf(cm)} cm.`};
+ },
+ q=>{ // vereenvoudigen
+  const pairs=[[1,2],[2,3],[3,4],[2,5],[3,5],[4,5],[5,6],[3,8],[5,8],[7,8],[3,10],[7,10]]; const [n,d]=pick(pairs); const k=R(2,q+3);
+  return {kind:"frac",simplest:true,prompt:`Schrijf de breuk zo eenvoudig mogelijk:<br><span class="sum">${fr(n*k,d*k)}</span>`,answer:{n,d},hint:"Typ zo: 3/4",
+   explain:`Deel boven en onder door ${k}: ${n*k}/${d*k} = ${n}/${d}.`};
+ },
+ q=>{ // breuk ↔ kommagetal / procent
+  const L=q<=2?[[1,2],[1,4],[3,4],[1,5],[2,5],[1,10]]:[[3,8],[1,8],[3,5],[4,5],[7,20],[3,20],[5,8]];
+  const [n,d]=pick(L); const v=rnd(n/d,4);
+  if(Math.random()<.5) return {kind:"num",prompt:`Schrijf ${fr(n,d)} als kommagetal.`,answer:v,hint:"Gebruik een komma, bijvoorbeeld 0,5",explain:`${n} : ${d} = ${nf(v,4)}.`};
+  return {kind:"num",prompt:`Hoeveel procent is ${fr(n,d)}?`,answer:rnd(v*100,2),unit:"%",explain:`${n} : ${d} = ${nf(v,4)} = ${nf(v*100,2)}%.`};
+ },
+ q=>{ // vergelijken (MC)
+  const pool=[["½",.5],["⅓",1/3],["⅔",2/3],["¾",.75],["⅖",.4],["⅗",.6],["⅝",.625],["⅜",.375],["0,55",.55],["0,7",.7],["0,65",.65],["0,45",.45],["65%",.65],["58%",.58],["72%",.72],["30%",.3],["0,8",.8],["⅘",.8]];
+  let ch; do{ch=shuffle(pool).slice(0,4)}while(new Set(ch.map(c=>c[1])).size<4);
+  const big=Math.random()<.6; const best=ch.reduce((m,c)=>big?(c[1]>m[1]?c:m):(c[1]<m[1]?c:m),ch[0]);
+  return {kind:"mc",prompt:`Welk getal is het <em>${big?"grootst":"kleinst"}</em>?`,options:ch.map(c=>c[0]),answer:ch.indexOf(best),
+   explain:`Maak er kommagetallen van: ${ch.map(c=>c[0]+" = "+nf(c[1],3)).join(", ")}.`};
+ },
+ q=>{ // breuken optellen
+  if(q<3) return RK.verhoudingen[0](q);
+  const P=[[2,4],[2,3],[3,6],[4,8],[2,5],[3,4],[2,6],[5,10]]; const [d1,d2]=pick(P); const n1=R(1,d1-1),n2=R(1,d2-1);
+  const n=n1*d2+n2*d1, d=d1*d2, g=gcd(n,d);
+  return {kind:"frac",prompt:`Reken uit:<br><span class="sum">${fr(n1,d1)} + ${fr(n2,d2)} =</span>`,answer:{n:n/g,d:d/g},hint:"Typ een breuk, bijvoorbeeld 5/6 of 1 1/4",
+   explain:`Maak de noemers gelijk: ${n1*d2}/${d} + ${n2*d1}/${d} = ${n}/${d}${g>1?` = ${n/g}/${d/g}`:""}.`};
+ }
+];
+RK.meten=[
+ q=>{ // omrekenen
+  const T=[{u:["km","hm","dam","m","dm","cm","mm"],use:[0,3,5,6,4]},{u:["kg","hg","dag","g"],use:[0,3]},{u:["l","dl","cl","ml"],use:[0,1,2,3]}];
+  const t=pick(T); let a,b; do{a=pick(t.use);b=pick(t.use)}while(a===b||Math.abs(a-b)>3);
+  const f=10**(b-a); // to smaller if positive
+  let v; if(q===1){v=f>1?R(2,9):R(2,9)*(1/f)} else if(q===2){v=f>1?R(11,95)/10:R(15,950)*(1/f)/10} else {v=f>1?R(105,995)/100:R(12,950)}
+  v=rnd(v,4); const ans=rnd(v*f,4);
+  if(q===4&&Math.random()<.5){const s=pick([["m²","cm²",10000,R(2,9)/2],["dm³","liter",1,R(5,95)/10],["m³","liter",1000,R(2,9)/2],["cm³","ml",1,R(50,900)]]);
+   return {kind:"num",prompt:`<span class="sum">${nf(s[3])} ${s[0]} = … ${s[1]}</span>`,answer:rnd(s[3]*s[2],3),unit:s[1],explain:`1 ${s[0]} = ${nf(s[2])} ${s[1]}. Dus ${nf(s[3])} ${s[0]} = ${nf(s[3]*s[2])} ${s[1]}.`}}
+  return {kind:"num",prompt:`<span class="sum">${nf(v)} ${t.u[a]} = … ${t.u[b]}</span>`,answer:ans,unit:t.u[b],
+   explain:`Van ${t.u[a]} naar ${t.u[b]} is ${f>1?"× "+nf(f):": "+nf(1/f)}. ${nf(v)} ${t.u[a]} = ${nf(ans)} ${t.u[b]}.`};
+ },
+ q=>{ // omtrek / oppervlakte
+  if(q<=2){const l=R(4,14),b=R(2,9);const opp=Math.random()<.5;
+   const svg=`<svg viewBox="0 0 260 150" width="260" height="150" role="img" aria-label="rechthoek ${l} bij ${b} meter"><rect x="30" y="20" width="${Math.min(200,l*14)}" height="${Math.min(100,b*11)}" fill="#E3EEFF" stroke="#5B6CFF" stroke-width="3"/><text x="${30+Math.min(200,l*14)/2}" y="${20+Math.min(100,b*11)+22}" text-anchor="middle">${l} m</text><text x="22" y="${20+Math.min(100,b*11)/2+5}" text-anchor="end">${b} m</text></svg>`;
+   return {kind:"num",prompt:`Een tuin is ${l} meter lang en ${b} meter breed. Wat is de <em>${opp?"oppervlakte":"omtrek"}</em>?<div class="fig">${svg}</div>`,answer:opp?l*b:2*(l+b),unit:opp?"m²":"m",
+    explain:opp?`Oppervlakte = lengte × breedte = ${l} × ${b} = ${l*b} m².`:`Omtrek = alle zijden bij elkaar: ${l} + ${b} + ${l} + ${b} = ${2*(l+b)} m.`}}
+  if(q===3){const b=R(3,12)*2,h=R(3,10);
+   const svg=`<svg viewBox="0 0 260 150" width="260" height="150" role="img" aria-label="rechthoekige driehoek"><polygon points="40,120 ${40+b*8},120 40,${120-h*9}" fill="#FFE5E9" stroke="#FF5D73" stroke-width="3"/><text x="${40+b*4}" y="142" text-anchor="middle">${b} cm</text><text x="32" y="${120-h*4.5+5}" text-anchor="end">${h} cm</text></svg>`;
+   return {kind:"num",prompt:`Wat is de oppervlakte van deze driehoek?<div class="fig">${svg}</div>`,answer:b*h/2,unit:"cm²",explain:`Oppervlakte driehoek = basis × hoogte : 2 = ${b} × ${h} : 2 = ${b*h/2} cm².`}}
+  const W=R(8,12),H=R(6,9),w=R(3,W-4),h=R(2,H-3); const s=14;
+  const pts=`30,15 ${30+(W-w)*s},15 ${30+(W-w)*s},${15+h*s} ${30+W*s},${15+h*s} ${30+W*s},${15+H*s} 30,${15+H*s}`;
+  const svg=`<svg viewBox="0 0 ${60+W*s} ${45+H*s}" width="${Math.min(320,60+W*s)}" role="img" aria-label="L-vorm"><polygon points="${pts}" fill="#E3F8EE" stroke="#16A36A" stroke-width="3"/><text x="${30+W*s/2}" y="${15+H*s+22}" text-anchor="middle">${W} m</text><text x="22" y="${15+H*s/2+5}" text-anchor="end">${H} m</text><text x="${30+(W-w)*s+w*s/2}" y="${15+h*s-6}" text-anchor="middle">${w} m</text><text x="${30+W*s+6}" y="${15+h*s/2+5}">${h} m</text></svg>`;
+  return {kind:"num",prompt:`Een speelplaats heeft deze vorm. Wat is de oppervlakte?<div class="fig">${svg}</div>`,answer:W*H-w*h,unit:"m²",
+   explain:`Grote rechthoek ${W} × ${H} = ${W*H} m². Haal het hoekje eraf: ${w} × ${h} = ${w*h} m². ${W*H} − ${w*h} = ${W*H-w*h} m².`};
+ },
+ q=>{ // inhoud
+  if(q===1) return RK.meten[0](q);
+  const l=R(2,8)*10,b=R(1,5)*10,h=R(1,4)*10; const v=l*b*h;
+  return {kind:"num",prompt:`Een aquarium is ${l} cm lang, ${b} cm breed en ${h} cm hoog. Hoeveel liter water past erin?`,answer:v/1000,unit:"liter",
+   explain:`Inhoud = ${l} × ${b} × ${h} = ${nf(v)} cm³. 1 liter = 1.000 cm³, dus ${nf(v/1000)} liter.`};
+ },
+ q=>{ // tijd
+  const film=pick(["De film","De voorstelling","De wedstrijd","Het concert"]);
+  const st=R(13*4,20*4)*15; const du=q===1?R(4,8)*15:q===2?R(5,12)*15:R(9,28)*5;
+  if(q<=2||Math.random()<.5) return {kind:"time",prompt:`${film} begint om <em>${hm(st)} uur</em> en duurt ${dur(du)}. Hoe laat is het afgelopen?`,answer:st+du,hint:"Typ bijvoorbeeld 21.35",
+   explain:`${hm(st)} + ${dur(du)} = ${hm(st+du)} uur. Tip: tel eerst de hele uren erbij, dan de minuten.`};
+  const st2=st+R(0,3)*7;
+  return {kind:"num",prompt:`De trein vertrekt om <em>${hm(st2)}</em> en komt aan om <em>${hm(st2+du)}</em>. Hoeveel minuten duurt de reis?`,answer:du,unit:"minuten",
+   explain:`Van ${hm(st2)} tot ${hm(st2+du)} is ${dur(du)} = ${du} minuten.`};
+ },
+ q=>{ // geld
+  const a=R(250,1599)/100,b=R(99,599)/100; const pay=a+b<10?10:a+b<20?20:50; const ans=rnd(pay-a-b,2);
+  return {kind:"num",prompt:`Je koopt een boek van ${eur(a)} en een pen van ${eur(b)}. Je betaalt met een briefje van ${eur(pay)}. Hoeveel geld krijg je terug?`,answer:ans,unit:"euro",
+   explain:`${eur(a)} + ${eur(b)} = ${eur(a+b)}. ${eur(pay)} − ${eur(a+b)} = ${eur(ans)}.`};
+ },
+ q=>{ // hoeken
+  if(q===1) return RK.meten[4](q);
+  const a=R(30,80),b=R(30,150-a);
+  return {kind:"num",prompt:`In een driehoek is één hoek ${a}° en een andere hoek ${b}°. Hoe groot is de derde hoek?`,answer:180-a-b,unit:"graden",
+   explain:`De drie hoeken van een driehoek zijn samen 180°. 180 − ${a} − ${b} = ${180-a-b}°.`};
+ }
+];
+RK.verbanden=[
+ q=>{ // staafdiagram
+  const days=["ma","di","wo","do","vr"]; const st=q<=2?10:25; const vals=days.map(()=>R(2,16)*st);
+  const max=Math.max(...vals); const top=Math.ceil(max/(st*4))*st*4; const H=150,W=300,x0=46;
+  let g=`<svg viewBox="0 0 ${W+20} ${H+50}" width="${W+20}" role="img" aria-label="staafdiagram bezoekers zwembad">`;
+  for(let i=0;i<=4;i++){const v=top*i/4,y=H-H*i/4+10;g+=`<line x1="${x0}" x2="${W}" y1="${y}" y2="${y}" stroke="#E4E0F5"/><text x="${x0-6}" y="${y+4}" text-anchor="end" font-size="11">${v}</text>`}
+  vals.forEach((v,i)=>{const bw=36,x=x0+14+i*50,h=H*v/top;g+=`<rect x="${x}" y="${H+10-h}" width="${bw}" height="${h}" rx="5" fill="${["#FF5D73","#FF9A5C","#FFC83D","#2FCB8A","#2BB3E8"][i]}"/><text x="${x+bw/2}" y="${H+28}" text-anchor="middle" font-size="12">${days[i]}</text>`});
+  g+=`</svg>`;
+  const t=R(0,2); let i=R(0,4),j=R(0,4); while(j===i)j=R(0,4);
+  if(t===0||q===1){const hi=vals[i]>=vals[j]?i:j,lo=hi===i?j:i;return {kind:"num",prompt:`Bezoekers van het zwembad. Hoeveel bezoekers kwamen er op <em>${days[hi]}</em> meer dan op <em>${days[lo]}</em>?<div class="fig">${g}</div>`,answer:vals[hi]-vals[lo],unit:"bezoekers",explain:`${days[hi]}: ${vals[hi]}, ${days[lo]}: ${vals[lo]}. Verschil: ${vals[hi]-vals[lo]}.`}}
+  const sum=vals.reduce((a,b)=>a+b,0);
+  if(t===1||q===2)return {kind:"num",prompt:`Bezoekers van het zwembad. Hoeveel bezoekers kwamen er in totaal deze vijf dagen?<div class="fig">${g}</div>`,answer:sum,unit:"bezoekers",explain:`${vals.join(" + ")} = ${sum}.`};
+  return {kind:"num",prompt:`Bezoekers van het zwembad. Hoeveel bezoekers kwamen er <em>gemiddeld</em> per dag?<div class="fig">${g}</div>`,answer:sum/5,unit:"bezoekers",explain:`Totaal ${sum}, gedeeld door 5 dagen = ${nf(sum/5)}.`};
+ },
+ q=>{ // gemiddelde
+  const n=q<=2?4:5; let v=Array.from({length:n},()=>R(4,10)); if(q<=2){const s=v.reduce((a,b)=>a+b,0);v[n-1]+=(n-s%n)%n; if(v[n-1]>10){v[n-1]-=n}}
+  const s=v.reduce((a,b)=>a+b,0); const avg=rnd(s/n,2);
+  if(q===4&&Math.random()<.5){const target=R(6,8);const k=v.slice(0,3);const need=target*4-k.reduce((a,b)=>a+b,0);if(need>=1&&need<=10)return {kind:"num",prompt:`Noor haalde voor topografie een ${k.join(", een ")}. Welk cijfer moet ze voor de vierde toets halen om gemiddeld precies een <em>${target}</em> te staan?`,answer:need,explain:`Voor gemiddeld ${target} heb je samen ${target} × 4 = ${target*4} punten nodig. Ze heeft ${k.reduce((a,b)=>a+b,0)}. ${target*4} − ${k.reduce((a,b)=>a+b,0)} = ${need}.`}}
+  return {kind:"num",prompt:`Daan haalde deze cijfers: <em>${v.join(" – ")}</em>. Wat is zijn gemiddelde cijfer?`,answer:avg,explain:`Tel op: ${v.join(" + ")} = ${s}. Deel door ${n}: ${nf(avg,2)}.`};
+ },
+ q=>{ // snelheid
+  if(q===1){const v=pick([60,80,90,100,120]),t=R(2,4);return {kind:"num",prompt:`Een auto rijdt ${v} km per uur. Hoeveel km rijdt hij in ${t} uur?`,answer:v*t,unit:"km",explain:`${v} × ${t} = ${v*t} km.`}}
+  if(q===2){const v=pick([60,80,90,100]),t=pick([1.5,2.5,3.5]);return {kind:"num",prompt:`Een bus rijdt ${v} km per uur. Hoeveel km rijdt de bus in ${comma(t)} uur?`,answer:v*t,unit:"km",explain:`${v} × ${comma(t)} = ${nf(v*t)} km. (Een half uur = ${v/2} km.)`}}
+  if(q===3){const v=pick([40,60,80,90]),t=pick([1.5,2.5,0.5]);return {kind:"num",prompt:`Een trein rijdt ${nf(v*t)} km in ${comma(t)} uur. Wat is de gemiddelde snelheid?`,answer:v,unit:"km/u",explain:`${nf(v*t)} : ${comma(t)} = ${v} km per uur.`}}
+  const v=pick([12,16,18,20,24]),m=pick([15,30,45,20,40]);return {kind:"num",prompt:`Sara fietst gemiddeld ${v} km per uur. Hoeveel km fietst ze in ${m} minuten?`,answer:rnd(v*m/60,2),unit:"km",explain:`${m} minuten = ${nf(m/60,3)} uur. ${v} × ${nf(m/60,3)} = ${nf(v*m/60,2)} km. Of: in 1 minuut ${nf(v/60,3)} km.`};
+ },
+ q=>{ // getallenrij
+  const s=R(1,9); let seq,why;
+  const t=pick(q<=2?[0,1,2]:[1,2,3,4]);
+  if(t===0){const k=R(3,12);seq=[0,1,2,3,4].map(i=>s+k*i);why=`Er komt steeds ${k} bij.`}
+  else if(t===1){seq=[0,1,2,3,4].map(i=>s*2**i);why=`Elk getal is ×2.`}
+  else if(t===2){seq=[s];for(let i=1;i<5;i++)seq.push(seq[i-1]+i);why=`Erbij komt steeds 1 meer: +1, +2, +3, +4.`}
+  else if(t===3){seq=[s];for(let i=1;i<5;i++)seq.push(seq[i-1]*2+1);why=`Steeds ×2 en dan +1.`}
+  else {const a=R(80,200);const k=R(3,9);seq=[0,1,2,3,4].map(i=>a-k*i*i);why=`Er gaat steeds meer af: −${k}, −${3*k}, −${5*k}, −${7*k}.`}
+  return {kind:"num",prompt:`Welk getal komt er op de plek van het vraagteken?<br><span class="sum">${seq.slice(0,4).join(" · ")} · ?</span>`,answer:seq[4],explain:`${why} Het volgende getal is ${seq[4]}.`};
+ },
+ q=>{ // dienstregeling
+  const st=["Zwolle","Deventer","Arnhem","Nijmegen"]; let t=R(7*60,9*60); const times=[t]; for(let i=1;i<4;i++){t+=R(14,39);times.push(t)}
+  const tab=`<div class="fig"><table class="tt"><tr><th>Station</th><th>Vertrek</th></tr>${st.map((s,i)=>`<tr><td>${s}</td><td>${hm(times[i])}</td></tr>`).join("")}</table></div>`;
+  let i=R(0,2),j=R(i+1,3);
+  return {kind:"num",prompt:`Hoeveel minuten duurt de reis van <em>${st[i]}</em> naar <em>${st[j]}</em>?${tab}`,answer:times[j]-times[i],unit:"minuten",
+   explain:`Van ${hm(times[i])} tot ${hm(times[j])} = ${times[j]-times[i]} minuten.`};
+ }
+];
+const REKEN_DOMAINS=[["getallen","Getallen"],["verhoudingen","Verhoudingen"],["meten","Meten & meetkunde"],["verbanden","Verbanden"]];
+function makeRekenen(q){
+  const items=[];
+  for(const [k,label] of REKEN_DOMAINS){
+    const gens=shuffle(RK[k]);
+    for(let i=0;i<5;i++){const it=gens[i%gens.length](q);it.cat=label;items.push(it)}
+  }
+  return items;
+}
+
+/* ============ TAAL data ============ */
+// werkwoorden: i=infinitief, s=stam, v=te/de (null=sterk), pd=voltooid deelwoord, sub=onderwerp, r=rest (tt), rv=rest (vt), aux, p=persoon (jij-vragen mogelijk)
+const WW=[
+ {i:"werken",s:"werk",v:"te",pd:"gewerkt",sub:"Mijn vader",r:"elke zaterdag in de tuin",rv:"gisteren de hele dag in de tuin",aux:"heeft",p:1},
+ {i:"fietsen",s:"fiets",v:"te",pd:"gefietst",sub:"Daan",r:"elke dag naar school",rv:"vorige week naar Utrecht",aux:"heeft",p:1},
+ {i:"wachten",s:"wacht",v:"te",pd:"gewacht",sub:"Sanne",r:"bij de bushalte",rv:"gisteren lang bij de bushalte",aux:"heeft",p:1},
+ {i:"praten",s:"praat",v:"te",pd:"gepraat",sub:"De juf",r:"met de ouders over de eindtoets",rv:"gisteren lang over de eindtoets",aux:"heeft",p:1},
+ {i:"zetten",s:"zet",v:"te",pd:"gezet",sub:"Opa",r:"thee voor iedereen",rv:"vanochtend thee voor iedereen",aux:"heeft",p:1},
+ {i:"landen",s:"land",v:"de",pd:"geland",sub:"Het vliegtuig",r:"om drie uur op Schiphol",rv:"gisteren op Schiphol",aux:"is",p:0},
+ {i:"antwoorden",s:"antwoord",v:"de",pd:"geantwoord",sub:"Lisa",r:"altijd snel op de vraag",rv:"meteen op de vraag",aux:"heeft",p:1},
+ {i:"verhuizen",s:"verhuis",v:"de",pd:"verhuisd",sub:"Mijn tante",r:"volgende maand naar Groningen",rv:"vorig jaar naar Groningen",aux:"is",p:1},
+ {i:"beloven",s:"beloof",v:"de",pd:"beloofd",sub:"Mijn broer",r:"zijn zusje een ijsje",rv:"zijn zusje een ijsje",aux:"heeft",p:1},
+ {i:"verbranden",s:"verbrand",v:"de",pd:"verbrand",sub:"De taart",r:"bijna in de oven",rv:"in de oven",aux:"is",p:0},
+ {i:"gebeuren",s:"gebeur",v:"de",pd:"gebeurd",sub:"Er",r:"iets geks op het schoolplein",rv:"iets geks op het schoolplein",aux:"is",p:0},
+ {i:"maken",s:"maak",v:"te",pd:"gemaakt",sub:"Ahmed",r:"een tekening van een draak",rv:"gisteren een tekening van een draak",aux:"heeft",p:1},
+ {i:"luisteren",s:"luister",v:"de",pd:"geluisterd",sub:"Fleur",r:"graag naar de radio",rv:"gisteren naar de radio",aux:"heeft",p:1},
+ {i:"spelen",s:"speel",v:"de",pd:"gespeeld",sub:"Mijn zusje",r:"met de lego",rv:"de hele middag met de lego",aux:"heeft",p:1},
+ {i:"redden",s:"red",v:"de",pd:"gered",sub:"De brandweer",r:"een kat uit de boom",rv:"gisteren een kat uit de boom",aux:"heeft",p:0},
+ {i:"schudden",s:"schud",v:"de",pd:"geschud",sub:"Tim",r:"de kaarten voor het spel",rv:"de kaarten voor het spel",aux:"heeft",p:1},
+ {i:"wensen",s:"wens",v:"te",pd:"gewenst",sub:"Oma",r:"iedereen een fijne dag",rv:"iedereen een fijne dag",aux:"heeft",p:1},
+ {i:"leven",s:"leef",v:"de",pd:"geleefd",sub:"De ridder",r:"in een groot kasteel",rv:"lang in een groot kasteel",aux:"heeft",p:1},
+ {i:"bestellen",s:"bestel",v:"de",pd:"besteld",sub:"Papa",r:"pizza voor de hele klas",rv:"gisteren pizza voor de hele klas",aux:"heeft",p:1},
+ {i:"vinden",s:"vind",v:null,sub:"Noor",r:"de rekentoets makkelijk",p:1},
+ {i:"worden",s:"word",v:null,sub:"Mijn broertje",r:"morgen tien jaar",p:1},
+ {i:"rijden",s:"rijd",v:null,sub:"De bus",r:"elk kwartier naar het station",p:0},
+ {i:"snijden",s:"snijd",v:null,sub:"Mama",r:"het brood in plakjes",p:1},
+];
+const KOF="tkfschp".split("");
+function wwItem(q){
+  const types=["hij","jij","ik"]; if(q>=2)types.push("inv","inv"); if(q>=3)types.push("vt","vt","vtmv"); if(q>=4)types.push("pd","pd","pd");
+  const t=pick(types);
+  const pool=WW.filter(w=>{ if(t==="vtmv")return w.v&&w.p; if(t==="vt"||t==="pd")return w.v; if(t==="jij"||t==="inv"||t==="ik")return w.p; return true;});
+  const w=pick(pool); const s=w.s; const endsT=s.endsWith("t");
+  let zin,cor,opts,uitleg;
+  const tt3=endsT?s:s+"t";
+  const presOpts=uniq([s,endsT?s+"t":s+"t",s.endsWith("d")?s.slice(0,-1)+"t":s+"d", null]);
+  const r=w.r;
+  if(t==="hij"){zin=`${w.sub} ___ ${r}.`;cor=tt3;opts=presOpts;uitleg=endsT?`Hij/zij-vorm = stam + t. De stam (${s}) eindigt al op een t, dus geen extra t.`:`Hij/zij-vorm (ook bij een naam of 'het') = stam + t: ${s} + t = ${tt3}.`}
+  else if(t==="jij"){zin=`Jij ___ ${r}.`;cor=tt3;opts=presOpts;uitleg=`Jij vóór de persoonsvorm: stam + t = ${tt3}.`}
+  else if(t==="ik"){zin=`Ik ___ ${r}.`;cor=s;opts=presOpts;uitleg=`Ik-vorm = de stam: ${s}.`}
+  else if(t==="inv"){zin=`___ jij ${r}?`;cor=s;opts=presOpts;uitleg=`Staat jij áchter de persoonsvorm? Dan geen t: ${s} jij…`}
+  else if(t==="vt"||t==="vtmv"){
+    const mv=t==="vtmv"; const end=w.v+(mv?"n":""); cor=s+end;
+    const wrong=w.v==="te"?"de":"te";
+    opts=uniq([cor,s+wrong+(mv?"n":""),(endsT||s.endsWith("d"))?s+"e"+(mv?"n":""):s+(mv?"en":"t")]);
+    zin=`${mv?"Wij":w.sub} ___ ${w.rv}.`;
+    const last=w.i.slice(0,-2).slice(-1); const lt=w.i.slice(0,-2).endsWith("ch")?"ch":last;
+    uitleg=`Verleden tijd: kijk naar de laatste letter vóór -en in '${w.i}': ${lt}. ${KOF.includes(lt)||lt==="ch"?"Die zit in 't kofschip → -te":"Die zit niet in 't kofschip → -de"}${mv?"n (meervoud)":""}: ${cor}.`;
+  } else {
+    cor=w.pd; const last=cor.slice(-1);
+    opts=uniq([cor,cor.slice(0,-1)+(last==="d"?"t":"d"),cor.slice(0,-1)+"dt"]);
+    zin=`${w.sub} ${w.aux} ${w.rv} ___.`;
+    uitleg=`Voltooid deelwoord: maak de verleden tijd (${s}${w.v}). Met -de eindigt het op d, met -te op t: ${cor}.`;
+  }
+  if(opts.length<3) opts.push(cor+"t");
+  opts=shuffle(uniq(opts)).slice(0,4); if(!opts.includes(cor)) opts[0]=cor;
+  return {kind:"mc",cat:"Werkwoordspelling",prompt:`Welke vorm is goed? <span class="zin">${zin.replace("___","<em>…</em>")}</span><span class="muted">(${w.i})</span>`,options:opts,answer:opts.indexOf(cor),explain:uitleg};
+}
+function uniq(a){return [...new Set(a.filter(Boolean))]}
+
+const SPELL=[ // [goed, fout, fout], niveau
+ [["vakantie","vakansie","vacantie"],1],[["politie","polietie","pollitie"],1],[["eigenlijk","eigelijk","eigenlek"],1],[["tijdens","teidens","tijdes"],1],
+ [["gezellig","gezelig","gezellich"],1],[["afspraak","afsprak","afspraag"],1],[["bibliotheek","biblioteek","bieblietheek"],1],[["horloge","horlooge","orloge"],1],
+ [["cadeau","kado","cadou"],2],[["bureau","buro","burreau"],2],[["douche","doesje","douchje"],2],[["fantastisch","fantasties","fantastich"],2],
+ [["restaurant","restourant","restaurent"],2],[["ambulance","ambulanse","ambulans"],2],[["tegenwoordig","tegewoordig","tegenwoordich"],2],[["foto's","fotos","foto-s"],2],
+ [["chauffeur","sjoffeur","chauffuer"],3],[["enthousiast","entousiast","enthoesiast"],3],[["categorie","catagorie","kategorie"],3],[["interessant","intressant","interresant"],3],
+ [["spaghetti","spagetti","spaghettie"],3],[["baby's","babys","babies"],3],[["ideeën","ideën","idee-en"],3],[["examen","eksamen","exsamen"],3],
+ [["onmiddellijk","onmiddelijk","onmidellijk"],4],[["abonnement","abbonement","abonement"],4],[["mysterie","misterie","mysterrie"],4],[["zeeën","zeën","zeëen"],4],
+ [["paraplu's","paraplus","paraplu-s"],4],[["magazine","magazien","magasine"],4],[["quiz","kwis","quis"],4],[["ouderwets","ouwerwets","ouderwedts"],4]
+];
+const PUNCT=[
+ [["Wij gaan in de zomervakantie naar Frankrijk.","Wij gaan in de zomervakantie naar frankrijk.","wij gaan in de zomervakantie naar Frankrijk.","Wij gaan in de Zomervakantie naar Frankrijk."],1,"Een zin begint met een hoofdletter. Namen van landen ook: Frankrijk. 'zomervakantie' niet."],
+ [["Ik heb appels, peren en bananen gekocht.","Ik heb appels peren en bananen gekocht.","Ik heb, appels, peren en bananen gekocht.","Ik heb appels, peren, en, bananen gekocht."],1,"Bij een opsomming zet je komma's tussen de woorden, maar niet vóór 'en'."],
+ [["Tim vroeg: \"Ga je mee naar het strand?\"","Tim vroeg \"ga je mee naar het strand?\"","Tim vroeg: \"ga je mee naar het strand.\"","Tim vroeg, Ga je mee naar het strand?"],2,"Directe rede: dubbele punt, aanhalingstekens, hoofdletter en een vraagteken bij een vraag."],
+ [["Op maandag 3 mei vieren we het feest.","Op Maandag 3 Mei vieren we het feest.","Op maandag 3 Mei vieren we het feest.","Op Maandag 3 mei vieren we het feest."],2,"Dagen en maanden schrijf je met een kleine letter."],
+ [["Woon jij ook in de Kerkstraat?","Woon jij ook in de kerkstraat?","Woon jij ook in de Kerkstraat.","woon jij ook in de Kerkstraat?"],2,"Straatnamen krijgen een hoofdletter, een vraag eindigt met een vraagteken."],
+ [["Anna's fiets staat naast Pieters scooter.","Annas fiets staat naast Pieter's scooter.","Anna's fiets staat naast Pieter's scooter.","Annas fiets staat naast Pieters scooter."],3,"Eindigt een naam op a, i, o, u of y, dan schrijf je 's (Anna's). Anders alleen een s (Pieters)."],
+ [["Ken jij de Nederlandse vlag?","Ken jij de nederlandse vlag?","Ken jij de Nederlandse Vlag?","Ken jij de nederlandse Vlag?"],3,"Bijvoeglijke naamwoorden van landen krijgen een hoofdletter: Nederlandse. 'vlag' niet."],
+ [["\"Pas op!\" riep de brandweerman. \"Het dak stort in.\"","\"Pas op\" riep de brandweerman, \"het dak stort in.\"","\"Pas op!\" riep de brandweerman \"Het dak stort in\"","Pas op! riep de brandweerman. \"Het dak stort in.\""],3,"Elk gesproken stuk staat tussen aanhalingstekens en eindigt met een leesteken."],
+ [["De Tweede Wereldoorlog eindigde in 1945.","De tweede wereldoorlog eindigde in 1945.","De Tweede wereldoorlog eindigde in 1945.","de Tweede Wereldoorlog eindigde in 1945."],4,"Namen van historische gebeurtenissen krijgen hoofdletters: Tweede Wereldoorlog."],
+ [["Mijn oom, die in Spanje woont, komt logeren.","Mijn oom die, in Spanje woont komt logeren.","Mijn oom die in Spanje woont, komt, logeren.","Mijn oom, die in spanje woont, komt logeren."],4,"Een bijzin die extra informatie geeft, zet je tussen twee komma's."],
+ [["De baby's sliepen in hun bedjes.","De babys sliepen in hun bedjes.","De baby,s sliepen in hun bedjes.","De babies sliepen in hun bedjes."],4,"Woorden die eindigen op y krijgen in het meervoud 's: baby's."],
+];
+// zinsontleding: [deel, rol]  rollen: pv, ow, lv, x
+const ZINNEN=[
+ [[["Morgen","x"],["gaat","pv"],["mijn zus","ow"],["naar de bioscoop","x"]],"."],
+ [[["De hond","ow"],["heeft","pv"],["een bot","lv"],["begraven","x"]],"."],
+ [[["In de klas","x"],["leest","pv"],["de juf","ow"],["een spannend verhaal","lv"],["voor","x"]],"."],
+ [[["Wij","ow"],["kochten","pv"],["gisteren","x"],["nieuwe schoenen","lv"]],"."],
+ [[["Na school","x"],["speelt","pv"],["Jayden","ow"],["altijd","x"],["voetbal","lv"]],"."],
+ [[["De leerlingen van groep 8","ow"],["oefenen","pv"],["elke week","x"],["voor de eindtoets","x"]],"."],
+ [[["Heb","pv"],["jij","ow"],["mijn telefoon","lv"],["gezien","x"]],"?"],
+ [[["Mijn opa","ow"],["repareert","pv"],["de kapotte fiets","lv"],["in de schuur","x"]],"."],
+ [[["Volgende week","x"],["vertrekken","pv"],["we","ow"],["naar Spanje","x"]],"."],
+ [[["De boze buurman","ow"],["gooide","pv"],["de bal","lv"],["over de schutting","x"]],"."],
+ [[["Elke ochtend","x"],["drinkt","pv"],["mijn moeder","ow"],["twee koppen koffie","lv"]],"."],
+ [[["Gisteren","x"],["heeft","pv"],["de burgemeester","ow"],["het nieuwe zwembad","lv"],["geopend","x"]],"."],
+];
+const WSOORT=[
+ ["De <em>snelle</em> hond rende weg.","bijvoeglijk naamwoord",1],["Mijn buurvrouw <em>tekent</em> elke dag.","werkwoord",1],["Wij gingen met <em>de</em> trein.","lidwoord",1],
+ ["Het <em>geluk</em> zat ons mee.","zelfstandig naamwoord",2],["<em>Zij</em> heeft de prijs gewonnen.","voornaamwoord",3],["Ik heb <em>drie</em> boeken gelezen.","telwoord",3],
+ ["We wandelen <em>door</em> het bos.","voorzetsel",4],["De <em>vrolijke</em> clown maakte grappen.","bijvoeglijk naamwoord",2],["Morgen <em>zwemmen</em> we in zee.","werkwoord",2],
+];
+const SOORTEN=["zelfstandig naamwoord","bijvoeglijk naamwoord","werkwoord","lidwoord","voornaamwoord","telwoord","voorzetsel"];
+function grammarItem(q){
+  const types=["pv"]; if(q>=1)types.push("pv","soort"); if(q>=2)types.push("ow","ow"); if(q>=3)types.push("lv","lv"); if(q>=4)types.push("ow","lv");
+  let t=pick(types);
+  if(t==="soort"){const it=pick(WSOORT.filter(w=>w[2]<=q)); const opts=shuffle([it[1],...shuffle(SOORTEN.filter(s=>s!==it[1])).slice(0,3)]);
+    return {kind:"mc",cat:"Grammatica",prompt:`Wat voor woord is het gekleurde woord? <span class="zin">${it[0]}</span>`,options:opts,answer:opts.indexOf(it[1]),explain:`Het gekleurde woord is een ${it[1]}.`}}
+  const pool=ZINNEN.filter(z=>z[0].some(d=>d[1]===t)); const z=pick(pool);
+  const zin=z[0].map(d=>d[0]).join(" ")+z[1]; const cor=z[0].find(d=>d[1]===t)[0];
+  const opts=shuffle(z[0].map(d=>d[0])).slice(0,4); if(!opts.includes(cor))opts[0]=cor;
+  const nm={pv:"de persoonsvorm",ow:"het onderwerp",lv:"het lijdend voorwerp"}[t];
+  const ex={pv:`Maak er een vraag van of zet de zin in een andere tijd: het woord dat verandert is de persoonsvorm ('${cor}').`,
+    ow:`Vraag: wie of wat + persoonsvorm? Het antwoord is het onderwerp: '${cor}'.`,
+    lv:`Vraag: wie of wat + onderwerp + gezegde? Het antwoord is het lijdend voorwerp: '${cor}'.`}[t];
+  return {kind:"mc",cat:"Grammatica",prompt:`Wat is ${nm} in deze zin? <span class="zin">${zin}</span>`,options:shuffle(opts),answer:-1,_cor:cor,explain:ex};
+}
+const WOORDEN=[
+ ["nauwkeurig","heel precies",["heel snel","een beetje slordig","erg nieuwsgierig"],1],["verbaasd","verrast",["boos","verdrietig","moe"],1],
+ ["geduldig","rustig kunnen wachten",["snel boos worden","heel sterk zijn","veel praten"],1],["vermoeid","moe",["blij","hongerig","ziek"],1],
+ ["voorzichtig","goed oppassen",["heel hard gaan","niet luisteren","snel vergeten"],1],["ontsnappen","wegkomen",["verstoppen","opsluiten","terugkomen"],1],
+ ["aarzelen","twijfelen",["haasten","weigeren","juichen"],2],["onmiddellijk","meteen",["later","soms","nooit"],2],["beschadigd","kapot gegaan",["schoongemaakt","nieuw gekocht","weggegooid"],2],
+ ["tijdelijk","voor een korte tijd",["voor altijd","elke dag","heel vroeger"],2],["verplicht","het moet",["het mag","het hoeft niet","het is verboden"],2],["nieuwsgierig","alles willen weten",["niets durven","snel verveeld","erg verlegen"],2],
+ ["de oorzaak","waardoor iets gebeurt",["wat er daarna gebeurt","de plek waar het gebeurt","wie het heeft gezien"],3],["schaars","er is weinig van",["er is heel veel van","het is duur","het is nieuw"],3],
+ ["toenemen","meer worden",["minder worden","gelijk blijven","verdwijnen"],3],["overtuigen","iemand iets laten geloven",["iemand iets vragen","iemand uitlachen","iemand vergeten"],3],
+ ["uitstellen","later doen",["meteen doen","nooit doen","samen doen"],3],["gevarieerd","met veel verschillende dingen",["steeds hetzelfde","heel duur","erg klein"],3],
+ ["ondanks","hoewel iets tegenzit",["omdat","doordat","dankzij"],4],["het voordeel","iets wat goed is aan iets",["iets wat slecht is","de prijs","de handleiding"],4],
+ ["subtiel","heel fijn en niet opvallend",["heel opvallend","grof","luidruchtig"],4],["consequent","je steeds aan hetzelfde houden",["telkens iets anders doen","heel snel beslissen","vaak te laat komen"],4],
+ ["Met de deur in huis vallen","meteen zeggen waar het om gaat",["per ongeluk naar binnen vallen","heel onhandig zijn","te laat thuiskomen"],3],
+ ["De kat uit de boom kijken","eerst afwachten wat er gebeurt",["iemand helpen","bang zijn voor dieren","heel nieuwsgierig zijn"],3],
+ ["Iemand een hart onder de riem steken","iemand moed geven",["iemand laten schrikken","iemand een cadeau geven","iemand straf geven"],4],
+ ["Door de mand vallen","betrapt worden op een leugen",["heel moe zijn","iets kapotmaken","een wedstrijd verliezen"],4],
+ ["In de wolken zijn","heel blij zijn",["aan het dromen zijn","in een vliegtuig zitten","verdrietig zijn"],4],
+];
+const SIGNAAL=[
+ ["Het regende hard, ___ we gingen toch naar buiten.","maar",["omdat","dus","want"],1],
+ ["Ik neem een paraplu mee, ___ het gaat vanmiddag regenen.","want",["maar","toch","dus"],1],
+ ["Eerst snijd je de uien. ___ bak je ze in de pan.","Daarna",["Toch","Want","Omdat"],1],
+ ["Wil je thee ___ wil je liever limonade?","of",["en","want","dus"],1],
+ ["Daan was zijn huiswerk vergeten. ___ moest hij na schooltijd blijven.","Daarom",["Toch","Bijvoorbeeld","Hoewel"],2],
+ ["Je kunt op veel manieren reizen, ___ met de trein, de bus of de fiets.","bijvoorbeeld",["daarom","omdat","maar"],2],
+ ["Het museum was gesloten. ___ zijn we naar de dierentuin gegaan.","Daarom",["Want","Hoewel","Omdat"],2],
+ ["___ hij goed had geoefend, haalde hij een laag cijfer.","Hoewel",["Omdat","Dus","Daarna"],3],
+ ["De wegen waren glad ___ het had gevroren.","doordat",["hoewel","maar","toch"],3],
+ ["___ het slechte weer ging de wedstrijd gewoon door.","Ondanks",["Doordat","Omdat","Dankzij"],4],
+ ["Bijen zijn belangrijk voor de natuur. ___ zorgen ze ervoor dat planten vruchten krijgen.","Zo",["Maar","Toch","Hoewel"],4],
+];
+const TEKSTEN=[
+ {lvl:1,t:"De kringloopwinkel",p:["In onze buurt is sinds kort een kringloopwinkel. Mensen brengen er spullen die ze niet meer gebruiken, zoals boeken, speelgoed, kleding en meubels. De medewerkers controleren eerst of alles nog heel is. Daarna krijgen de spullen een prijskaartje en komen ze in de winkel te staan. Alles is er veel goedkoper dan in een gewone winkel. Een spel kost bijvoorbeeld maar twee euro.","Een kringloopwinkel is goed voor het milieu. Spullen worden niet weggegooid, maar krijgen een tweede leven. Er hoeven dan ook minder nieuwe spullen gemaakt te worden. In de winkel werken veel vrijwilligers. Zij krijgen geen geld voor hun werk, maar vinden het fijn om iets te doen voor de buurt."],
+  v:[["Wat gebeurt er éérst met de spullen die mensen naar de winkel brengen?",["Ze worden gecontroleerd.","Ze krijgen een prijskaartje.","Ze worden weggegooid.","Ze gaan naar een gewone winkel."],"In de tekst staat: 'De medewerkers controleren eerst of alles nog heel is. Daarna…'"],
+     ["Waarom is een kringloopwinkel goed voor het milieu?",["Spullen worden opnieuw gebruikt, dus er hoeven minder nieuwe gemaakt te worden.","Alles is er goedkoper.","Er werken veel vrijwilligers.","De winkel is dichtbij."],"Tweede alinea: spullen krijgen een tweede leven en er hoeven minder nieuwe spullen gemaakt te worden."],
+     ["Wat is een vrijwilliger?",["Iemand die werkt zonder er geld voor te krijgen.","Iemand die spullen koopt.","De baas van de winkel.","Iemand die spullen weggooit."],"'Zij krijgen geen geld voor hun werk' legt uit wat een vrijwilliger is."]]},
+ {lvl:1,t:"Waarom kleuren bladeren in de herfst?",p:["In de zomer zijn de bladeren van de meeste bomen groen. Dat komt door bladgroen. Met bladgroen maakt een boom voedsel uit zonlicht, water en lucht.","In de herfst worden de dagen korter en kouder. Er is dan te weinig licht om genoeg voedsel te maken. De boom stopt daarom met het maken van bladgroen. Het groen verdwijnt langzaam uit het blad. Nu worden andere kleuren zichtbaar die er al die tijd al in zaten: geel en oranje.","Uiteindelijk laat de boom zijn bladeren vallen. Zo verliest hij in de winter geen water via zijn bladeren. In het voorjaar groeien er weer nieuwe, groene blaadjes."],
+  v:[["Waarom stopt een boom in de herfst met het maken van bladgroen?",["Er is te weinig licht om voedsel te maken.","Het regent te veel.","De bladeren zijn te oud.","De boom heeft genoeg water."],"'Er is dan te weinig licht om genoeg voedsel te maken. De boom stopt daarom…'"],
+     ["Welke zin klopt volgens de tekst?",["Geel en oranje zaten al in het blad, maar je zag ze niet.","De zon verft de bladeren in de herfst geel.","Een boom laat zijn bladeren vallen om meer licht te krijgen.","In de winter maakt een boom extra bladgroen."],"'…andere kleuren die er al die tijd al in zaten.'"],
+     ["Wat is het doel van deze tekst?",["De lezer informeren.","De lezer overtuigen.","De lezer laten lachen.","De lezer iets verkopen."],"De tekst legt uit hoe iets werkt: dat is informeren."]]},
+ {lvl:2,t:"Een skatebaan voor Molenwijk",p:["Geachte leden van de gemeenteraad,","Wij zijn leerlingen van groep 8 van basisschool De Wilg. In onze wijk wonen veel kinderen, maar er is bijna geen plek om te spelen. Op het grasveld naast de school mag niet gevoetbald worden, en de dichtstbijzijnde speeltuin is voor kleine kinderen. Daarom vragen wij u om een skatebaan aan te leggen op het lege terrein bij de bibliotheek.","Een skatebaan is niet alleen leuk, maar ook gezond. Kinderen bewegen dan meer en zitten minder achter een scherm. Bovendien kunnen jongeren elkaar daar ontmoeten. Wij hebben al 214 handtekeningen verzameld van mensen uit de wijk die het met ons eens zijn.","Wilt u ons voorstel bespreken in de volgende vergadering?","Met vriendelijke groet,<br>Groep 8 van De Wilg"],
+  v:[["Wat willen de schrijvers bereiken met deze brief?",["De gemeenteraad overtuigen om een skatebaan aan te leggen.","Uitleggen hoe je moet skaten.","Klagen over de bibliotheek.","De speeltuin laten weghalen."],"Ze geven argumenten en vragen om een skatebaan: dat is overtuigen."],
+     ["Waarom noemen de schrijvers de 214 handtekeningen?",["Om te laten zien dat veel mensen het plan steunen.","Om te laten zien hoe groot de wijk is.","Omdat de gemeenteraad dat verplicht.","Om de bibliotheek te bedanken."],"De handtekeningen zijn van mensen 'die het met ons eens zijn': een extra argument."],
+     ["Welk woord kan op de plaats van 'Bovendien' staan?",["Daarnaast","Maar","Daarom","Toch"],"'Bovendien' voegt nog een argument toe, net als 'daarnaast'."]]},
+ {lvl:2,t:"Een nieuwe klasgenoot",p:["Op maandagochtend stond er een onbekende jongen naast de juf. 'Dit is Yusuf,' zei ze. 'Hij komt uit Eindhoven en zit vanaf vandaag bij ons in de klas.' Yusuf keek naar de grond en friemelde aan de rits van zijn jas.","In de pauze stond hij alleen bij het hek. Lotte zag het en twijfelde. Haar vriendinnen wilden gaan tikkertje spelen. Toen liep ze toch naar hem toe. 'Speel je mee?' vroeg ze. Yusuf keek op en er verscheen een voorzichtige glimlach op zijn gezicht.","Na een week leek het alsof Yusuf er altijd al was geweest. Hij bleek de snelste van de hele klas."],
+  v:[["Hoe voelt Yusuf zich op de eerste ochtend?",["Hij is onzeker.","Hij is boos.","Hij is heel vrolijk.","Hij verveelt zich."],"Hij kijkt naar de grond en friemelt aan zijn rits: dat doe je als je onzeker of verlegen bent."],
+     ["Waarom twijfelt Lotte in de pauze?",["Haar vriendinnen wilden iets anders gaan doen.","Ze kent Yusuf al van vroeger.","De juf heeft het verboden.","Ze wil liever naar binnen."],"Haar vriendinnen wilden tikkertje spelen; toch loopt ze naar Yusuf."],
+     ["Wat betekent 'Hij bleek de snelste van de hele klas'?",["Later zagen ze dat hij de snelste was.","Hij zei dat hij de snelste was.","Hij wilde de snelste worden.","Hij was bang om de snelste te zijn."],"'Bleek' betekent: het werd later duidelijk."]]},
+ {lvl:3,t:"De Afsluitdijk",p:["Vroeger was het IJsselmeer geen meer, maar een zee: de Zuiderzee. Bij zware stormen stroomde het zoute water vaak over de dijken. In 1916 ging het opnieuw mis. Grote delen van Noord-Holland kwamen onder water te staan. Na die ramp besloot de regering dat er iets moest gebeuren. Ingenieur Cornelis Lely had al jaren eerder een plan bedacht: een lange dijk dwars door de zee.","In 1927 begon de bouw. Duizenden arbeiders werkten jarenlang aan de dijk, vaak in weer en wind. Op 28 mei 1932 werd het laatste gat gedicht. De Afsluitdijk is ruim 32 kilometer lang. Achter de dijk veranderde de zoute zee langzaam in een zoet meer. Dat had ook nadelen: vissers die op zoutwatervis visten, raakten hun werk kwijt."],
+  v:[["Wat was de directe aanleiding om de Afsluitdijk te bouwen?",["De overstroming van 1916.","Het plan van Cornelis Lely.","Vissers wilden zoet water.","Er waren te weinig wegen."],"'Na die ramp besloot de regering…' Het plan van Lely bestond al, maar de ramp was de aanleiding."],
+     ["Hoeveel jaar na de ramp werd het laatste gat gedicht?",["16 jaar","5 jaar","11 jaar","32 jaar"],"1932 − 1916 = 16 jaar."],
+     ["Welk nadeel van de Afsluitdijk noemt de tekst?",["Sommige vissers verloren hun werk.","De dijk was te kort.","Noord-Holland liep onder water.","Het water werd zouter."],"'Dat had ook nadelen: vissers … raakten hun werk kwijt.'"]]},
+ {lvl:3,t:"De laatste bus",p:["Mila keek op haar telefoon: 21.47 uur. De laatste bus zou om 21.50 uur vertrekken. Ze rende de trap van het station af, haar tas bonkend tegen haar rug. Bij de bushalte was het stil. Te stil. Ze speurde de straat af, maar zag alleen de rode achterlichten van een bus die net de hoek om verdween.","'Nee, hè,' zuchtte ze. Ze plofte neer op het bankje. Het begon zachtjes te regenen. Mila overwoog haar vader te bellen, maar die zou boos zijn, want ze had beloofd op tijd te zijn. Toen hoorde ze een stem naast zich. 'Jij moet ook naar Oosterhout?' Een oudere vrouw met een groene paraplu glimlachte. 'Mijn zoon komt me zo halen. Je mag wel meerijden, als je ouders dat goed vinden.'"],
+  v:[["Waarom is het 'te stil' bij de bushalte?",["De bus was al vertrokken.","Er was een storing.","Het was midden in de nacht.","Mila stond op het verkeerde station."],"Ze ziet de achterlichten van een bus die net de hoek om verdwijnt."],
+     ["Waarom twijfelt Mila om haar vader te bellen?",["Ze had beloofd op tijd te zijn.","Haar telefoon is leeg.","Haar vader slaapt al.","Ze weet zijn nummer niet."],"'…die zou boos zijn, want ze had beloofd op tijd te zijn.'"],
+     ["Wat betekent 'overwoog' in de tekst?",["dacht erover na","besloot meteen","vergat","weigerde"],"'Overwegen' is: erover nadenken of je iets gaat doen."]]},
+ {lvl:4,t:"Bijen in de stad",p:["Steeds meer mensen zetten een bijenkast op hun dak of in hun tuin. Ze willen de bij helpen, want het gaat niet goed met veel bijensoorten. In Nederland leven ruim 350 soorten bijen. Ongeveer de helft daarvan staat op de Rode Lijst: de lijst van bedreigde soorten.","Toch zijn niet alle onderzoekers blij met al die bijenkasten. In de kasten wonen bijna altijd honingbijen. Die worden door imkers gehouden en zijn niet bedreigd. Wilde bijen, zoals de metselbij en de hommel, zoeken voedsel op dezelfde bloemen. Als er te veel honingbijen zijn, blijft er voor wilde bijen te weinig over. Wie wilde bijen echt wil helpen, kan daarom beter bloemen planten die laat in het seizoen bloeien en tegels uit de tuin halen. Volgens mij is dat ook nog eens veel mooier dan een grijze tuin."],
+  v:[["Wat is de hoofdgedachte van de tekst?",["Bijenkasten helpen vooral honingbijen; voor wilde bijen kun je beter bloemen planten.","In Nederland leven ruim 350 soorten bijen.","Honingbijen zijn bedreigd en hebben bijenkasten nodig.","Imkers verdienen veel geld met honing."],"De hoofdgedachte is de belangrijkste boodschap van de hele tekst, niet één detail."],
+     ["Welke zin is een mening en geen feit?",["Volgens mij is dat ook nog eens veel mooier dan een grijze tuin.","In Nederland leven ruim 350 soorten bijen.","In de kasten wonen bijna altijd honingbijen.","Ongeveer de helft daarvan staat op de Rode Lijst."],"'Volgens mij' en 'mooier' laten zien dat het een mening is."],
+     ["Wat is het verband tussen de eerste en de tweede alinea?",["De tweede alinea geeft een tegenstelling met de eerste.","De tweede alinea geeft een voorbeeld bij de eerste.","De tweede alinea is een samenvatting.","De tweede alinea vertelt wat er eerder gebeurde."],"Het signaalwoord 'Toch' laat een tegenstelling zien."]]},
+ {lvl:4,t:"Slapen is topsport",p:["Kinderen van 10 tot 12 jaar hebben elke nacht ongeveer negen tot elf uur slaap nodig. Uit onderzoek blijkt dat veel kinderen in groep 7 en 8 minder slapen. Dat heeft gevolgen. Wie te weinig slaapt, kan zich slechter concentreren en onthoudt minder van wat hij heeft geleerd.","Tijdens je slaap gebeurt er namelijk veel in je hersenen. Ze ordenen wat je die dag hebt meegemaakt, ongeveer zoals je een rommelige kast opruimt. Ook groeit je lichaam vooral 's nachts.","Een belangrijke oorzaak van slaaptekort is het scherm. Het blauwe licht van een telefoon of tablet houdt je hersenen wakker. Slaaponderzoekers raden daarom aan om een uur voor het slapengaan geen schermen meer te gebruiken."],
+  v:[["Waarom vergelijkt de schrijver de hersenen met een rommelige kast?",["Om uit te leggen dat de hersenen 's nachts alles ordenen.","Omdat kinderen hun kast moeten opruimen.","Om te laten zien dat hersenen vol raken.","Omdat slapen saai is."],"De vergelijking maakt duidelijk wat de hersenen doen: ordenen, zoals opruimen."],
+     ["Wat is volgens de tekst een oorzaak van slaaptekort?",["Het licht van schermen.","Te veel groeien.","Te veel huiswerk.","Een rommelige kamer."],"'Een belangrijke oorzaak van slaaptekort is het scherm.'"],
+     ["Welk advies geven slaaponderzoekers?",["Een uur voor het slapen geen schermen gebruiken.","Elke nacht precies negen uur slapen.","Je kast opruimen voor het slapen.","Overdag een dutje doen."],"Laatste zin van de tekst."]]},
+];
+function poolBy(arr,q,lvlOf){
+  const near=arr.filter(x=>lvlOf(x)<=q&&lvlOf(x)>=q-1); const all=arr.filter(x=>lvlOf(x)<=q);
+  return near.length>=4?near:all;
+}
+function makeTaal(q){
+  const items=[];
+  // Lezen: 1 tekst (3 vragen) + 1 tekst (1 vraag) + 1 signaalwoord
+  const tx=shuffle(poolBy(TEKSTEN,q,t=>t.lvl)).slice(0,2);
+  const qsets=[shuffle(tx[0].v).slice(0,3),shuffle(tx[1]?tx[1].v:[]).slice(0,1)];
+  tx.forEach((t,ti)=>qsets[ti].forEach(v=>{const opts=shuffle(v[1]);items.push({kind:"mc",cat:"Lezen",text:t,prompt:v[0],options:opts,answer:opts.indexOf(v[1][0]),explain:v[2]})}));
+  const sg=shuffle(poolBy(SIGNAAL,q,s=>s[3])).slice(0,5-items.length);
+  sg.forEach(s=>{const opts=shuffle([s[1],...s[2]]);items.push({kind:"mc",cat:"Lezen",prompt:`Welk signaalwoord past op de puntjes? <span class="zin">${s[0].replace("___","<em>…</em>")}</span>`,options:opts,answer:opts.indexOf(s[1]),explain:`'${s[1]}' past: het laat het goede verband tussen de zinsdelen zien.`})});
+  // Werkwoordspelling 5
+  const seen=new Set(); let guard=0;
+  while(items.filter(i=>i.cat==="Werkwoordspelling").length<5&&guard++<60){const it=wwItem(q);if(seen.has(it.prompt))continue;seen.add(it.prompt);items.push(it)}
+  // Spelling & interpunctie 4
+  shuffle(poolBy(SPELL,q,s=>s[1])).slice(0,2).forEach(s=>{const opts=shuffle(s[0]);items.push({kind:"mc",cat:"Spelling & interpunctie",prompt:"Welk woord is goed geschreven?",options:opts,answer:opts.indexOf(s[0][0]),explain:`Goed is: ${s[0][0]}.`})});
+  shuffle(poolBy(PUNCT,q,s=>s[1])).slice(0,2).forEach(s=>{const opts=shuffle(s[0]);items.push({kind:"mc",cat:"Spelling & interpunctie",prompt:"Welke zin is goed geschreven (hoofdletters en leestekens)?",options:opts,answer:opts.indexOf(s[0][0]),explain:s[2]})});
+  // Grammatica 3
+  const gs=new Set();guard=0;
+  while(items.filter(i=>i.cat==="Grammatica").length<3&&guard++<40){const it=grammarItem(q);if(gs.has(it.prompt))continue;gs.add(it.prompt);if(it._cor){it.answer=it.options.indexOf(it._cor);delete it._cor}items.push(it)}
+  // Woordenschat 3
+  shuffle(poolBy(WOORDEN,q,w=>w[3])).slice(0,3).forEach(w=>{const opts=shuffle([w[1],...w[2]]);const idiom=w[0].includes(" ")&&w[0][0]===w[0][0].toUpperCase();
+    items.push({kind:"mc",cat:"Woordenschat",prompt:idiom?`Wat betekent de uitdrukking <em>${w[0]}</em>?`:`Wat betekent <em>${w[0]}</em>?`,options:opts,answer:opts.indexOf(w[1]),explain:`'${w[0]}' betekent: ${w[1]}.`})});
+  return items;
+}
+const TAAL_DOMAINS=["Lezen","Werkwoordspelling","Spelling & interpunctie","Grammatica","Woordenschat"];
+
+/* ============ checking & grading ============ */
+function checkAnswer(it,val){
+  if(it.kind==="mc") return val===it.answer;
+  if(it.kind==="num") return parseNums(val).some(x=>Math.abs(x-it.answer)<1e-6);
+  if(it.kind==="time"){const t=parseTime(val);return t!==null&&((t-it.answer)%1440+1440)%1440===0}
+  if(it.kind==="frac"){const f=parseFrac(val);if(!f)return false;const same=Math.abs(f.n/f.d-it.answer.n/it.answer.d)<1e-9;if(!same)return false;if(it.simplest)return gcd(f.n,f.d)===1&&f.d===it.answer.d;return true}
+  return false;
+}
+function answerText(it){
+  if(it.kind==="mc")return it.options[it.answer];
+  if(it.kind==="num")return nf(it.answer,4)+(it.unit?" "+it.unit:"");
+  if(it.kind==="time")return hm(it.answer)+" uur";
+  if(it.kind==="frac")return it.answer.d===1?String(it.answer.n):`${it.answer.n}/${it.answer.d}`;
+}
+function givenText(it,val){
+  if(val===null||val===undefined||val==="")return "geen antwoord";
+  if(it.kind==="mc")return it.options[val]??"geen antwoord";
+  return String(val)+(it.unit&&it.kind==="num"?" "+it.unit:"");
+}
+const cijferOf=p=>Math.max(1,Math.round((1+9*p)*10)/10);
+const cijferTxt=c=>comma(c.toFixed(1));
+function niveau(p,subject){
+  if(p>=.8)return {t:subject==="taal"?"Richting 2F":"Richting 1S",c:"good"};
+  if(p>=.55)return {t:"1F gehaald",c:"warn"};
+  return {t:"Nog oefenen (onder 1F)",c:"bad"};
+}
+const scClass=c=>c==null?"e":c>=7?"g":c>=5.5?"w":"b";
+
+/* ============ storage ============ */
+const LS_KEY="iep-oefenplein-v1", ME_KEY="iep-oefenplein-me";
+const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const Store={mode:"local",db:null,students:[],results:[],
+  async init(){
+    const loc=lsGet(LS_KEY,{students:[],results:[]}); this.students=loc.students||[]; this.results=loc.results||[];
+    setBadge();
+    let db=null; try{ if(window.claude&&window.claude.use) db=await window.claude.use("db"); }catch(e){db=null}
+    if(!db){setBadge();render();return}
+    this.db=db; this.mode="shared"; this.students=[]; this.results=[]; setBadge();
+    db.collection("students").onSnapshot(s=>{this.students=s.docs.map(d=>({id:d.id,...d.data()}));refresh()},e=>this.fail(e));
+    db.collection("results").orderBy("at","desc").limit(1000).onSnapshot(s=>{this.results=s.docs.map(d=>({id:d.id,...d.data()}));refresh()},e=>this.fail(e));
+  },
+  fail(e){ if(this.mode==="shared"){toast("Gedeelde opslag niet bereikbaar. Resultaten worden op dit apparaat bewaard.");this.mode="local";this.db=null;const loc=lsGet(LS_KEY,{students:[],results:[]});this.students=loc.students;this.results=loc.results;setBadge();render()} },
+  saveLocal(){lsSet(LS_KEY,{students:this.students,results:this.results})},
+  async put(col,obj){
+    if(this.mode==="shared"){try{const {id,...rest}=obj;await this.db.collection(col).doc(id).set(rest);return true}catch(e){
+      if(e&&e.code==="invalid_argument"){toast("Je hebt alleen kijkrechten. Vraag de eigenaar om je 'Contributor' te maken om resultaten op te slaan.");return false}
+      if(e&&e.code==="unavailable"){await new Promise(r=>setTimeout(r,800+Math.random()*800));try{const {id,...rest}=obj;await this.db.collection(col).doc(id).set(rest);return true}catch(e2){}}
+      toast("Opslaan lukte niet: "+(e&&e.message||"onbekende fout"));return false}}
+    const arr=col==="students"?this.students:this.results; const i=arr.findIndex(x=>x.id===obj.id); if(i>=0)arr[i]=obj; else arr.unshift(obj); this.saveLocal(); render(); return true;
+  },
+  async del(col,id){
+    if(this.mode==="shared"){try{await this.db.collection(col).doc(id).delete();return true}catch(e){toast("Verwijderen lukte niet.");return false}}
+    if(col==="students")this.students=this.students.filter(x=>x.id!==id); else this.results=this.results.filter(x=>x.id!==id); this.saveLocal(); render(); return true;
+  }
+};
+function setBadge(){const b=document.getElementById("storeBadge");b.textContent=Store.mode==="shared"?"Gedeelde voortgang":"Opgeslagen op dit apparaat";b.title=Store.mode==="shared"?"Leerlingen en resultaten worden gedeeld met iedereen die deze app opent.":"Je bent niet ingelogd of gedeelde opslag is niet beschikbaar; alles blijft in deze browser."}
+
+/* ============ state & UI ============ */
+const COLORS=["#FF5D73","#FF9A5C","#E8A800","#2FCB8A","#2BB3E8","#5B6CFF","#8A5CFF","#E04FB3"];
+const S={view:"home",subject:null,mode:"oefen",test:null,boardStudent:null,confirmDel:false};
+const app=document.getElementById("app");
+let meId=lsGet(ME_KEY,null);
+const me=()=>Store.students.find(s=>s.id===meId)||null;
+const resultsOf=sid=>Store.results.filter(r=>r.studentId===sid);
+function best(sid,subj,q){const rs=resultsOf(sid).filter(r=>r.subject===subj&&r.q===q);return rs.length?Math.max(...rs.map(r=>r.cijfer)):null}
+function avatar(s,lg){return `<span class="av${lg?" lg":""}" style="background:${esc(s?.color||"#B9B4D6")}">${esc((s?.name||"?").trim().charAt(0).toUpperCase())}</span>`}
+function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),4200)}
+const QINFO={1:["Herhaling groep 7","Basis: grote getallen, eenvoudige breuken en procenten, tegenwoordige tijd."],2:["Basis groep 8","Volgorde van bewerkingen, schaal, inversie bij werkwoorden, onderwerp."],3:["Doorstroomtoets-niveau","Kommagetallen, negatieve getallen, verleden tijd, lijdend voorwerp."],4:["Extra uitdaging","Samengestelde vormen, snelheid in minuten, voltooid deelwoord, uitdrukkingen."]};
+const SUBJ={taal:{n:"Taal",g:"Aa",sub:"Lezen · werkwoordspelling · spelling · grammatica · woordenschat"},rekenen:{n:"Rekenen",g:"+−×÷",sub:"Getallen · verhoudingen · meten & meetkunde · verbanden"}};
+
+function renderHeader(){
+  const u=me(); const ub=document.getElementById("userBtn");
+  ub.innerHTML=u?`${avatar(u)}<span>${esc(u.name)}</span>`:`<span class="av" style="background:var(--ink)">+</span><span>Wie oefent er?</span>`;
+}
+function refresh(){if(S.view==="test"||document.querySelector("#modalRoot .modal")){renderHeader();return}render()}
+function render(){
+  renderHeader();
+  if(S.view==="test"&&S.test) return renderTest();
+  if(S.view==="results"&&S.test) return renderResults();
+  if(S.view==="board") return renderBoard();
+  if(S.view==="student") return renderStudent();
+  if(S.view==="quarter") return renderQuarter();
+  renderHome();
+}
+function renderHome(){
+  const u=me();
+  const strip=subj=>u?`<div class="qstrip">${[1,2,3,4].map(q=>{const b=best(u.id,subj,q);return `<span class="qpill">Q${q}: ${b==null?"–":cijferTxt(b)}</span>`}).join("")}</div>`:"";
+  app.innerHTML=`
+  <section class="hero"><h1>${u?`Hoi ${esc(u.name)}!`:"Oefenen voor de IEP"}</h1><p>${u?"Wat ga je vandaag oefenen?":"Kies eerst wie er oefent, en dan Taal of Rekenen."}</p></section>
+  <section class="big2">
+    <button class="bigbtn taal" data-subj="taal" type="button"><span class="glyph" aria-hidden="true">Aa</span><span class="lbl">Taal</span><span class="sub">${SUBJ.taal.sub}</span>${strip("taal")}</button>
+    <button class="bigbtn reken" data-subj="rekenen" type="button"><span class="glyph" aria-hidden="true">+−×÷</span><span class="lbl">Rekenen</span><span class="sub">${SUBJ.rekenen.sub}</span>${strip("rekenen")}</button>
+  </section>`;
+  app.querySelectorAll("[data-subj]").forEach(b=>b.onclick=()=>{S.subject=b.dataset.subj;if(!me()){openUsers(()=>{S.view="quarter";render()});return}S.view="quarter";render()});
+}
+function renderQuarter(){
+  const u=me(); const sj=S.subject; const info=SUBJ[sj];
+  app.innerHTML=`<div class="card">
+   <div class="row" style="justify-content:space-between"><div><span class="tag ${sj==="taal"?"taal":"reken"}">${info.n}</span><h2 style="margin-top:8px">Kies een periode</h2><p class="muted" style="margin:6px 0 0">Elke toets heeft 20 nieuwe vragen, net als bij de IEP.</p></div>
+   <div><div class="muted" style="font-weight:800;font-size:.85rem;margin-bottom:6px">Hoe wil je nakijken?</div><div class="seg" role="group" aria-label="Nakijkmodus">
+     <button type="button" data-mode="oefen" aria-pressed="${S.mode==="oefen"}">Oefenen · meteen nakijken</button>
+     <button type="button" data-mode="toets" aria-pressed="${S.mode==="toets"}">Toets · nakijken aan het eind</button></div></div></div>
+   <div class="qgrid">${[1,2,3,4].map(q=>{const b=u?best(u.id,sj,q):null;return `<button class="qcard ${sj==="taal"?"taal":"reken"}" data-q="${q}" type="button"><span class="qn">Q${q}</span><h3>${QINFO[q][0]}</h3><span class="muted">${QINFO[q][1]}</span><span class="best">${b==null?"Nog niet gemaakt":`Beste cijfer: <span class="sc ${scClass(b)}">${cijferTxt(b)}</span>`}</span></button>`}).join("")}</div>
+   <div class="actions"><button class="btn ghost" id="back" type="button">Terug</button></div></div>`;
+  app.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;renderQuarter()});
+  app.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>startTest(sj,+b.dataset.q));
+  app.querySelector("#back").onclick=()=>{S.view="home";render()};
+}
+function startTest(subject,q){
+  const items=subject==="taal"?makeTaal(q):makeRekenen(q);
+  S.test={subject,q,mode:S.mode,items,i:0,answers:items.map(()=>null),checked:false,started:Date.now(),saved:false,stopAsk:false};
+  S.view="test"; render(); window.scrollTo(0,0);
+}
+function renderTest(){
+  const T=S.test,it=T.items[T.i],n=T.items.length,sj=T.subject;
+  const val=T.answers[T.i]; const done=T.mode==="oefen"&&T.checked;
+  let ans="";
+  if(it.kind==="mc"){
+    ans=`<div class="opts" role="group" aria-label="Antwoorden">${it.options.map((o,k)=>{let cls="";if(done){if(k===it.answer)cls="ok";else if(k===val)cls="no"}
+      return `<button type="button" class="opt ${cls}" data-k="${k}" aria-pressed="${val===k}" ${done?"disabled":""}><span class="k">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`}).join("")}</div>`;
+  } else {
+    ans=`<div class="ansrow"><input id="ans" inputmode="${it.kind==="frac"?"text":"decimal"}" autocomplete="off" aria-label="Jouw antwoord" value="${esc(val??"")}" ${done?"disabled":""}>${it.unit?`<span class="unit">${esc(it.unit)}</span>`:""}</div>
+      <div class="hint">${it.hint||"Gebruik een komma voor kommagetallen, bijvoorbeeld 2,5."}</div>`;
+  }
+  let fb="";
+  if(done){const ok=checkAnswer(it,val);fb=`<div class="fb ${ok?"ok":"no"}"><strong>${ok?"Goed zo!":"Helaas, niet goed."}</strong>${ok?"":`Het goede antwoord is: <b>${esc(answerText(it))}</b><br>`}${it.explain}</div>`}
+  const text=it.text?`<div class="text" tabindex="0"><h4>${esc(it.text.t)}</h4>${it.text.p.map(p=>`<p>${p}</p>`).join("")}</div>`:"";
+  const primary=T.mode==="oefen"?(done?(T.i===n-1?"Bekijk je cijfer":"Volgende vraag"):"Controleer"):(T.i===n-1?"Inleveren":"Volgende vraag");
+  app.innerHTML=`
+   <div class="testbar"><span class="chip plain">${SUBJ[sj].n} · Q${T.q} · ${T.mode==="oefen"?"Oefenen":"Toets"}</span>
+    <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${T.i+1}"><i style="width:${(T.i+1)/n*100}%"></i></div>
+    <span class="chip plain">${T.i+1} / ${n}</span><button class="chip plain" id="stop" type="button">Stoppen</button></div>
+   ${T.stopAsk?`<div class="confirm" style="margin-bottom:12px">Wil je stoppen? Deze toets wordt dan niet bewaard. <button class="btn danger" id="stopYes" type="button">Ja, stoppen</button><button class="btn ghost" id="stopNo" type="button">Verder</button></div>`:""}
+   <div class="card">
+    <span class="tag ${sj==="taal"?"taal":"reken"}">${esc(it.cat)}</span>
+    ${text}
+    <div class="prompt">${it.prompt}</div>
+    ${ans}${fb}
+    <div class="actions">${T.mode==="toets"&&T.i>0?`<button class="btn ghost" id="prev" type="button">Vorige</button>`:""}<button class="btn ${sj==="taal"?"taal":"reken"}" id="next" type="button">${primary}</button></div>
+   </div>`;
+  const inp=app.querySelector("#ans");
+  if(inp){inp.oninput=()=>{T.answers[T.i]=inp.value}; inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();next()}}; if(!done)setTimeout(()=>inp.focus({preventScroll:true}),30)}
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{T.answers[T.i]=+b.dataset.k;renderTest()});
+  app.querySelector("#next").onclick=next;
+  const pv=app.querySelector("#prev"); if(pv)pv.onclick=()=>{T.i--;renderTest()};
+  app.querySelector("#stop").onclick=()=>{T.stopAsk=true;renderTest()};
+  const sy=app.querySelector("#stopYes"); if(sy){sy.onclick=()=>{S.test=null;S.view="home";render()};app.querySelector("#stopNo").onclick=()=>{T.stopAsk=false;renderTest()}}
+  function next(){
+    const v=T.answers[T.i]; const empty=v===null||v===undefined||String(v).trim()==="";
+    if(T.mode==="oefen"&&!T.checked){if(empty){toast("Kies of typ eerst een antwoord.");return}T.checked=true;renderTest();return}
+    T.checked=false;
+    if(T.i<n-1){T.i++;renderTest();window.scrollTo({top:0,behavior:"smooth"})}else finish();
+  }
+}
+async function finish(){
+  const T=S.test; const items=T.items; const ok=items.map((it,i)=>checkAnswer(it,T.answers[i]));
+  const correct=ok.filter(Boolean).length; const p=correct/items.length; const c=cijferOf(p);
+  const cats={}; items.forEach((it,i)=>{cats[it.cat]=cats[it.cat]||{c:0,t:0};cats[it.cat].t++;if(ok[i])cats[it.cat].c++});
+  T.result={correct,total:items.length,p,cijfer:c,cats,ok};
+  S.view="results"; render(); window.scrollTo(0,0);
+  const u=me(); if(u&&!T.saved){T.saved=true;
+    const rec={id:uid(),studentId:u.id,subject:T.subject,q:T.q,mode:T.mode,correct,total:items.length,cijfer:c,cats,at:new Date().toISOString(),mins:Math.round((Date.now()-T.started)/60000),
+      items:items.map((it,i)=>({p:strip(it.prompt).slice(0,160),c:it.cat,g:givenText(it,T.answers[i]).slice(0,80),k:String(answerText(it)).slice(0,80),ok:ok[i]}))};
+    const saved=await Store.put("results",rec); if(saved)toast("Resultaat opgeslagen in de voortgang.");}
+}
+function barColor(p){return p>=.8?"var(--good)":p>=.55?"var(--sun)":"var(--bad)"}
+function renderResults(){
+  const T=S.test,Rz=T.result,sj=T.subject,nv=niveau(Rz.p,sj);
+  const bg=Rz.cijfer>=7?"linear-gradient(135deg,#2FCB8A,#16A36A)":Rz.cijfer>=5.5?"linear-gradient(135deg,#FFC83D,#FF9A5C)":"linear-gradient(135deg,#FF5D73,#E0364F)";
+  const doms=sj==="taal"?TAAL_DOMAINS:REKEN_DOMAINS.map(d=>d[1]);
+  app.innerHTML=`<div class="card"><div class="resgrid">
+    <div style="text-align:center"><div class="grade" style="background:${bg}"><div><div class="g">${cijferTxt(Rz.cijfer)}</div><small>${Rz.correct} van ${Rz.total} goed</small></div></div>
+      <p style="margin:14px 0 6px"><span class="pill ${nv.c}">${nv.t}</span></p><p class="muted" style="font-size:.85rem;margin:0">${SUBJ[sj].n} · Q${T.q} · indicatie referentieniveau</p></div>
+    <div><h2>${Rz.cijfer>=8?"Super gedaan!":Rz.cijfer>=6.5?"Goed bezig!":Rz.cijfer>=5.5?"Voldoende, ga zo door!":"Blijf oefenen, je komt er wel!"}</h2>
+     <h3 style="margin:16px 0 10px">Per onderdeel</h3><div class="bars">${doms.map(d=>{const c=Rz.cats[d]||{c:0,t:0};const p=c.t?c.c/c.t:0;return `<div class="bar"><span>${esc(d)}</span><span class="tr"><i style="width:${p*100}%;background:${barColor(p)}"></i></span><span class="v">${c.c}/${c.t}</span></div>`}).join("")}</div>
+     <div class="actions" style="justify-content:flex-start"><button class="btn ${sj==="taal"?"taal":"reken"}" id="again" type="button">Nieuwe toets Q${T.q}</button><button class="btn ghost" id="toBoard" type="button">Voortgang</button><button class="btn ghost" id="toHome" type="button">Naar start</button></div>
+    </div></div></div>
+   <div class="card" style="margin-top:18px"><h3>Nakijken</h3><p class="muted" style="margin:4px 0 0">Bekijk wat goed en fout ging, met uitleg.</p>
+    <div class="review">${T.items.map((it,i)=>{const ok=Rz.ok[i];return `<div class="ri ${ok?"ok":"no"}"><span class="n">${i+1}</span><div class="p">${it.text?`<span class="muted">Tekst: ${esc(it.text.t)} · </span>`:""}${esc(strip(it.prompt))}
+      <div class="a">Jouw antwoord: <b>${esc(givenText(it,T.answers[i]))}</b>${ok?" ✓":` · Goed antwoord: <b>${esc(answerText(it))}</b>`}</div>${ok?"":`<div class="e">${it.explain}</div>`}</div></div>`}).join("")}</div></div>`;
+  app.querySelector("#again").onclick=()=>{S.mode=T.mode;startTest(sj,T.q)};
+  app.querySelector("#toBoard").onclick=()=>{S.view="board";render()};
+  app.querySelector("#toHome").onclick=()=>{S.view="home";S.test=null;render()};
+}
+function renderBoard(){
+  const st=Store.students.slice().sort((a,b)=>a.name.localeCompare(b.name,"nl"));
+  const last=sid=>{const r=resultsOf(sid)[0];return r?new Date(r.at).toLocaleDateString("nl-NL",{day:"numeric",month:"short"}):"–"};
+  const cell=(sid,sj,q)=>{const b=best(sid,sj,q);return `<td><span class="sc ${scClass(b)}">${b==null?"–":cijferTxt(b)}</span></td>`};
+  app.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><div><h2>Voortgangsbord</h2><p class="muted" style="margin:6px 0 0">Beste cijfer per periode. Klik op een leerling voor details.</p></div>
+   <div class="row"><button class="btn ghost" id="addU" type="button">Leerling toevoegen</button><button class="btn" id="bHome" type="button">Naar start</button></div></div>
+   ${st.length?`<div class="tablewrap"><table class="board"><thead><tr><th class="l" rowspan="2">Leerling</th><th class="grp" colspan="4">Taal</th><th class="grp" colspan="4">Rekenen</th><th rowspan="2">Toetsen</th><th rowspan="2">Laatst</th></tr>
+    <tr>${[1,2,3,4].map(q=>`<th>Q${q}</th>`).join("")}${[1,2,3,4].map(q=>`<th>Q${q}</th>`).join("")}</tr></thead>
+    <tbody>${st.map(s=>`<tr class="click" data-sid="${esc(s.id)}" tabindex="0"><td class="l"><span class="who">${avatar(s)}${esc(s.name)}</span></td>${[1,2,3,4].map(q=>cell(s.id,"taal",q)).join("")}${[1,2,3,4].map(q=>cell(s.id,"rekenen",q)).join("")}<td>${resultsOf(s.id).length}</td><td>${last(s.id)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="muted" style="font-size:.85rem;margin-top:12px"><span class="sc g">7,0+</span> goed &nbsp; <span class="sc w">5,5–6,9</span> voldoende &nbsp; <span class="sc b">&lt; 5,5</span> nog oefenen</p>`
+   :`<div class="empty"><h3>Nog geen leerlingen</h3><p class="muted">Voeg de eerste leerling toe. Na elke toets verschijnt het cijfer hier.</p><button class="btn" id="addU2" type="button">Eerste leerling toevoegen</button></div>`}</div>`;
+  const add=()=>openUsers(null,true);
+  app.querySelector("#addU").onclick=add; const a2=app.querySelector("#addU2"); if(a2)a2.onclick=add;
+  app.querySelector("#bHome").onclick=()=>{S.view="home";render()};
+  app.querySelectorAll("[data-sid]").forEach(r=>{const go=()=>{S.boardStudent=r.dataset.sid;S.confirmDel=false;S.view="student";render();window.scrollTo(0,0)};r.onclick=go;r.onkeydown=e=>{if(e.key==="Enter")go()}});
+}
+function spark(vals){
+  if(vals.length<2)return `<p class="muted">Maak minstens twee toetsen om een lijn te zien.</p>`;
+  const W=420,H=120,p=24; const x=i=>p+i*(W-2*p)/(vals.length-1); const y=v=>H-p-(v-1)/9*(H-2*p);
+  const pts=vals.map((v,i)=>`${x(i)},${y(v)}`).join(" ");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px" role="img" aria-label="cijferverloop">
+   ${[1,5.5,10].map(v=>`<line x1="${p}" x2="${W-p}" y1="${y(v)}" y2="${y(v)}" stroke="#E4E0F5" ${v===5.5?'stroke-dasharray="4 4"':""}/><text x="${p-6}" y="${y(v)+4}" text-anchor="end" font-size="10">${comma(v)}</text>`).join("")}
+   <polygon points="${x(0)},${H-p} ${pts} ${x(vals.length-1)},${H-p}" fill="rgba(138,92,255,.12)"/><polyline points="${pts}" fill="none" stroke="#8A5CFF" stroke-width="3" stroke-linejoin="round"/>
+   <circle cx="${x(vals.length-1)}" cy="${y(vals[vals.length-1])}" r="5" fill="#8A5CFF"/></svg>`;
+}
+function renderStudent(){
+  const s=Store.students.find(x=>x.id===S.boardStudent); if(!s){S.view="board";return renderBoard()}
+  const rs=resultsOf(s.id); const avg=rs.length?rs.reduce((a,r)=>a+r.cijfer,0)/rs.length:null;
+  const agg=sj=>{const o={};rs.filter(r=>r.subject===sj).forEach(r=>Object.entries(r.cats||{}).forEach(([k,v])=>{o[k]=o[k]||{c:0,t:0};o[k].c+=v.c;o[k].t+=v.t}));return o};
+  const domBars=(sj,doms)=>{const a=agg(sj);return `<div class="bars">${doms.map(d=>{const c=a[d];const p=c&&c.t?c.c/c.t:null;return `<div class="bar"><span>${esc(d)}</span><span class="tr"><i style="width:${(p||0)*100}%;background:${p==null?"transparent":barColor(p)}"></i></span><span class="v">${p==null?"–":Math.round(p*100)+"%"}</span></div>`}).join("")}</div>`};
+  const weak=[...Object.entries(agg("taal")),...Object.entries(agg("rekenen"))].filter(([k,v])=>v.t>=3).sort((a,b)=>a[1].c/a[1].t-b[1].c/b[1].t)[0];
+  app.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><div class="who">${avatar(s,true)}<div><h2>${esc(s.name)}</h2><span class="muted">${rs.length} toets${rs.length===1?"":"en"} gemaakt</span></div></div>
+   <div class="row"><button class="btn" id="practice" type="button">Oefenen als ${esc(s.name)}</button><button class="btn ghost" id="bBack" type="button">Terug naar bord</button></div></div>
+   <div class="stats"><div class="stat"><b>${avg==null?"–":cijferTxt(Math.round(avg*10)/10)}</b><span>Gemiddeld cijfer</span></div>
+    <div class="stat"><b>${rs.filter(r=>r.subject==="taal").length}</b><span>Taaltoetsen</span></div><div class="stat"><b>${rs.filter(r=>r.subject==="rekenen").length}</b><span>Rekentoetsen</span></div>
+    <div class="stat"><b style="font-size:1.15rem;line-height:1.6">${weak?esc(weak[0]):"–"}</b><span>Oefen dit het meest</span></div></div>
+   <div class="two"><div><h3 style="margin-bottom:10px">Taal per onderdeel</h3>${domBars("taal",TAAL_DOMAINS)}</div><div><h3 style="margin-bottom:10px">Rekenen per onderdeel</h3>${domBars("rekenen",REKEN_DOMAINS.map(d=>d[1]))}</div></div>
+   <h3 style="margin:22px 0 8px">Cijferverloop</h3>${spark(rs.slice().reverse().map(r=>r.cijfer))}
+   <h3 style="margin:22px 0 4px">Alle toetsen</h3><div class="hist">${rs.length?rs.map(r=>`<div class="hrow"><span class="sc ${scClass(r.cijfer)}">${cijferTxt(r.cijfer)}</span><span>${SUBJ[r.subject].n} · Q${r.q} · ${r.correct}/${r.total} goed <span class="muted">· ${r.mode==="toets"?"toets":"oefenen"}</span></span><span class="muted">${new Date(r.at).toLocaleDateString("nl-NL",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</span></div>`).join(""):`<p class="muted">Nog geen toetsen gemaakt.</p>`}</div>
+   <div style="margin-top:22px">${S.confirmDel?`<div class="confirm">Leerling ${esc(s.name)} en alle ${rs.length} resultaten verwijderen? Dit kan niet ongedaan worden. <button class="btn danger" id="delYes" type="button">Ja, verwijderen</button><button class="btn ghost" id="delNo" type="button">Annuleren</button></div>`:`<button class="btn ghost" id="del" type="button">Leerling verwijderen</button>`}</div>
+  </div>`;
+  app.querySelector("#bBack").onclick=()=>{S.view="board";render()};
+  app.querySelector("#practice").onclick=()=>{meId=s.id;lsSet(ME_KEY,meId);S.view="home";render()};
+  const d=app.querySelector("#del"); if(d)d.onclick=()=>{S.confirmDel=true;renderStudent()};
+  const dy=app.querySelector("#delYes"); if(dy){dy.onclick=async()=>{for(const r of rs){await Store.del("results",r.id)}await Store.del("students",s.id);if(meId===s.id){meId=null;lsSet(ME_KEY,null)}S.view="board";S.confirmDel=false;render();toast("Leerling verwijderd.")};app.querySelector("#delNo").onclick=()=>{S.confirmDel=false;renderStudent()}}
+}
+/* user picker */
+function openUsers(after,startNew){
+  const root=document.getElementById("modalRoot"); let col=COLORS[Store.students.length%COLORS.length]; let creating=!!startNew||Store.students.length===0;
+  const close=()=>{root.innerHTML="";document.removeEventListener("keydown",onKey)};
+  const onKey=e=>{if(e.key==="Escape")close()};
+  document.addEventListener("keydown",onKey);
+  function draw(){
+    const st=Store.students.slice().sort((a,b)=>a.name.localeCompare(b.name,"nl"));
+    root.innerHTML=`<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="card">
+     <h2 id="mt">${creating?"Nieuwe leerling":"Wie oefent er?"}</h2>
+     ${creating?`<form id="nf" style="display:grid;gap:14px;margin-top:14px"><label class="field" for="nm">Naam<input id="nm" maxlength="24" autocomplete="off" placeholder="Bijvoorbeeld Sanne" required></label>
+       <div class="field">Kleur<div class="colors">${COLORS.map(c=>`<button type="button" data-c="${c}" aria-label="kleur" aria-pressed="${c===col}" style="background:${c}"></button>`).join("")}</div></div>
+       <div class="actions">${st.length?`<button class="btn ghost" type="button" id="cb">Terug</button>`:`<button class="btn ghost" type="button" id="cx">Annuleren</button>`}<button class="btn" type="submit">Opslaan en kiezen</button></div></form>`
+     :`<div class="ulist">${st.map(s=>`<button class="utile" type="button" data-id="${esc(s.id)}" aria-pressed="${s.id===meId}">${avatar(s,true)}<span>${esc(s.name)}</span></button>`).join("")}
+       <button class="utile" type="button" id="nw"><span class="av lg" style="background:var(--mist);color:var(--ink)">+</span><span>Nieuwe leerling</span></button></div>
+       <div class="actions"><button class="btn ghost" type="button" id="cx">Sluiten</button></div>`}
+    </div></div>`;
+    root.querySelector(".modal").onclick=e=>{if(e.target.classList.contains("modal"))close()};
+    const cx=root.querySelector("#cx"); if(cx)cx.onclick=close;
+    const cb=root.querySelector("#cb"); if(cb)cb.onclick=()=>{creating=false;draw()};
+    const nw=root.querySelector("#nw"); if(nw)nw.onclick=()=>{creating=true;draw()};
+    root.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>{meId=b.dataset.id;lsSet(ME_KEY,meId);close();render();if(after)after()});
+    root.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{col=b.dataset.c;root.querySelectorAll("[data-c]").forEach(x=>x.setAttribute("aria-pressed",x.dataset.c===col))});
+    const f=root.querySelector("#nf"); if(f){const nm=root.querySelector("#nm");setTimeout(()=>nm.focus(),30);
+      f.onsubmit=async e=>{e.preventDefault();const name=nm.value.trim();if(!name)return;
+        if(Store.students.some(s=>s.name.toLowerCase()===name.toLowerCase())){toast("Die naam bestaat al. Kies hem uit de lijst of gebruik een andere naam.");return}
+        const s={id:uid(),name,color:col,createdAt:new Date().toISOString()};const ok=await Store.put("students",s);
+        if(ok){if(Store.mode==="shared"&&!Store.students.some(x=>x.id===s.id))Store.students.push(s);meId=s.id;lsSet(ME_KEY,meId);close();render();if(after)after()}}}
+  }
+  draw();
+}
+document.getElementById("userBtn").onclick=()=>openUsers(null);
+document.getElementById("boardBtn").onclick=()=>{S.view="board";render()};
+document.getElementById("homeBtn").onclick=()=>{if(S.view==="test"){S.test.stopAsk=true;renderTest();return}S.view="home";render()};
+/* confetti background */
+(()=>{const c=document.getElementById("confetti");const cols=["#FFFFFF","#FFC83D","#FF5D73","#2FCB8A","#5B6CFF","#FF9A5C"];let h="";for(let i=0;i<22;i++){const s=R(10,26);h+=`<i style="left:${R(0,100)}%;top:${R(0,100)}%;width:${s}px;height:${R(0,1)?s:s/2.5}px;background:${pick(cols)};transform:rotate(${R(0,180)}deg);animation-delay:-${R(0,14)}s"></i>`}c.innerHTML=h})();
+render();
+Store.init();
+})();
+</script>
+</body>
+</html>
