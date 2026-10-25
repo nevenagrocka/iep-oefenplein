@@ -10,7 +10,7 @@
 /* Layout: speelplein-achtergrond met kleurvlakken; één witte "werkkaart" per scherm, grote knoppen voor kinderen. Bewust één (lichte, kleurrijke) look. */
 :root{
   --ink:#1F1A3D; --ink-2:#5B5680; --paper:#FFFFFF; --mist:#F4F2FF; --line:#E4E0F5;
-  --taal:#FF5D73; --taal-2:#FF9A5C; --reken:#2BB3E8; --reken-2:#5B6CFF;
+  --taal:#FF5D73; --taal-2:#FF9A5C; --reken:#2BB3E8; --reken-2:#5B6CFF; --lees:#1DBF84; --lees-2:#0E9AA7;
   --sun:#FFC83D; --mint:#2FCB8A; --grape:#8A5CFF;
   --good:#16A36A; --good-bg:#E3F8EE; --bad:#E0364F; --bad-bg:#FFE7EA; --warn:#D98A00; --warn-bg:#FFF3D6;
   --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
@@ -53,8 +53,30 @@ h3{font-size:1.2rem;font-weight:700}
 .muted{color:var(--ink-2)}
 .hero{text-align:center;margin:18px 0 26px;color:var(--ink)}
 .hero p{font-size:1.15rem;font-weight:700;margin:8px 0 0}
-.big2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-@media (max-width:640px){.big2{grid-template-columns:1fr}}
+.big2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.bigbtn.lees{background:linear-gradient(135deg,var(--lees),var(--lees-2))}
+.btn.lees{background:#0E8F6A}
+.tag.lees{background:#DDF6EC;color:#0B6E4F}
+.qcard.lees:hover{border-color:var(--lees)} .qcard.lees .qn{color:#0E8F6A}
+.lzgrid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
+.lzgrid .text{max-height:72vh;margin-top:0;position:sticky;top:12px}
+.lzgrid .prompt{font-size:1.15rem;margin:12px 0 14px}
+@media (max-width:820px){.lzgrid{grid-template-columns:1fr}.lzgrid .text{position:relative;top:auto;max-height:52vh}}
+.text .an{display:inline-grid;place-items:center;min-width:24px;height:24px;border-radius:7px;background:#F6E6A6;font:800 .8rem var(--display);margin-right:8px;vertical-align:1px}
+.text .soort{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#8A6D00;margin-bottom:10px}
+.text mark{background:#FFD95C;color:inherit;border-radius:4px;box-shadow:0 0 0 3px #FFD95C}
+.newtext{border-radius:14px;background:#DDF6EC;color:#0B5A41;padding:10px 14px;font-weight:700;margin-bottom:14px;line-height:1.45}
+.tipbtn{border:0;background:none;color:#0B6E4F;font:800 .95rem var(--body);cursor:pointer;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.tipbox{margin-top:8px;border-radius:14px;background:#EEF9F4;border:2px solid #BFEBD7;padding:12px 14px;line-height:1.5;font-weight:600}
+.tipbox b{display:block;font-family:var(--display);font-size:1.05rem;margin-bottom:2px}
+.fb.retry{background:var(--warn-bg);color:#6E4300}
+.fb .tipline{display:block;margin-top:8px;font-weight:600}
+.skillgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:12px}
+.skillbtn{border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;font:inherit;color:var(--ink)}
+.skillbtn:hover{border-color:var(--lees)} .skillbtn b{font-weight:800}
+.skillbtn span{font-size:.85rem;color:var(--ink-2);font-weight:700}
+.ri .ev{font-size:.9rem;margin-top:6px;background:#FFFBEA;border-left:4px solid #FFD95C;padding:6px 10px;border-radius:6px}
+.sect{margin-top:26px;padding-top:20px;border-top:2px dashed var(--line)}
 .bigbtn{position:relative;overflow:hidden;border:0;border-radius:32px;padding:28px 24px 26px;min-height:240px;color:#fff;cursor:pointer;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;
   box-shadow:0 10px 0 rgba(31,26,61,.25);transition:transform .15s, box-shadow .15s}
 .bigbtn:hover{transform:translateY(-4px);box-shadow:0 14px 0 rgba(31,26,61,.25)}
@@ -143,7 +165,7 @@ table.tt th{background:var(--mist)}
 .ri .e{font-size:.9rem;color:var(--ink-2);margin-top:4px}
 /* board */
 .tablewrap{overflow-x:auto;margin-top:14px}
-table.board{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums;min-width:720px}
+table.board{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums;min-width:900px}
 table.board th{font:800 .78rem var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);text-align:center;padding:8px 6px;border-bottom:2px solid var(--line)}
 table.board th.l, table.board td.l{text-align:left}
 table.board td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:center;font-weight:700}
@@ -660,6 +682,222 @@ function makeTaal(q){
   return items;
 }
 const TAAL_DOMAINS=["Lezen","Werkwoordspelling","Spelling & interpunctie","Grammatica","Woordenschat"];
+/* ============ BEGRIJPEND LEZEN ============ */
+const LSKILLS={
+ hg:{n:"Hoofdgedachte",tip:"Lees de hele tekst. Vraag jezelf: waar gaat de tekst over, en wat wil de schrijver daarover zeggen? Kijk extra goed naar de eerste en de laatste alinea. Een antwoord dat maar over één alinea gaat, is meestal een bijzaak."},
+ doel:{n:"Tekstdoel & tekstsoort",tip:"Informeren = uitleggen of vertellen hoe iets zit. Overtuigen = de lezer iets laten vinden of doen (let op woorden als 'ik vind', 'moet', 'daarom'). Amuseren = vermaken, zoals een verhaal. Instrueren = stappen om iets te doen."},
+ verband:{n:"Verbanden & signaalwoorden",tip:"Zoek het signaalwoord. maar / toch / ook al = tegenstelling. want / omdat / doordat = reden of oorzaak. dus / daarom / daardoor = gevolg. bijvoorbeeld = voorbeeld. ook / bovendien / daarnaast = opsomming. eerst / daarna = tijd."},
+ verwijs:{n:"Verwijswoorden",tip:"Een verwijswoord (hij, zij, het, die, dat, dit, daar, ze) wijst naar iets wat ervóór staat. Lees de zin ervoor. Zet je antwoord op de plek van het verwijswoord: klopt de zin dan nog?"},
+ woord:{n:"Woordbetekenis",tip:"Je hoeft het woord niet te kennen. Lees de zin ervoor en erna. Zet elk antwoord op de plek van het woord: welk antwoord past het best in de tekst?"},
+ fm:{n:"Feit of mening",tip:"Een feit kun je controleren: het is waar of niet waar (getallen, wat er gebeurde). Een mening is wat iemand vindt. Let op woorden als 'ik vind', 'volgens mij', 'beter', 'mooi', 'moet'."},
+ zoek:{n:"Informatie zoeken",tip:"Kijk eerst wát je zoekt: een getal, een naam, een tijd, een stap? Zoek dat woord in de tekst of tabel. Lees die zin daarna heel precies. Soms moet je nog iets uitrekenen."},
+ afleid:{n:"Conclusies trekken",tip:"Het antwoord staat er niet letterlijk. Zoek de aanwijzingen in de tekst en bedenk wat daar logisch uit volgt. Kies geen antwoord dat je alleen zelf denkt: het moet uit de tekst blijken."},
+ opbouw:{n:"Opbouw & titel",tip:"Kijk wat een alinea doet: geeft ze een voorbeeld, een oorzaak, een tegenstelling, argumenten, een oplossing of een conclusie? Een goede titel of samenvatting past bij de héle tekst, niet bij één stukje."}
+};
+const LSKILL_ORDER=["zoek","verwijs","verband","woord","afleid","hg","doel","fm","opbouw"];
+/* elke vraag: [vaardigheid, vraag, [goed, fout, fout, fout], uitleg, bewijs-zin (letterlijk uit de tekst) of null] */
+const LZ=[
+/* ---------- NIVEAU 1 ---------- */
+{lvl:1,t:"Een hond uit het asiel",soort:"informatieve tekst",p:[
+ "Wil je een hond? Dan kun je naar een dierenasiel gaan. In een asiel wonen dieren die geen baas meer hebben. Sommige honden zijn gevonden op straat. Andere honden zijn naar het asiel gebracht, omdat hun baas niet meer voor ze kon zorgen.",
+ "Voordat je een hond meeneemt, krijg je eerst een gesprek met een medewerker. Die wil weten hoe groot je huis is en hoeveel tijd je hebt. Een jonge hond moet bijvoorbeeld vaak naar buiten. Daarna mag je een keer met de hond gaan wandelen. Zo merk je of jullie bij elkaar passen.",
+ "Een hond uit het asiel kost geld, maar veel minder dan een hond van een fokker. Hij is al ingeënt en heeft een chip. Op die chip staat een nummer. Als de hond wegloopt, kan iedereen zien bij wie hij hoort."],
+ v:[["zoek","Wat gebeurt er éérst als je een hond uit het asiel wilt meenemen?",["Je krijgt een gesprek met een medewerker.","Je gaat met de hond wandelen.","Je betaalt geld aan een fokker.","De hond krijgt een chip."],"In alinea 2 staat 'eerst een gesprek' en daarna 'Daarna mag je … wandelen'. De woorden eerst en daarna geven de volgorde.","Voordat je een hond meeneemt, krijg je eerst een gesprek met een medewerker."],
+    ["verwijs","'Die wil weten hoe groot je huis is' (alinea 2). Wie is 'Die'?",["de medewerker","de hond","de baas","de fokker"],"Lees de zin ervoor: daar staat 'een medewerker'. De medewerker wil weten hoe groot je huis is.","krijg je eerst een gesprek met een medewerker. Die wil weten hoe groot je huis is"],
+    ["verband","'Een jonge hond moet bijvoorbeeld vaak naar buiten.' Wat doet het woord 'bijvoorbeeld' in deze zin?",["Het geeft een voorbeeld van waarom je tijd moet hebben.","Het geeft een tegenstelling.","Het geeft een gevolg.","Het vertelt wat er daarna gebeurt."],"'Bijvoorbeeld' geeft altijd een voorbeeld. Hier een voorbeeld van waarom de medewerker wil weten hoeveel tijd je hebt.","Een jonge hond moet bijvoorbeeld vaak naar buiten."],
+    ["zoek","Waarom is de chip handig?",["Als de hond wegloopt, kan iedereen zien bij wie hij hoort.","De hond wordt er gezonder van.","De hond kost dan minder geld.","De hond loopt dan niet meer weg."],"Het staat in de laatste zin van alinea 3.","Als de hond wegloopt, kan iedereen zien bij wie hij hoort."]]},
+{lvl:1,t:"Het kapotte achterlicht",soort:"verhaal",p:[
+ "Elke ochtend fietste Bram samen met zijn buurmeisje Noa naar school. Op een dinsdag in november was het nog donker toen ze vertrokken. Halverwege de dijk riep Noa opeens: 'Je achterlicht doet het niet!'",
+ "Bram stapte af en bekeek het lampje. Het batterijklepje was weg. 'Dat is vast bij de drempel gebeurd,' zei hij. Hij keek op zijn horloge. Als ze terug zouden gaan om het te zoeken, kwamen ze te laat.",
+ "'Fiets maar vlak achter mij,' zei Noa. 'Mijn lamp is fel genoeg voor ons tweeën.' Zo reden ze verder. Bij het hek van de school stond meester Tim. Hij zag het kapotte lampje en grijnsde. 'In de pauze repareren we dat samen,' zei hij. 'Ik heb nog een doosje met klepjes in de kast.'"],
+ v:[["zoek","Waarom gaan Bram en Noa niet terug om het klepje te zoeken?",["Dan komen ze te laat op school.","Het is te donker om te zoeken.","Noa wil niet terug.","Bram weet al waar het klepje ligt."],"Aan het eind van alinea 2 staat dat ze anders te laat zouden komen.","Als ze terug zouden gaan om het te zoeken, kwamen ze te laat."],
+    ["verwijs","'Dat is vast bij de drempel gebeurd' (alinea 2). Waar verwijst 'Dat' naar?",["dat het batterijklepje weg is","dat het nog donker is","dat Noa iets riep","dat ze te laat komen"],"In de zin ervoor staat: 'Het batterijklepje was weg.' Dát is bij de drempel gebeurd.","Het batterijklepje was weg. 'Dat is vast bij de drempel gebeurd,'"],
+    ["afleid","Wat voor iemand is Noa in dit verhaal?",["behulpzaam","ongeduldig","bang","boos"],"Noa bedenkt een oplossing zodat Bram toch veilig verder kan fietsen. Dat laat zien dat ze behulpzaam is.","'Fiets maar vlak achter mij,' zei Noa."],
+    ["doel","Wat voor tekst is dit?",["een verhaal","een uitleg over fietslampjes","een reclame voor fietslampjes","een gebruiksaanwijzing"],"Er zijn personen (Bram, Noa, meester Tim), er gebeurt iets en ze praten met elkaar. Dat zijn kenmerken van een verhaal.",null]]},
+{lvl:1,t:"Zo maak je een pindaslinger",soort:"instructie",p:[
+ "In de winter kunnen vogels moeilijk voedsel vinden. Met een pindaslinger help je ze de koude dagen door. Je hebt nodig: een stevig touw van een meter, een grote naald, ongezouten pinda's in de dop en een schaar.",
+ "Stap 1: Knip het touw af en maak aan één kant een dikke knoop. Stap 2: Steek de naald door het midden van een pinda en schuif hem tot aan de knoop. Stap 3: Rijg zo pinda na pinda aan het touw, tot je ongeveer twintig centimeter touw overhoudt.",
+ "Stap 4: Hang de slinger aan een tak, op een plek waar katten niet bij kunnen. Gebruik nooit gezouten pinda's. Zout is slecht voor vogels. Binnen een paar dagen komen de eerste mezen al een kijkje nemen."],
+ v:[["doel","Wat is het doel van deze tekst?",["uitleggen hoe je iets maakt","de lezer overtuigen om pinda's te kopen","een spannend verhaal vertellen","vertellen hoeveel vogels er zijn"],"De tekst geeft stappen (Stap 1, Stap 2 …). Een tekst met stappen wil je iets leren doen: dat is instrueren.",null],
+    ["zoek","Wat doe je direct nadat je de knoop hebt gemaakt?",["Je steekt de naald door een pinda.","Je hangt de slinger aan een tak.","Je knipt het touw af.","Je haalt zout van de pinda's."],"De knoop is stap 1. Direct daarna komt stap 2: de naald door een pinda steken.","Stap 2: Steek de naald door het midden van een pinda"],
+    ["verband","'Gebruik nooit gezouten pinda's. Zout is slecht voor vogels.' Wat is het verband tussen deze twee zinnen?",["De tweede zin geeft de reden.","De tweede zin is een tegenstelling.","De tweede zin is een voorbeeld.","De tweede zin vertelt wat er daarna gebeurt."],"Je kunt 'want' tussen de zinnen zetten: Gebruik nooit gezouten pinda's, want zout is slecht voor vogels. Dus de tweede zin is de reden.","Gebruik nooit gezouten pinda's. Zout is slecht voor vogels."],
+    ["afleid","Waarom moet je de slinger ophangen waar katten niet bij kunnen?",["Katten kunnen de vogels vangen.","Katten eten de pinda's op.","Katten houden niet van touw.","Katten maken de tak kapot."],"Dat staat er niet letterlijk. Maar katten jagen op vogels. De vogels moeten veilig kunnen eten.","op een plek waar katten niet bij kunnen"]]},
+{lvl:1,t:"Een week zonder scherm",soort:"column (mening)",p:[
+ "Ik ben Jesse en ik zit in groep 8. Vorige maand deed onze klas mee aan een proef: een hele week geen telefoon en tablet na schooltijd. Eerst vond ik dat verschrikkelijk. Na drie dagen merkte ik iets geks: ik verveelde me minder dan ik dacht.",
+ "Ik ging weer voetballen op het veldje en ik las in vier dagen een heel boek uit. Ook sliep ik beter. In onze klas zeiden vijftien van de vierentwintig kinderen dat ze beter sliepen.",
+ "Daarom vind ik dat elk gezin één dag per week zonder scherm zou moeten houden. Het is niet makkelijk, maar je krijgt er echt iets voor terug. Probeer het gewoon eens!"],
+ v:[["doel","Wat wil Jesse vooral met deze tekst?",["De lezer overtuigen om een dag zonder scherm te proberen.","Uitleggen hoe een tablet werkt.","Vertellen welk boek hij heeft gelezen.","De lezer laten lachen om zijn klas."],"In alinea 3 geeft Jesse zijn mening ('Daarom vind ik…') en roept hij de lezer op: 'Probeer het gewoon eens!' Dat is overtuigen.","Daarom vind ik dat elk gezin één dag per week zonder scherm zou moeten houden."],
+    ["fm","Welke zin is een feit?",["In onze klas zeiden vijftien van de vierentwintig kinderen dat ze beter sliepen.","Het is niet makkelijk, maar je krijgt er echt iets voor terug.","Elk gezin zou één dag per week zonder scherm moeten houden.","Een dag zonder scherm is goed voor iedereen."],"Je kunt navragen hoeveel kinderen dat zeiden: dat is te controleren, dus een feit. De andere zinnen zijn wat iemand vindt.","In onze klas zeiden vijftien van de vierentwintig kinderen dat ze beter sliepen."],
+    ["verwijs","'Eerst vond ik dat verschrikkelijk' (alinea 1). Wat vond Jesse verschrikkelijk?",["een week geen telefoon en tablet na schooltijd","dat hij in groep 8 zit","dat hij zich verveelde","voetballen op het veldje"],"Kijk in de zin ervoor: de proef was een hele week geen telefoon en tablet. Dát vond hij eerst verschrikkelijk.","een hele week geen telefoon en tablet na schooltijd. Eerst vond ik dat verschrikkelijk."],
+    ["verband","Welk woord laat zien dat Jesse in alinea 3 een conclusie trekt uit zijn ervaringen?",["Daarom","maar","Ook","Eerst"],"'Daarom' betekent: om die reden. Jesse trekt een conclusie uit wat hij in alinea 1 en 2 heeft verteld.","Daarom vind ik"]]},
+{lvl:1,t:"Hoe ontstaat een regenboog?",soort:"informatieve tekst",p:[
+ "Een regenboog zie je alleen als het regent en de zon tegelijk schijnt. Dat lijkt vreemd, want meestal schijnt de zon niet als het regent. Daarom zie je een regenboog vaak aan het eind van een bui, wanneer de zon net weer doorbreekt.",
+ "Zonlicht lijkt wit, maar het bestaat eigenlijk uit allemaal kleuren. Als het licht door een regendruppel gaat, buigt het een beetje af. Elke kleur buigt net iets anders. Daardoor worden de kleuren uit elkaar gehaald en zie je ze naast elkaar: van rood aan de bovenkant tot violet aan de onderkant.",
+ "Wil je zelf een regenboog zien? Ga dan met je rug naar de zon staan en kijk naar de regen. Je kunt er ook zelf een maken: zet op een zonnige dag de tuinslang op een fijne straal."],
+ v:[["hg","Waar gaat deze tekst vooral over?",["hoe een regenboog ontstaat en hoe je hem kunt zien","waarom het in Nederland vaak regent","hoe je een tuinslang gebruikt","welke kleur de mooiste is"],"Alinea 1 en 2 leggen uit hoe een regenboog ontstaat, alinea 3 hoe je hem kunt zien. De tuinslang is maar een klein stukje.",null],
+    ["woord","'…wanneer de zon net weer doorbreekt' (alinea 1). Wat betekent 'doorbreekt' hier?",["tevoorschijn komt achter de wolken","kapotgaat","ondergaat","heel heet wordt"],"Aan het eind van een bui verdwijnen de wolken en komt de zon weer tevoorschijn.","wanneer de zon net weer doorbreekt"],
+    ["verband","'Daardoor worden de kleuren uit elkaar gehaald' (alinea 2). Wat is de oorzaak?",["Elke kleur buigt net iets anders af.","Het regent heel hard.","De zon staat achter je.","Zonlicht is wit."],"'Daardoor' wijst terug naar de oorzaak in de zin ervoor: elke kleur buigt net iets anders.","Elke kleur buigt net iets anders. Daardoor worden de kleuren uit elkaar gehaald"],
+    ["zoek","Hoe moet je staan om een regenboog te zien?",["met je rug naar de zon","met je gezicht naar de zon","onder een paraplu","zo hoog mogelijk"],"Het staat in alinea 3.","Ga dan met je rug naar de zon staan"]]},
+/* ---------- NIVEAU 2 ---------- */
+{lvl:2,t:"Wadlopen",soort:"informatieve tekst",p:[
+ "De Waddenzee ligt in het noorden van Nederland, tussen het vasteland en de Waddeneilanden. Twee keer per dag stroomt het water weg. Dat heet eb. Daarna komt het water weer terug: vloed. Bij eb valt een groot deel van de zeebodem droog. Je kunt dan over de bodem lopen. Dat noemen we wadlopen.",
+ "Wadlopen is spannend, maar ook gevaarlijk. Het water komt sneller terug dan je denkt, en op het wad zijn diepe geulen. Ook kan het plotseling mistig worden. Daarom mag je alleen met een gids het wad op. Een gids kent de route en weet precies hoe laat het water terugkomt.",
+ "Tijdens een tocht zie je van alles. Op de bodem liggen kleine hoopjes zand, als slierten spaghetti. Die worden gemaakt door de wadpier, een worm die in de bodem leeft. Met wat geluk zie je in de verte zeehonden op een zandplaat liggen.",
+ "De Waddenzee is zo bijzonder dat hij sinds 2009 op de Werelderfgoedlijst van UNESCO staat. Dat betekent dat het gebied extra goed beschermd moet worden."],
+ v:[["verband","'Daarom mag je alleen met een gids het wad op' (alinea 2). Waarom?",["Wadlopen kan gevaarlijk zijn door het water, de geulen en de mist.","Een gids kan zeehonden vinden.","De Waddenzee staat op de Werelderfgoedlijst.","Er liggen hoopjes zand op de bodem."],"'Daarom' wijst terug naar de zinnen ervoor: daar staan de gevaren.","Het water komt sneller terug dan je denkt, en op het wad zijn diepe geulen."],
+    ["verwijs","'Die worden gemaakt door de wadpier' (alinea 3). Waar verwijst 'Die' naar?",["de kleine hoopjes zand","de zeehonden","de geulen","de gidsen"],"In de zin ervoor staan 'kleine hoopjes zand'. Die worden door de wadpier gemaakt.","Op de bodem liggen kleine hoopjes zand, als slierten spaghetti. Die worden gemaakt door de wadpier"],
+    ["opbouw","Waar gaat alinea 2 over?",["over de gevaren en waarom je een gids nodig hebt","over wat je ziet tijdens een tocht","over wat eb en vloed is","over waarom het gebied beschermd wordt"],"Alinea 2 begint met 'Wadlopen is spannend, maar ook gevaarlijk' en legt daarna uit waarom je een gids nodig hebt.",null],
+    ["woord","'…dat het gebied extra goed beschermd moet worden' (alinea 4). Wat betekent 'beschermd'?",["Er wordt goed voor gezorgd, zodat het niet beschadigd raakt.","Er mag nooit meer iemand komen.","Het wordt groter gemaakt.","Er worden huizen gebouwd."],"Het gebied is bijzonder. Daarom moet ervoor gezorgd worden dat het niet kapotgaat: het wordt beschermd.","extra goed beschermd moet worden"]]},
+{lvl:2,t:"Het dakje van opa",soort:"verhaal",p:[
+ "Sinds opa met pensioen is, brengt hij elke dag uren door in zijn moestuin. Lieke helpt hem op woensdagmiddag. Ze vindt het heerlijk om te wieden, ook al krijgt ze er altijd zwarte nagels van.",
+ "Deze woensdag was opa stiller dan anders. Hij stond bij het bed met tomaten en keek naar de bladeren. Ze hadden bruine vlekken. 'Het heeft te veel geregend,' mompelde hij. 'Als ik niet oppas, ben ik ze allemaal kwijt.'",
+ "Lieke dacht na. In de klas hadden ze een filmpje gezien over een kas van plastic. 'Opa, kunnen we niet een dak boven de tomaten bouwen?' vroeg ze. Opa keek haar aan. Toen verscheen er een glimlach op zijn gezicht. 'Jij bent slimmer dan je opa,' zei hij. 'In de schuur ligt nog een oud golfplaatje.'",
+ "De rest van de middag zaagden en timmerden ze. Toen Liekes moeder haar kwam ophalen, stond er een scheef, maar stevig dakje boven de tomaten."],
+ v:[["afleid","Waarom is opa deze woensdag 'stiller dan anders'?",["Hij maakt zich zorgen om zijn tomaten.","Hij is moe van het wieden.","Hij is boos op Lieke.","Hij heeft keelpijn."],"Direct daarna kijkt hij naar de bruine vlekken en zegt hij dat hij de tomaten kan kwijtraken. Hij maakt zich zorgen.","Deze woensdag was opa stiller dan anders."],
+    ["verband","'Ze vindt het heerlijk om te wieden, ook al krijgt ze er altijd zwarte nagels van.' Welk verband geeft 'ook al'?",["een tegenstelling","een oorzaak","een voorbeeld","een tijdsvolgorde"],"Iets leuks (wieden is heerlijk) en iets minder leuks (zwarte nagels) staan tegenover elkaar. 'Ook al' geeft een tegenstelling, net als 'maar'.","ook al krijgt ze er altijd zwarte nagels van"],
+    ["zoek","Waar haalde Lieke het idee voor het dakje vandaan?",["uit een filmpje dat ze in de klas had gezien","uit een boek van opa","van haar moeder","uit de schuur"],"Het staat aan het begin van alinea 3.","In de klas hadden ze een filmpje gezien over een kas van plastic."],
+    ["woord","Wat betekent 'wieden' (alinea 1)?",["onkruid weghalen","water geven","zaadjes planten","groente plukken"],"Bij wieden trek je onkruid uit de grond. Daarom krijgt Lieke er zwarte nagels van.","om te wieden"]]},
+{lvl:2,t:"Zwembad De Golf weer open",soort:"informatieve tekst met tabel",p:[
+ "Zwembad De Golf in Veenhorst is na een grote verbouwing weer open. Er is een nieuw golfslagbad en een glijbaan van 40 meter. In het ondiepe bad is een speciaal deel voor kinderen tot zes jaar.",
+ {table:[["Dag","Vrij zwemmen","Banenzwemmen"],["maandag","14.00–17.00","07.00–09.00"],["woensdag","13.00–18.00","07.00–09.00"],["vrijdag","15.00–21.30","–"],["zaterdag","10.00–16.00","08.00–10.00"],["zondag","11.00–16.00","–"]],cap:"Openingstijden (niet in de schoolvakanties)"},
+ "Een los kaartje kost € 6,50. Kinderen tot en met 12 jaar betalen € 4,50. Wie vaak komt, kan beter een tienbadenkaart kopen: die kost € 40,00 voor volwassenen en € 30,00 voor kinderen. Let op: in de schoolvakanties gelden andere tijden. Kijk daarvoor op de website."],
+ v:[["zoek","Op welke dag kun je het langst vrij zwemmen?",["vrijdag","zaterdag","woensdag","zondag"],"Reken het per dag uit: vrijdag 15.00–21.30 is 6,5 uur. Zaterdag 6 uur, woensdag 5 uur, zondag 5 uur.",null],
+    ["zoek","Sem is 11 jaar en wil tien keer gaan zwemmen. Hoeveel geld bespaart hij met een tienbadenkaart?",["€ 15,00","€ 5,00","€ 10,00","€ 25,00"],"Tien losse kinderkaartjes: 10 × € 4,50 = € 45,00. De tienbadenkaart voor kinderen kost € 30,00. € 45,00 − € 30,00 = € 15,00.","Kinderen tot en met 12 jaar betalen € 4,50."],
+    ["afleid","Mila wil in de kerstvakantie op maandag om 15.00 uur gaan zwemmen. Wat kan ze het beste eerst doen?",["op de website kijken wat de tijden in de vakantie zijn","niets, want op maandag is het open van 14.00 tot 17.00","een tienbadenkaart kopen","naar het kinderbad gaan"],"De tabel geldt niet in de schoolvakanties. De kerstvakantie is een schoolvakantie, dus moet ze op de website kijken.","Let op: in de schoolvakanties gelden andere tijden."],
+    ["doel","Wat is het doel van deze tekst?",["informeren over het zwembad","een spannend verhaal vertellen","uitleggen hoe je moet zwemmen","de mening van de badmeester geven"],"De tekst geeft informatie: wat er nieuw is, de openingstijden en de prijzen.",null]]},
+{lvl:2,t:"Interview: Fenna, jeugdkampioen schaken",soort:"interview",p:[
+ "Fenna van Dijk (12) werd dit jaar Nederlands jeugdkampioen schaken in haar leeftijdsgroep. We vroegen haar hoe ze dat voor elkaar kreeg.",
+ "Hoe ben je begonnen met schaken? 'Toen ik zes was, lag ik met een gebroken been op de bank. Mijn oma kwam elke dag langs met een schaakbord. Eerst won zij altijd, maar na een paar weken niet meer. Toen was ik verkocht.'",
+ "Hoeveel train je? 'Op dinsdag en vrijdag ga ik naar de schaakclub. Thuis los ik elke dag een paar puzzels op. Dat zijn stellingen waarin je de beste zet moet vinden. Het is net als met piano spelen: je wordt alleen beter als je vaak oefent.'",
+ "Wat vind je het moeilijkste? 'Verliezen. Vroeger moest ik dan huilen. Nu kijk ik samen met mijn trainer waar het misging. Van een verloren partij leer je eigenlijk meer dan van een gewonnen partij.'"],
+ v:[["woord","'Toen was ik verkocht' (alinea 2). Wat bedoelt Fenna?",["Toen vond ze schaken heel leuk.","Toen had oma het schaakbord verkocht.","Toen moest ze naar het ziekenhuis.","Toen wilde ze stoppen met schaken."],"'Verkocht zijn' is een uitdrukking: je bent helemaal enthousiast over iets. Fenna begon te winnen en vond schaken vanaf toen geweldig.","Toen was ik verkocht."],
+    ["verwijs","'Dat zijn stellingen waarin je de beste zet moet vinden' (alinea 3). Waar verwijst 'Dat' naar?",["de puzzels","de schaakclub","de trainingen op dinsdag en vrijdag","het piano spelen"],"In de zin ervoor staat: 'Thuis los ik elke dag een paar puzzels op.' Die puzzels zijn stellingen.","Thuis los ik elke dag een paar puzzels op. Dat zijn stellingen"],
+    ["verband","Waarom vergelijkt Fenna schaken met piano spelen?",["Om te laten zien dat je vaak moet oefenen om beter te worden.","Omdat ze ook piano speelt.","Omdat oma piano speelt.","Om te laten zien dat schaken saai is."],"Ze zegt erbij: 'je wordt alleen beter als je vaak oefent.' Dat is het punt van de vergelijking.","Het is net als met piano spelen: je wordt alleen beter als je vaak oefent."],
+    ["fm","Welke zin is een mening van Fenna?",["Van een verloren partij leer je eigenlijk meer dan van een gewonnen partij.","Op dinsdag en vrijdag ga ik naar de schaakclub.","Toen ik zes was, lag ik met een gebroken been op de bank.","Mijn oma kwam elke dag langs met een schaakbord."],"Of je meer leert van verliezen, is wat Fenna vindt. De andere zinnen vertellen wat er echt gebeurde: die kun je controleren.","Van een verloren partij leer je eigenlijk meer dan van een gewonnen partij."],
+    ["hg","Wat is de belangrijkste boodschap van dit interview?",["Fenna werd kampioen doordat ze veel oefent en leert van haar fouten.","Fenna brak haar been toen ze zes was.","Oma won vroeger altijd van Fenna.","Schaken is alleen voor slimme kinderen."],"Het gebroken been en oma zijn details uit het begin. Het interview gaat over hoe ze kampioen werd: veel oefenen en leren van verlies.",null]]},
+{lvl:2,t:"Groen schoolplein in Hengelo",soort:"nieuwsbericht",p:[
+ "Basisschool De Regenboog in Hengelo heeft een nieuw schoolplein. Waar vroeger grijze tegels lagen, staan nu bomen, struiken en een heuvel met gras. Er is ook een moestuin en een plek waar het regenwater in de grond kan zakken.",
+ "Het idee kwam van de leerlingenraad. 'Op warme dagen was het plein veel te heet,' vertelt Daan (11) uit groep 8. 'En als het hard regende, stond alles blank.' Een groen plein blijft koeler, omdat planten en bomen schaduw geven en water vasthouden.",
+ "Niet iedereen was meteen enthousiast. Sommige ouders waren bang dat hun kinderen vaker met modderige kleren thuis zouden komen. De school heeft daarom laarzen gekocht die kinderen in de pauze kunnen aantrekken.",
+ "De gemeente heeft de helft van de kosten betaald. Volgens wethouder Bakker krijgen volgend jaar nog vijf scholen in de stad een groen plein."],
+ v:[["opbouw","Welke titel past ook goed bij deze tekst?",["Nieuw groen schoolplein blijft koeler en droger","Kinderen werken in de moestuin","Ouders boos op de school","Wethouder koopt laarzen"],"Een goede titel past bij de hele tekst. De andere titels gaan over een klein stukje, of kloppen niet.",null],
+    ["verband","'Een groen plein blijft koeler, omdat planten en bomen schaduw geven en water vasthouden.' Wat staat er na 'omdat'?",["de reden waarom een groen plein koeler blijft","een tegenstelling","een voorbeeld van een plant","wat er daarna gebeurt"],"Na 'omdat' komt altijd een reden.","Een groen plein blijft koeler, omdat planten en bomen schaduw geven en water vasthouden."],
+    ["woord","'…stond alles blank' (alinea 2). Wat betekent 'blank' hier?",["onder water","wit","schoon","leeg"],"Het gaat over hard regenen. Als alles blank staat, staat alles onder water.","stond alles blank"],
+    ["verband","Waarom heeft de school laarzen gekocht?",["Sommige ouders waren bang voor modderige kleren.","Het plein was te heet.","De gemeente wilde dat.","De kinderen werken in de moestuin."],"'Daarom' in alinea 3 wijst terug naar de zin ervoor: ouders waren bang voor modderige kleren.","Sommige ouders waren bang dat hun kinderen vaker met modderige kleren thuis zouden komen."]]},
+/* ---------- NIVEAU 3 ---------- */
+{lvl:3,t:"Plastic in zee",soort:"informatieve tekst",p:[
+ "Plastic is handig. Het is licht, sterk en goedkoop. Juist daardoor is het ook een probleem. Een plastic flesje dat in zee belandt, verdwijnt niet. Het kan honderden jaren blijven drijven.",
+ "Hoe komt plastic in zee? Een deel wordt achteloos weggegooid op het strand. Veel meer plastic komt via rivieren in zee terecht. Een zakje dat in Duitsland in de Rijn waait, kan zo weken later voor de kust van Nederland drijven.",
+ "In zee breekt plastic door de zon en de golven in steeds kleinere stukjes. Uiteindelijk zijn die zo klein dat je ze bijna niet meer ziet. Dit noemen we microplastics. Vissen en vogels zien de stukjes aan voor voedsel. Ze krijgen een vol gevoel in hun maag, maar ze krijgen geen voedingsstoffen binnen. Sommige dieren gaan daardoor dood.",
+ "Er zijn mensen die plastic uit zee proberen te vissen. Dat helpt, maar het is dweilen met de kraan open zolang er elke dag nieuw plastic bij komt. Belangrijker is dat we minder plastic gebruiken en het niet laten rondslingeren. Een hervulbare fles is daarvoor een simpel begin."],
+ v:[["verwijs","'Juist daardoor is het ook een probleem' (alinea 1). Waar verwijst 'daardoor' naar?",["doordat plastic licht, sterk en goedkoop is","doordat plastic in zee belandt","doordat plastic honderden jaren drijft","doordat plastic in rivieren waait"],"Lees de zin ervoor: 'Het is licht, sterk en goedkoop.' Juist dáárdoor gebruiken we veel plastic en verdwijnt het niet.","Het is licht, sterk en goedkoop. Juist daardoor is het ook een probleem."],
+    ["woord","'…het is dweilen met de kraan open' (alinea 4). Wat bedoelt de schrijver?",["Opruimen helpt weinig zolang er steeds nieuw plastic bij komt.","Je moet de zee schoonmaken met een dweil.","Het water in zee stijgt.","Plastic opruimen gaat heel snel."],"Als de kraan openstaat, kun je blijven dweilen: het wordt nooit droog. Zo helpt opruimen weinig zolang er elke dag nieuw plastic bij komt.","het is dweilen met de kraan open zolang er elke dag nieuw plastic bij komt"],
+    ["verband","Waarom gaan sommige vissen en vogels dood door microplastics?",["Ze voelen zich vol, maar krijgen geen voedingsstoffen binnen.","Ze raken verstrikt in grote flessen.","Ze worden gevangen in visnetten.","Het water wordt te warm."],"'Daardoor' in de laatste zin van alinea 3 wijst naar de oorzaak in de zin ervoor.","Ze krijgen een vol gevoel in hun maag, maar ze krijgen geen voedingsstoffen binnen."],
+    ["fm","Welke zin is een mening van de schrijver?",["Belangrijker is dat we minder plastic gebruiken en het niet laten rondslingeren.","Veel meer plastic komt via rivieren in zee terecht.","In zee breekt plastic door de zon en de golven in steeds kleinere stukjes.","Vissen en vogels zien de stukjes aan voor voedsel."],"'Belangrijker is…' geeft aan wat de schrijver het belangrijkst vindt: een mening. De andere zinnen zijn feiten die onderzoekers kunnen controleren.","Belangrijker is dat we minder plastic gebruiken en het niet laten rondslingeren."],
+    ["hg","Wat is de hoofdgedachte van deze tekst?",["Plastic in zee is een groot probleem; minder plastic gebruiken helpt het meest.","Via de Rijn komt plastic uit Duitsland naar Nederland.","Plastic is licht, sterk en goedkoop.","Er zijn mensen die plastic uit zee vissen."],"De andere antwoorden zijn details uit één alinea. De hoofdgedachte vat de hele tekst samen: het probleem (alinea 1–3) en de beste oplossing (alinea 4).",null]]},
+{lvl:3,t:"Het schoolkamp",soort:"verhaal",p:[
+ "Iedereen in groep 8 had zich verheugd op het schoolkamp. Iedereen, behalve Ravi. Al weken lag er een briefje met de paklijst op zijn bureau. Hij had er nog niets van afgestreept.",
+ "'Heb je je slaapzak al?' vroeg zijn moeder op zondagavond. Ravi haalde zijn schouders op. 'Misschien ben ik woensdag wel ziek,' zei hij. Zijn moeder ging naast hem op bed zitten. 'Is het vanwege het slapen?' vroeg ze zacht. Ravi knikte. Hij had nog nooit ergens anders geslapen dan thuis, en zijn knuffelaap ging altijd mee naar bed. Wat zouden de anderen wel niet zeggen?",
+ "Op woensdag stond Ravi toch bij de bus, met zijn tas stijf tegen zich aan geklemd. 's Avonds in de slaapzaal kroop hij als eerste in zijn slaapzak, zodat niemand zag wat hij erin had verstopt. Toen het licht uitging, hoorde hij naast zich geritsel. 'Psst, Ravi,' fluisterde Thijs, de stoerste jongen van de klas. 'Niet verder vertellen, hoor.' In het schemerlicht zag Ravi een versleten knuffelhond.",
+ "Ravi grinnikte. Voor het eerst die week voelde zijn buik niet als een knoop."],
+ v:[["afleid","Waarom heeft Ravi nog niets van de paklijst afgestreept?",["Hij ziet op tegen het kamp.","Hij is de lijst kwijt.","Hij heeft al alles ingepakt.","Zijn moeder pakt altijd voor hem in."],"Iedereen verheugt zich, 'behalve Ravi'. En hij hoopt dat hij ziek is. Hij ziet er dus tegen op.","Hij had er nog niets van afgestreept."],
+    ["afleid","Wat heeft Ravi in zijn slaapzak verstopt?",["zijn knuffelaap","zijn paklijst","een zaklamp","snoep"],"Het staat er niet letterlijk. In alinea 2 lees je dat zijn knuffelaap altijd mee naar bed gaat en dat hij bang is voor wat de anderen zeggen.","zodat niemand zag wat hij erin had verstopt"],
+    ["woord","'Voor het eerst die week voelde zijn buik niet als een knoop' (alinea 4). Wat betekent dit?",["Hij was niet meer zo zenuwachtig.","Hij had geen honger meer.","Hij had buikpijn van het eten.","Hij was boos op Thijs."],"Een buik als een knoop is beeldspraak voor zenuwen. Nu voelt hij zich opgelucht.","Voor het eerst die week voelde zijn buik niet als een knoop."],
+    ["afleid","Waarom is het belangrijk dat juist Thijs een knuffel bij zich heeft?",["Ravi ziet dat zelfs de stoerste jongen er een heeft, dus hij hoeft zich niet te schamen.","Thijs wil de knuffel van Ravi afpakken.","Thijs is bang in het donker.","Thijs is de beste vriend van Ravi."],"De schrijver noemt Thijs 'de stoerste jongen van de klas'. Als zelfs hij een knuffel heeft, is het niet gek.","fluisterde Thijs, de stoerste jongen van de klas."]]},
+{lvl:3,t:"Moet de zomervakantie korter?",soort:"betoog",p:[
+ "In Nederland duurt de zomervakantie op de basisschool zes weken. Sommige onderwijsdeskundigen willen die vakantie inkorten tot vier weken. De twee weken die overblijven, willen ze verdelen over de rest van het jaar.",
+ "Voorstanders zeggen dat kinderen in zes weken veel vergeten. Na de zomer moeten leerkrachten eerst herhalen wat de klas voor de vakantie al kon. Vooral bij rekenen en lezen zou dat goed te merken zijn. Met kortere vakanties en vaker een weekje vrij zouden kinderen bovendien minder moe worden.",
+ "Tegenstanders vinden dat kinderen juist een lange vakantie nodig hebben om echt tot rust te komen. Daarnaast wijzen ze erop dat veel gezinnen in de zomer op reis gaan. Als de vakantie korter wordt, kunnen zij minder ver weg. Ook bedrijven die van toeristen afhankelijk zijn, zoals campings, zouden er last van hebben.",
+ "Ik denk dat beide kanten een punt hebben. Toch zou ik kiezen voor vijf weken zomervakantie. Dan is er genoeg tijd om uit te rusten, en vergeten kinderen waarschijnlijk minder dan na zes weken."],
+ v:[["opbouw","Wat staat er in alinea 3?",["argumenten tegen een kortere zomervakantie","argumenten voor een kortere zomervakantie","de mening van de schrijver","hoe lang de vakantie nu duurt"],"Alinea 3 begint met 'Tegenstanders vinden…'. Daarna volgen hun argumenten.",null],
+    ["fm","Welke zin is een mening?",["Toch zou ik kiezen voor vijf weken zomervakantie.","In Nederland duurt de zomervakantie op de basisschool zes weken.","Sommige onderwijsdeskundigen willen die vakantie inkorten tot vier weken.","Veel gezinnen gaan in de zomer op reis."],"'Ik zou kiezen' is wat de schrijver vindt. De andere zinnen kun je controleren.","Toch zou ik kiezen voor vijf weken zomervakantie."],
+    ["verband","'Daarnaast wijzen ze erop…' (alinea 3). Welk verband geeft 'Daarnaast'?",["een opsomming: er komt nog een argument bij","een tegenstelling","een conclusie","een tijdsvolgorde"],"'Daarnaast' betekent 'en ook nog'. Het voegt een tweede argument toe.","Daarnaast wijzen ze erop"],
+    ["afleid","Welk argument van de vóórstanders gebruikt de schrijver in zijn eigen mening?",["dat kinderen na een lange vakantie veel vergeten","dat gezinnen ver weg op reis kunnen","dat campings er last van krijgen","dat kinderen tijd nodig hebben om tot rust te komen"],"'Tot rust komen' is een argument van de tegenstanders. Het argument 'vergeten' komt van de voorstanders (alinea 2) en staat ook in alinea 4.","en vergeten kinderen waarschijnlijk minder dan na zes weken"]]},
+{lvl:3,t:"Het geheim van de trekvogels",soort:"informatieve tekst",p:[
+ "Elk najaar vertrekken miljoenen vogels uit Nederland naar het zuiden. Ze vliegen naar landen waar het in de winter warmer is en waar ze genoeg voedsel kunnen vinden. In het voorjaar komen ze terug om hier te broeden. Deze vogels noemen we trekvogels.",
+ "Sommige trekvogels leggen enorme afstanden af. De noordse stern is daarvan het bekendste voorbeeld. Deze kleine zeevogel vliegt elk jaar van het noordpoolgebied naar het zuidpoolgebied en weer terug. Dat is ongeveer 70.000 kilometer: bijna twee keer rond de aarde.",
+ "Lang was het een raadsel hoe trekvogels de weg vinden. Inmiddels weten wetenschappers dat ze verschillende hulpmiddelen gebruiken. Overdag letten ze op de stand van de zon. 's Nachts gebruiken veel soorten de sterren. Daarnaast kunnen vogels het magnetisch veld van de aarde voelen. Dat werkt als een soort ingebouwd kompas.",
+ "Toch gaat het niet altijd goed. Door het veranderende klimaat zijn er in het voorjaar soms al minder insecten wanneer de vogels terugkomen. De grutto, die in Afrika overwintert, heeft het daarnaast moeilijk doordat er in Nederland minder bloemrijke weilanden zijn. Daar vinden de jonge vogels juist hun voedsel."],
+ v:[["verwijs","'Daar vinden de jonge vogels juist hun voedsel' (alinea 4). Waar verwijst 'Daar' naar?",["de bloemrijke weilanden","Afrika","het zuidpoolgebied","de landen waar het warmer is"],"Kijk wat er vlak vóór 'Daar' staat: 'minder bloemrijke weilanden'.","minder bloemrijke weilanden zijn. Daar vinden de jonge vogels juist hun voedsel."],
+    ["verwijs","'Dat werkt als een soort ingebouwd kompas' (alinea 3). Wat werkt als een kompas?",["het voelen van het magnetisch veld van de aarde","de stand van de zon","de sterren","de noordse stern"],"'Dat' wijst naar de zin ervoor: vogels kunnen het magnetisch veld van de aarde voelen.","het magnetisch veld van de aarde voelen. Dat werkt als een soort ingebouwd kompas."],
+    ["opbouw","Waarom noemt de schrijver de noordse stern in alinea 2?",["als voorbeeld van een vogel die een enorme afstand aflegt","als oorzaak van de vogeltrek","als tegenstelling met alinea 1","als conclusie van de hele tekst"],"Er staat letterlijk: 'daarvan het bekendste voorbeeld'.","De noordse stern is daarvan het bekendste voorbeeld."],
+    ["woord","'Lang was het een raadsel…' (alinea 3). Wat betekent 'raadsel' hier?",["iets wat men niet kon verklaren","een grap","een spelletje","een gevaar"],"In de zin erna staat 'Inmiddels weten wetenschappers…'. Vroeger wisten ze het dus niet: het was een raadsel.","Lang was het een raadsel hoe trekvogels de weg vinden."]]},
+{lvl:3,t:"Een klachtbrief",soort:"zakelijke brief",p:[
+ "Beste medewerker van SpeelMaar,",
+ "Op 3 maart heb ik bij uw webwinkel een bordspel besteld: 'Schatten van de Zee', voor € 29,95. Op de website stond dat het binnen twee werkdagen bezorgd zou worden. Het pakket kwam pas na negen dagen. Erger nog: toen ik de doos openmaakte, bleken er vier speelstukken te ontbreken.",
+ "Ik had het spel gekocht als verjaardagscadeau voor mijn broertje. Hij was erg teleurgesteld, want we konden het niet spelen. Ik heb u op 14 maart al een e-mail gestuurd, maar daarop heb ik nog geen antwoord gekregen.",
+ "Ik wil u vragen om mij zo snel mogelijk de ontbrekende speelstukken op te sturen. Als dat niet kan, wil ik graag mijn geld terug. Ik hoop binnen een week van u te horen.",
+ "Met vriendelijke groet,<br>Yara Bos"],
+ v:[["doel","Waarom schrijft Yara deze brief?",["Ze wil dat de winkel haar probleem oplost.","Ze wil een nieuw spel bestellen.","Ze wil de winkel bedanken.","Ze wil uitleggen hoe het spel werkt."],"In alinea 4 vraagt ze om de speelstukken of haar geld terug. Dat is het doel van een klachtbrief.","Ik wil u vragen om mij zo snel mogelijk de ontbrekende speelstukken op te sturen."],
+    ["zoek","Welk tweede probleem noemt Yara, naast de late bezorging?",["Er ontbreken vier speelstukken.","Het spel was te duur.","Het spel was kapot.","Haar broertje vond het spel niet leuk."],"Na 'Erger nog:' komt het tweede probleem.","bleken er vier speelstukken te ontbreken"],
+    ["verband","Wat laat Yara zien met de woorden 'Erger nog:' (alinea 2)?",["Dat er een probleem volgt dat nog vervelender is.","Dat het probleem is opgelost.","Dat ze een voorbeeld geeft.","Dat ze een conclusie trekt."],"'Erger nog' kondigt aan dat er iets komt wat nog vervelender is dan het eerste probleem.","Erger nog:"],
+    ["afleid","Waarom vertelt Yara dat ze op 14 maart al een e-mail stuurde?",["Om te laten zien dat ze al eerder contact zocht en geen antwoord kreeg.","Om te laten weten wanneer haar broertje jarig was.","Om te vertellen wanneer het pakket kwam.","Om de winkel te bedanken voor het snelle antwoord."],"Ze laat zien dat de winkel nog niet heeft gereageerd. Zo maakt ze haar klacht sterker.","Ik heb u op 14 maart al een e-mail gestuurd, maar daarop heb ik nog geen antwoord gekregen."]]},
+/* ---------- NIVEAU 4 ---------- */
+{lvl:4,t:"Waarom we liegen",soort:"informatieve tekst",p:[
+ "Iedereen liegt weleens. Je zegt dat je een cadeau mooi vindt, terwijl je het eigenlijk lelijk vindt. Of je vertelt je moeder dat je huiswerk al af is, terwijl je nog moet beginnen. Onderzoekers hebben ontdekt dat de meeste kinderen al rond hun derde jaar beginnen met liegen.",
+ "Dat klinkt misschien slecht, maar volgens psychologen is het eerste leugentje juist een teken van ontwikkeling. Om te kunnen liegen, moet je namelijk begrijpen dat een ander iets anders weet dan jij. Een peuter die zegt dat hij het koekje niet heeft gepakt, snapt dat zijn moeder niet in zijn hoofd kan kijken.",
+ "Niet elke leugen is hetzelfde. Een leugen om jezelf uit de problemen te praten, noemen we een eigenbelangleugen. Een leugen om een ander niet te kwetsen, heet een leugentje om bestwil. De meeste mensen vinden die tweede soort minder erg. Toch kan ook een leugentje om bestwil schade doen: als je vriendin steeds hoort dat haar tekeningen prachtig zijn, weet ze nooit wat ze beter kan doen.",
+ "Liegen kost bovendien moeite. Wie liegt, moet onthouden wat hij heeft gezegd en tegen wie. Daardoor raken leugenaars vaak verstrikt in hun eigen verhaal. Eén leugen leidt dan tot de volgende.",
+ "Wat helpt er tegen liegen? Volgens deskundigen helpt het als ouders en leerkrachten niet te boos reageren wanneer een kind eerlijk vertelt over iets wat fout ging. Wie weet dat eerlijkheid niet bestraft wordt, heeft minder reden om te liegen."],
+ v:[["hg","Wat is de hoofdgedachte van deze tekst?",["Liegen hoort bij de ontwikkeling, maar heeft nadelen; eerlijkheid niet bestraffen helpt.","Kinderen beginnen rond hun derde jaar met liegen.","Een leugentje om bestwil is nooit erg.","Een peuter kan niet in het hoofd van zijn moeder kijken."],"Antwoord 2 en 4 zijn details. Antwoord 3 klopt niet met alinea 3. Het eerste antwoord vat de hele tekst samen.",null],
+    ["afleid","Waarom is het eerste leugentje volgens psychologen 'een teken van ontwikkeling' (alinea 2)?",["Het kind begrijpt dan dat een ander niet weet wat het zelf weet.","Het kind heeft geleerd om koekjes te pakken.","Het kind wil zijn moeder boos maken.","Het kind kan dan beter praten."],"Het woord 'namelijk' geeft de uitleg: om te liegen moet je begrijpen dat een ander iets anders weet dan jij.","Om te kunnen liegen, moet je namelijk begrijpen dat een ander iets anders weet dan jij."],
+    ["verwijs","'De meeste mensen vinden die tweede soort minder erg' (alinea 3). Wat is 'die tweede soort'?",["het leugentje om bestwil","de eigenbelangleugen","de leugen van een peuter","een leugen over huiswerk"],"In alinea 3 worden twee soorten genoemd. De eerste is de eigenbelangleugen, de tweede het leugentje om bestwil.","Een leugen om een ander niet te kwetsen, heet een leugentje om bestwil. De meeste mensen vinden die tweede soort minder erg."],
+    ["woord","'…raken leugenaars vaak verstrikt in hun eigen verhaal' (alinea 4). Wat betekent 'verstrikt raken' hier?",["vast komen te zitten, zodat je er moeilijk uitkomt","heel goed worden in verhalen vertellen","je verhaal helemaal vergeten","snel ontdekt worden door de politie"],"Lees de zinnen eromheen: je moet alles onthouden en één leugen leidt tot de volgende. Je komt er steeds moeilijker uit.","Daardoor raken leugenaars vaak verstrikt in hun eigen verhaal."]]},
+{lvl:4,t:"Van loopfiets tot veiligheidsfiets",soort:"informatieve tekst",p:[
+ "Nederland heeft meer fietsen dan inwoners. Toch is de fiets geen Nederlandse uitvinding. Het begon in 1817 in Duitsland. Daar bouwde Karl Drais een houten loopfiets. Er zaten geen trappers aan: je zette je met je voeten af tegen de grond.",
+ "Rond 1860 kwamen er in Frankrijk fietsen met trappers aan het voorwiel. Hoe groter het voorwiel, hoe verder je kwam met één rondje trappen. Daarom werd het voorwiel steeds groter. Zo ontstond de hoge bi, met een voorwiel dat soms anderhalve meter hoog was. Snel was hij wel, maar ook gevaarlijk: wie hard remde of een steen raakte, viel zo voorover.",
+ "In 1885 bedacht de Engelsman John Kemp Starley de veiligheidsfiets. Die had twee even grote wielen en een ketting die het achterwiel aandreef. Je zat veel lager en kon met je voeten bij de grond. Drie jaar later kwam de luchtband, waardoor fietsen veel minder hard schokte.",
+ "Vanaf dat moment werd fietsen populair bij een groot publiek. Eerst was een fiets nog duur, maar toen fabrieken ze in grote aantallen gingen maken, werden ze goedkoper. Voor veel arbeiders werd de fiets het eerste vervoermiddel dat ze zelf konden betalen."],
+ v:[["opbouw","Hoe is deze tekst vooral opgebouwd?",["in de volgorde van de tijd","als probleem en oplossing","als vraag en antwoord","als voor- en nadelen"],"De tekst volgt de jaartallen: 1817, rond 1860, 1885, drie jaar later. Dat is een opbouw in tijdsvolgorde.",null],
+    ["verband","'Daarom werd het voorwiel steeds groter' (alinea 2). Wat is de reden?",["Met een groter voorwiel kwam je verder met één rondje trappen.","Grote wielen waren veiliger.","Mensen wilden hoger zitten om beter te kijken.","Het voorwiel moest de ketting aandrijven."],"'Daarom' wijst terug naar de zin ervoor.","Hoe groter het voorwiel, hoe verder je kwam met één rondje trappen."],
+    ["zoek","In welk jaar kwam de luchtband?",["1888","1885","1860","1817"],"De veiligheidsfiets kwam in 1885. 'Drie jaar later' kwam de luchtband: 1885 + 3 = 1888.","Drie jaar later kwam de luchtband"],
+    ["afleid","Waarom werd fietsen 'populair bij een groot publiek' (alinea 4)?",["De fiets werd veiliger, comfortabeler en goedkoper.","De hoge bi was heel snel.","Karl Drais maakte veel reclame.","Nederland had veel inwoners."],"Alinea 3 vertelt dat de fiets veiliger en comfortabeler werd. Alinea 4 vertelt dat hij goedkoper werd. Samen verklaren ze waarom veel mensen gingen fietsen.","toen fabrieken ze in grote aantallen gingen maken, werden ze goedkoper"]]},
+{lvl:4,t:"Mijn telefoon in het kluisje",soort:"column (betoog)",p:[
+ "Toen ik vorig jaar naar de brugklas ging, moest mijn telefoon tijdens de lessen in een kluisje. Ik vond dat eerst onzin. Ik ben toch geen klein kind meer? Inmiddels denk ik er anders over.",
+ "Het grootste voordeel merk ik in de lessen. Vroeger lag mijn telefoon naast mijn schrift, en elke keer dat hij trilde, was ik met mijn gedachten weg. Nu kan ik me beter concentreren. Mijn cijfer voor wiskunde is zelfs omhooggegaan, van een 5,8 naar een 7,1.",
+ "Ook in de pauze is er iets veranderd. Eerst zat iedereen op zijn scherm te kijken. Nu praten we weer met elkaar, en sommige klasgenoten zijn zelfs gaan tafeltennissen. Er zijn natuurlijk ook nadelen. Als je ouders je onder schooltijd willen bereiken, kan dat niet meteen. Mijn moeder vond dat in het begin lastig. Maar via de administratie van school kan het altijd.",
+ "Sommige leerlingen zeggen dat een verbod niet nodig is, omdat ze zelf wel weten wanneer ze hun telefoon moeten wegleggen. Dat geloof ik best, maar ik weet ook hoe moeilijk het is om níét te kijken als er een berichtje binnenkomt. Een kluisje maakt het een stuk makkelijker. Wat mij betreft blijft het verbod dus."],
+ v:[["fm","Welke zin is een feit?",["Mijn cijfer voor wiskunde is zelfs omhooggegaan, van een 5,8 naar een 7,1.","Een kluisje maakt het een stuk makkelijker.","Wat mij betreft blijft het verbod dus.","Een telefoonverbod is goed voor alle leerlingen."],"Een cijfer kun je controleren op het rapport. De andere zinnen geven weer wat iemand vindt.","Mijn cijfer voor wiskunde is zelfs omhooggegaan, van een 5,8 naar een 7,1."],
+    ["opbouw","Wat doet de schrijver in alinea 4?",["Ze noemt een tegenargument en reageert erop.","Ze vertelt wat er in de pauze veranderd is.","Ze noemt het grootste voordeel.","Ze vertelt hoe het verbod begon."],"Eerst staat wat andere leerlingen vinden (een tegenargument). Daarna reageert ze: 'Dat geloof ik best, maar…'.",null],
+    ["verband","'Maar via de administratie van school kan het altijd' (alinea 3). Wat geeft deze zin?",["een oplossing voor het nadeel dat net genoemd is","nog een nadeel","een voorbeeld van een voordeel","de conclusie van de hele tekst"],"Het nadeel is dat ouders je niet meteen kunnen bereiken. Na 'Maar' volgt hoe dat toch kan.","Maar via de administratie van school kan het altijd."],
+    ["afleid","Wat bedoelt de schrijver met 'Inmiddels denk ik er anders over' (alinea 1)?",["Ze vindt het kluisje nu wel een goed idee.","Ze wil dat het verbod stopt.","Ze is haar telefoon kwijtgeraakt.","Ze vindt de kluisjes te klein."],"Eerst vond ze het onzin. 'Anders' betekent dus dat ze het nu goed vindt. Dat blijkt ook uit de laatste zin van de tekst.","Inmiddels denk ik er anders over."]]},
+{lvl:4,t:"De laatste nacht",soort:"verhaal",p:[
+ "Al veertig jaar beklom Jelle elke avond de honderdzesentwintig treden van de vuurtoren. Boven draaide hij aan de knop, en het licht zwiepte over de golven als een arm die de schepen naar huis wees.",
+ "Maar vanavond was het anders. Morgen zou de vuurtoren automatisch worden. Een computer in een kantoor in de stad zou het licht aan- en uitzetten. Jelle was niet meer nodig. 'Een machine wordt niet moe,' had de man van het waterschap gezegd, alsof dat Jelle zou troosten.",
+ "Hij ging op zijn krukje zitten en keek naar buiten. In de verte gleed een vrachtschip voorbij, met lichtjes als een drijvende stad. Zou de kapitein weten dat dit de laatste nacht was? Waarschijnlijk niet. Voor de schepen veranderde er niets. Het licht zou blijven draaien. Alleen hij zou er niet meer bij zijn.",
+ "Toen de zon opkwam, liep Jelle langzaam de trap af. Halverwege bleef hij staan en legde zijn hand op de koude, gladde muur. 'Pas goed op ze,' fluisterde hij. Daarna trok hij de deur zachtjes achter zich dicht."],
+ v:[["woord","'…het licht zwiepte over de golven als een arm die de schepen naar huis wees' (alinea 1). Wat bedoelt de schrijver?",["Het licht helpt de schepen de veilige weg te vinden.","Jelle zwaait naar de schepen.","Het licht maakt de golven groter.","De schepen varen weg van huis."],"Dit is een vergelijking (beeldspraak): het licht wijst de weg, zoals een arm de weg wijst.","als een arm die de schepen naar huis wees"],
+    ["afleid","Hoe voelt Jelle zich vooral in dit verhaal?",["verdrietig, omdat er een einde komt aan zijn werk","opgelucht, omdat hij niet meer hoeft te klimmen","boos op de kapitein","bang voor de computer"],"Hij is 'niet meer nodig', kijkt nog één keer naar buiten en neemt afscheid van de toren. Dat laat verdriet zien.","Alleen hij zou er niet meer bij zijn."],
+    ["afleid","'…alsof dat Jelle zou troosten' (alinea 2). Wat laat de schrijver hiermee zien?",["Dat die opmerking Jelle juist níét troost.","Dat Jelle blij is met de machine.","Dat de man van het waterschap moe is.","Dat de computer kapot is."],"'Alsof' betekent hier: de man dácht dat het zou troosten, maar dat deed het niet. Het maakt Jelle eerder verdrietiger.","alsof dat Jelle zou troosten"],
+    ["verwijs","'Pas goed op ze,' fluistert Jelle (alinea 4). Wie bedoelt hij met 'ze'?",["de schepen","de treden","de mensen van het waterschap","de golven"],"Jelle praat tegen de vuurtoren. Hij vraagt de toren om goed op de schepen te passen, zoals hij veertig jaar deed.","'Pas goed op ze,' fluisterde hij."]]},
+{lvl:4,t:"Waar blijft ons water?",soort:"informatieve tekst met tabel",p:[
+ "Een gemiddelde Nederlander gebruikt ongeveer 130 liter drinkwater per dag. Het meeste daarvan drinken we niet op: we spoelen het weg.",
+ {table:[["Waarvoor","Liters per persoon per dag"],["douchen","55"],["wc doorspoelen","35"],["kleren wassen","15"],["keukenkraan (koken, afwassen, drinken)","15"],["overig (schoonmaken, tuin)","10"]],cap:"Afgeronde getallen"},
+ "De douche is de grootste waterverbruiker. Een douche gebruikt ongeveer acht liter per minuut. Wie een kwartier doucht, gebruikt dus al 120 liter. Met een waterbesparende douchekop kan dat bijna de helft minder.",
+ "Waarom zou je zuinig zijn, als er in Nederland toch genoeg regen valt? Drinkwater maken kost veel energie: het water wordt opgepompt, gezuiverd en door buizen naar je huis gebracht. In droge zomers kan het bovendien gebeuren dat waterbedrijven mensen vragen om minder water te gebruiken, omdat het grondwater laag staat."],
+ v:[["zoek","Lars doucht elke dag 10 minuten. Hoeveel liter water gebruikt hij daarbij volgens de tekst?",["80 liter","55 liter","120 liter","8 liter"],"Een douche gebruikt ongeveer 8 liter per minuut. 10 × 8 = 80 liter.","Een douche gebruikt ongeveer acht liter per minuut."],
+    ["afleid","Welke conclusie past bij de tabel en de tekst?",["Korter douchen bespaart het meeste water.","Afwassen kost het meeste water.","In Nederland is zuinig zijn met water niet nodig.","Iedereen drinkt 130 liter water per dag."],"Douchen staat bovenaan in de tabel (55 liter). Daar valt dus het meeste te besparen. De andere antwoorden kloppen niet met de tekst.",null],
+    ["verband","Wat laat het woord 'bovendien' in alinea 3 zien?",["Er komt nog een reden bij.","Er komt een tegenstelling.","Er komt een voorbeeld.","Er komt een conclusie."],"De eerste reden is dat drinkwater maken energie kost. Met 'bovendien' komt er een tweede reden bij: het grondwater kan laag staan.","In droge zomers kan het bovendien gebeuren"],
+    ["doel","Wat is het doel van deze tekst?",["informeren over waterverbruik en waarom zuinig zijn zinvol is","de lezer overtuigen om een nieuw bad te kopen","de lezer vermaken met een verhaal over water","uitleggen hoe je een douchekop vervangt"],"De tekst geeft vooral informatie: cijfers over verbruik en de redenen om zuinig te zijn.",null]]}
+];
+
+LZ.forEach(t=>t.lz=true);
+const LEZEN_DOMAINS=LSKILL_ORDER.map(k=>LSKILLS[k].n);
+function lzItem(t,v){const opts=shuffle(v[2]);return {kind:"mc",cat:LSKILLS[v[0]].n,skill:v[0],text:t,prompt:v[1],options:opts,answer:opts.indexOf(v[2][0]),explain:v[3],ev:v[4]}}
+function makeLezen(q,skill){
+  if(skill){const all=[];LZ.forEach(t=>t.v.forEach(v=>{if(v[0]===skill)all.push([t,v])}));
+    return shuffle(all).slice(0,8).sort((a,b)=>a[0].lvl-b[0].lvl).map(([t,v])=>lzItem(t,v))}
+  const main=shuffle(LZ.filter(t=>t.lvl===q)),prev=shuffle(LZ.filter(t=>t.lvl===q-1));
+  const texts=q===1?main.slice(0,4):[...prev.slice(0,1),...main.slice(0,3)];
+  const items=[];texts.forEach((t,ti)=>t.v.forEach((v,vi)=>{const it=lzItem(t,v);if(vi===0){it.newText=ti+1;it.textCount=texts.length}items.push(it)}));
+  return items;
+}
+function textBox(t,mark){let n=0;
+  return `<div class="text" tabindex="0" id="tbox"><h4>${esc(t.t)}</h4>${t.soort?`<div class="soort">${esc(t.soort)}</div>`:""}${t.p.map(p=>{
+    if(typeof p!=="string")return `<div class="fig"><table class="tt">${p.table.map((r,ri)=>`<tr>${r.map(c=>ri?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join("")}</tr>`).join("")}</table>${p.cap?`<div class="hint">${esc(p.cap)}</div>`:""}</div>`;
+    n++;let h=p;if(mark){const at=h.indexOf(mark);if(at>=0)h=h.slice(0,at)+"<mark>"+mark+"</mark>"+h.slice(at+mark.length)}
+    return t.lz?`<p><span class="an" aria-label="alinea ${n}">${n}</span>${h}</p>`:`<p>${h}</p>`}).join("")}</div>`}
+const clsOf=sj=>sj==="taal"?"taal":sj==="lezen"?"lees":"reken";
 
 /* ============ checking & grading ============ */
 function checkAnswer(it,val){
@@ -683,7 +921,7 @@ function givenText(it,val){
 const cijferOf=p=>Math.max(1,Math.round((1+9*p)*10)/10);
 const cijferTxt=c=>comma(c.toFixed(1));
 function niveau(p,subject){
-  if(p>=.8)return {t:subject==="taal"?"Richting 2F":"Richting 1S",c:"good"};
+  if(p>=.8)return {t:subject==="rekenen"?"Richting 1S":"Richting 2F",c:"good"};
   if(p>=.55)return {t:"1F gehaald",c:"warn"};
   return {t:"Nog oefenen (onder 1F)",c:"bad"};
 }
@@ -730,7 +968,8 @@ function best(sid,subj,q){const rs=resultsOf(sid).filter(r=>r.subject===subj&&r.
 function avatar(s,lg){return `<span class="av${lg?" lg":""}" style="background:${esc(s?.color||"#B9B4D6")}">${esc((s?.name||"?").trim().charAt(0).toUpperCase())}</span>`}
 function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),4200)}
 const QINFO={1:["Herhaling groep 7","Basis: grote getallen, eenvoudige breuken en procenten, tegenwoordige tijd."],2:["Basis groep 8","Volgorde van bewerkingen, schaal, inversie bij werkwoorden, onderwerp."],3:["Doorstroomtoets-niveau","Kommagetallen, negatieve getallen, verleden tijd, lijdend voorwerp."],4:["Extra uitdaging","Samengestelde vormen, snelheid in minuten, voltooid deelwoord, uitdrukkingen."]};
-const SUBJ={taal:{n:"Taal",g:"Aa",sub:"Lezen · werkwoordspelling · spelling · grammatica · woordenschat"},rekenen:{n:"Rekenen",g:"+−×÷",sub:"Getallen · verhoudingen · meten & meetkunde · verbanden"}};
+const LQINFO={1:["Korte teksten","Informatie zoeken, verwijswoorden, tekstdoel. Teksten van ongeveer 130 woorden."],2:["Langere teksten","Signaalwoorden, woordbetekenis uit de zin, tabellen lezen."],3:["Doorstroomtoets-niveau","Hoofdgedachte, betoog met argumenten, conclusies trekken."],4:["Lastige teksten","Beeldspraak, opbouw van de tekst, feit en mening, lange teksten."]};
+const SUBJ={lezen:{n:"Begrijpend lezen",g:"¶",sub:"Teksten lezen · vragen zoals op de IEP · tips en uitleg"},taal:{n:"Taal",g:"Aa",sub:"Lezen · werkwoordspelling · spelling · grammatica · woordenschat"},rekenen:{n:"Rekenen",g:"+−×÷",sub:"Getallen · verhoudingen · meten & meetkunde · verbanden"}};
 
 function renderHeader(){
   const u=me(); const ub=document.getElementById("userBtn");
@@ -750,58 +989,78 @@ function renderHome(){
   const u=me();
   const strip=subj=>u?`<div class="qstrip">${[1,2,3,4].map(q=>{const b=best(u.id,subj,q);return `<span class="qpill">Q${q}: ${b==null?"–":cijferTxt(b)}</span>`}).join("")}</div>`:"";
   app.innerHTML=`
-  <section class="hero"><h1>${u?`Hoi ${esc(u.name)}!`:"Oefenen voor de IEP"}</h1><p>${u?"Wat ga je vandaag oefenen?":"Kies eerst wie er oefent, en dan Taal of Rekenen."}</p></section>
+  <section class="hero"><h1>${u?`Hoi ${esc(u.name)}!`:"Oefenen voor de IEP"}</h1><p>${u?"Wat ga je vandaag oefenen?":"Kies eerst wie er oefent, en dan Taal, Rekenen of Begrijpend lezen."}</p></section>
   <section class="big2">
     <button class="bigbtn taal" data-subj="taal" type="button"><span class="glyph" aria-hidden="true">Aa</span><span class="lbl">Taal</span><span class="sub">${SUBJ.taal.sub}</span>${strip("taal")}</button>
     <button class="bigbtn reken" data-subj="rekenen" type="button"><span class="glyph" aria-hidden="true">+−×÷</span><span class="lbl">Rekenen</span><span class="sub">${SUBJ.rekenen.sub}</span>${strip("rekenen")}</button>
+    <button class="bigbtn lees" data-subj="lezen" type="button"><span class="glyph" aria-hidden="true">¶</span><span class="lbl">Begrijpend lezen</span><span class="sub">${SUBJ.lezen.sub}</span>${strip("lezen")}</button>
   </section>`;
   app.querySelectorAll("[data-subj]").forEach(b=>b.onclick=()=>{S.subject=b.dataset.subj;if(!me()){openUsers(()=>{S.view="quarter";render()});return}S.view="quarter";render()});
 }
 function renderQuarter(){
   const u=me(); const sj=S.subject; const info=SUBJ[sj];
   app.innerHTML=`<div class="card">
-   <div class="row" style="justify-content:space-between"><div><span class="tag ${sj==="taal"?"taal":"reken"}">${info.n}</span><h2 style="margin-top:8px">Kies een periode</h2><p class="muted" style="margin:6px 0 0">Elke toets heeft 20 nieuwe vragen, net als bij de IEP.</p></div>
+   <div class="row" style="justify-content:space-between"><div><span class="tag ${clsOf(sj)}">${info.n}</span><h2 style="margin-top:8px">Kies een periode</h2><p class="muted" style="margin:6px 0 0">${sj==="lezen"?"Elke toets heeft 4 teksten met ongeveer 17 vragen. Bij Oefenen krijg je tips, zie je waar het antwoord staat en mag je een tweede keer proberen.":"Elke toets heeft 20 nieuwe vragen, net als bij de IEP."}</p></div>
    <div><div class="muted" style="font-weight:800;font-size:.85rem;margin-bottom:6px">Hoe wil je nakijken?</div><div class="seg" role="group" aria-label="Nakijkmodus">
      <button type="button" data-mode="oefen" aria-pressed="${S.mode==="oefen"}">Oefenen · meteen nakijken</button>
      <button type="button" data-mode="toets" aria-pressed="${S.mode==="toets"}">Toets · nakijken aan het eind</button></div></div></div>
-   <div class="qgrid">${[1,2,3,4].map(q=>{const b=u?best(u.id,sj,q):null;return `<button class="qcard ${sj==="taal"?"taal":"reken"}" data-q="${q}" type="button"><span class="qn">Q${q}</span><h3>${QINFO[q][0]}</h3><span class="muted">${QINFO[q][1]}</span><span class="best">${b==null?"Nog niet gemaakt":`Beste cijfer: <span class="sc ${scClass(b)}">${cijferTxt(b)}</span>`}</span></button>`}).join("")}</div>
+   <div class="qgrid">${[1,2,3,4].map(q=>{const b=u?best(u.id,sj,q):null;const QI=sj==="lezen"?LQINFO:QINFO;return `<button class="qcard ${clsOf(sj)}" data-q="${q}" type="button"><span class="qn">Q${q}</span><h3>${QI[q][0]}</h3><span class="muted">${QI[q][1]}</span><span class="best">${b==null?"Nog niet gemaakt":`Beste cijfer: <span class="sc ${scClass(b)}">${cijferTxt(b)}</span>`}</span></button>`}).join("")}</div>
+   ${sj==="lezen"?`<div class="sect"><h3>Train één soort vraag</h3><p class="muted" style="margin:4px 0 0">8 vragen over één vaardigheid, met tips en uitleg. Kies wat je nog lastig vindt.</p>
+    <div class="skillgrid">${LSKILL_ORDER.map(k=>{const m=u?skillStat(u.id,LSKILLS[k].n):null;return `<button class="skillbtn" type="button" data-skill="${k}"><b>${esc(LSKILLS[k].n)}</b><span>${m?`${Math.round(m.c/m.t*100)}% goed (${m.t} vragen)`:"Nog niet geoefend"}</span></button>`}).join("")}</div></div>`:""}
    <div class="actions"><button class="btn ghost" id="back" type="button">Terug</button></div></div>`;
+  app.querySelectorAll("[data-skill]").forEach(b=>b.onclick=()=>{S.mode="oefen";startTest("lezen",0,b.dataset.skill)});
   app.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;renderQuarter()});
   app.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>startTest(sj,+b.dataset.q));
   app.querySelector("#back").onclick=()=>{S.view="home";render()};
 }
-function startTest(subject,q){
-  const items=subject==="taal"?makeTaal(q):makeRekenen(q);
-  S.test={subject,q,mode:S.mode,items,i:0,answers:items.map(()=>null),checked:false,started:Date.now(),saved:false,stopAsk:false};
+function skillStat(sid,name){let c=0,t=0;resultsOf(sid).filter(r=>r.subject==="lezen").forEach(r=>{const x=(r.cats||{})[name];if(x){c+=x.c;t+=x.t}});return t?{c,t}:null}
+function testLabel(T){return T.q?`Q${T.q}`:`Training: ${LSKILLS[T.skill].n}`}
+function startTest(subject,q,skill){
+  const items=subject==="taal"?makeTaal(q):subject==="lezen"?makeLezen(q,skill):makeRekenen(q);
+  S.test={subject,q,skill:skill||null,mode:S.mode,items,i:0,answers:items.map(()=>null),first:[],retried:[],wrong1:[],tip:[],checked:false,started:Date.now(),saved:false,stopAsk:false};
   S.view="test"; render(); window.scrollTo(0,0);
 }
 function renderTest(){
   const T=S.test,it=T.items[T.i],n=T.items.length,sj=T.subject;
   const val=T.answers[T.i]; const done=T.mode==="oefen"&&T.checked;
+  const lz=sj==="lezen", oef=T.mode==="oefen", retrying=lz&&oef&&T.retried[T.i]&&!T.checked;
   let ans="";
   if(it.kind==="mc"){
-    ans=`<div class="opts" role="group" aria-label="Antwoorden">${it.options.map((o,k)=>{let cls="";if(done){if(k===it.answer)cls="ok";else if(k===val)cls="no"}
-      return `<button type="button" class="opt ${cls}" data-k="${k}" aria-pressed="${val===k}" ${done?"disabled":""}><span class="k">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`}).join("")}</div>`;
+    ans=`<div class="opts" role="group" aria-label="Antwoorden">${it.options.map((o,k)=>{let cls="",dis=done;if(done){if(k===it.answer)cls="ok";else if(k===val)cls="no"}else if(retrying&&k===T.wrong1[T.i]){cls="no";dis=true}
+      return `<button type="button" class="opt ${cls}" data-k="${k}" aria-pressed="${val===k}" ${dis?"disabled":""}><span class="k">${"ABCD"[k]}</span><span>${esc(o)}</span></button>`}).join("")}</div>`;
   } else {
     ans=`<div class="ansrow"><input id="ans" inputmode="${it.kind==="frac"?"text":"decimal"}" autocomplete="off" aria-label="Jouw antwoord" value="${esc(val??"")}" ${done?"disabled":""}>${it.unit?`<span class="unit">${esc(it.unit)}</span>`:""}</div>
       <div class="hint">${it.hint||"Gebruik een komma voor kommagetallen, bijvoorbeeld 2,5."}</div>`;
   }
   let fb="";
-  if(done){const ok=checkAnswer(it,val);fb=`<div class="fb ${ok?"ok":"no"}"><strong>${ok?"Goed zo!":"Helaas, niet goed."}</strong>${ok?"":`Het goede antwoord is: <b>${esc(answerText(it))}</b><br>`}${it.explain}</div>`}
-  const text=it.text?`<div class="text" tabindex="0"><h4>${esc(it.text.t)}</h4>${it.text.p.map(p=>`<p>${p}</p>`).join("")}</div>`:"";
+  if(retrying){fb=`<div class="fb retry"><strong>Nog niet goed.</strong>${it.ev?"Lees de gele zin in de tekst nog eens goed.":"Lees de tekst nog eens goed."} Probeer het daarna opnieuw.<span class="tipline"><b>Tip · ${esc(LSKILLS[it.skill].n)}:</b> ${esc(LSKILLS[it.skill].tip)}</span></div>`}
+  if(done){const okNow=checkAnswer(it,val);const firstOk=T.first[T.i]!=null?checkAnswer(it,T.first[T.i]):okNow;
+    fb=`<div class="fb ${firstOk?"ok":okNow?"retry":"no"}"><strong>${firstOk?"Goed zo!":okNow?"Goed gevonden bij de tweede poging!":"Helaas, niet goed."}</strong>${okNow?"":`Het goede antwoord is: <b>${esc(answerText(it))}</b><br>`}${it.explain}${!firstOk&&okNow?`<span class="tipline">Voor je cijfer telt je eerste antwoord.</span>`:""}</div>`}
+  const mark=lz&&oef&&(done||retrying)?it.ev:null;
+  const text=it.text?(it.text.lz?textBox(it.text,mark):`<div class="text" tabindex="0"><h4>${esc(it.text.t)}</h4>${it.text.p.map(p=>`<p>${p}</p>`).join("")}</div>`):"";
+  const tip=lz&&oef&&it.skill&&!done&&!retrying?`<button class="tipbtn" id="tipb" type="button" aria-expanded="${!!T.tip[T.i]}">${T.tip[T.i]?"Tip verbergen":"Hoe pak ik deze vraag aan?"}</button>${T.tip[T.i]?`<div class="tipbox"><b>${esc(LSKILLS[it.skill].n)}</b>${esc(LSKILLS[it.skill].tip)}</div>`:""}`:"";
+  const banner=lz&&it.newText?`<div class="newtext">Tekst ${it.newText} van ${it.textCount}: ${esc(it.text.soort)}. Lees eerst de titel en daarna de hele tekst. Zoek bij elke vraag het antwoord terug in de tekst.</div>`:"";
   const primary=T.mode==="oefen"?(done?(T.i===n-1?"Bekijk je cijfer":"Volgende vraag"):"Controleer"):(T.i===n-1?"Inleveren":"Volgende vraag");
   app.innerHTML=`
-   <div class="testbar"><span class="chip plain">${SUBJ[sj].n} · Q${T.q} · ${T.mode==="oefen"?"Oefenen":"Toets"}</span>
+   <div class="testbar"><span class="chip plain">${SUBJ[sj].n} · ${testLabel(T)} · ${T.mode==="oefen"?"Oefenen":"Toets"}</span>
     <div class="prog" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${T.i+1}"><i style="width:${(T.i+1)/n*100}%"></i></div>
     <span class="chip plain">${T.i+1} / ${n}</span><button class="chip plain" id="stop" type="button">Stoppen</button></div>
    ${T.stopAsk?`<div class="confirm" style="margin-bottom:12px">Wil je stoppen? Deze toets wordt dan niet bewaard. <button class="btn danger" id="stopYes" type="button">Ja, stoppen</button><button class="btn ghost" id="stopNo" type="button">Verder</button></div>`:""}
-   <div class="card">
-    <span class="tag ${sj==="taal"?"taal":"reken"}">${esc(it.cat)}</span>
+   <div class="card">${lz?`${banner}<div class="lzgrid">${text}<div>
+    <span class="tag lees">${esc(it.cat)}</span>
+    <div class="prompt">${esc(it.prompt)}</div>
+    ${ans}${tip}${fb}
+    <div class="actions">${T.mode==="toets"&&T.i>0?`<button class="btn ghost" id="prev" type="button">Vorige</button>`:""}<button class="btn lees" id="next" type="button">${primary}</button></div></div></div>`:`
+    <span class="tag ${clsOf(sj)}">${esc(it.cat)}</span>
     ${text}
     <div class="prompt">${it.prompt}</div>
     ${ans}${fb}
-    <div class="actions">${T.mode==="toets"&&T.i>0?`<button class="btn ghost" id="prev" type="button">Vorige</button>`:""}<button class="btn ${sj==="taal"?"taal":"reken"}" id="next" type="button">${primary}</button></div>
+    <div class="actions">${T.mode==="toets"&&T.i>0?`<button class="btn ghost" id="prev" type="button">Vorige</button>`:""}<button class="btn ${clsOf(sj)}" id="next" type="button">${primary}</button></div>`}
    </div>`;
+  const tb=app.querySelector("#tbox");
+  if(tb&&lz){if(T.tsText===it.text.t)tb.scrollTop=T.ts||0;tb.onscroll=()=>{T.ts=tb.scrollTop;T.tsText=it.text.t};
+    const m=tb.querySelector("mark");if(m){tb.scrollTop=Math.max(0,m.offsetTop-tb.clientHeight/3);T.ts=tb.scrollTop;T.tsText=it.text.t}}
+  const tbtn=app.querySelector("#tipb"); if(tbtn)tbtn.onclick=()=>{T.tip[T.i]=!T.tip[T.i];renderTest()};
   const inp=app.querySelector("#ans");
   if(inp){inp.oninput=()=>{T.answers[T.i]=inp.value}; inp.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();next()}}; if(!done)setTimeout(()=>inp.focus({preventScroll:true}),30)}
   app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{T.answers[T.i]=+b.dataset.k;renderTest()});
@@ -811,38 +1070,40 @@ function renderTest(){
   const sy=app.querySelector("#stopYes"); if(sy){sy.onclick=()=>{S.test=null;S.view="home";render()};app.querySelector("#stopNo").onclick=()=>{T.stopAsk=false;renderTest()}}
   function next(){
     const v=T.answers[T.i]; const empty=v===null||v===undefined||String(v).trim()==="";
-    if(T.mode==="oefen"&&!T.checked){if(empty){toast("Kies of typ eerst een antwoord.");return}T.checked=true;renderTest();return}
+    if(T.mode==="oefen"&&!T.checked){if(empty){toast("Kies of typ eerst een antwoord.");return}
+      if(lz){if(T.first[T.i]==null)T.first[T.i]=v;if(!checkAnswer(it,v)&&!T.retried[T.i]){T.retried[T.i]=true;T.wrong1[T.i]=v;T.answers[T.i]=null;renderTest();return}}
+      T.checked=true;renderTest();return}
     T.checked=false;
     if(T.i<n-1){T.i++;renderTest();window.scrollTo({top:0,behavior:"smooth"})}else finish();
   }
 }
 async function finish(){
-  const T=S.test; const items=T.items; const ok=items.map((it,i)=>checkAnswer(it,T.answers[i]));
+  const T=S.test; const items=T.items; const sv=i=>T.first[i]!=null?T.first[i]:T.answers[i]; T.sv=sv; const ok=items.map((it,i)=>checkAnswer(it,sv(i)));
   const correct=ok.filter(Boolean).length; const p=correct/items.length; const c=cijferOf(p);
   const cats={}; items.forEach((it,i)=>{cats[it.cat]=cats[it.cat]||{c:0,t:0};cats[it.cat].t++;if(ok[i])cats[it.cat].c++});
   T.result={correct,total:items.length,p,cijfer:c,cats,ok};
   S.view="results"; render(); window.scrollTo(0,0);
   const u=me(); if(u&&!T.saved){T.saved=true;
-    const rec={id:uid(),studentId:u.id,subject:T.subject,q:T.q,mode:T.mode,correct,total:items.length,cijfer:c,cats,at:new Date().toISOString(),mins:Math.round((Date.now()-T.started)/60000),
-      items:items.map((it,i)=>({p:strip(it.prompt).slice(0,160),c:it.cat,g:givenText(it,T.answers[i]).slice(0,80),k:String(answerText(it)).slice(0,80),ok:ok[i]}))};
+    const rec={id:uid(),studentId:u.id,subject:T.subject,q:T.q,skill:T.skill,mode:T.mode,correct,total:items.length,cijfer:c,cats,at:new Date().toISOString(),mins:Math.round((Date.now()-T.started)/60000),
+      items:items.map((it,i)=>({p:strip(it.prompt).slice(0,160),c:it.cat,g:givenText(it,sv(i)).slice(0,80),k:String(answerText(it)).slice(0,80),ok:ok[i]}))};
     const saved=await Store.put("results",rec); if(saved)toast("Resultaat opgeslagen in de voortgang.");}
 }
 function barColor(p){return p>=.8?"var(--good)":p>=.55?"var(--sun)":"var(--bad)"}
 function renderResults(){
   const T=S.test,Rz=T.result,sj=T.subject,nv=niveau(Rz.p,sj);
   const bg=Rz.cijfer>=7?"linear-gradient(135deg,#2FCB8A,#16A36A)":Rz.cijfer>=5.5?"linear-gradient(135deg,#FFC83D,#FF9A5C)":"linear-gradient(135deg,#FF5D73,#E0364F)";
-  const doms=sj==="taal"?TAAL_DOMAINS:REKEN_DOMAINS.map(d=>d[1]);
+  const doms=sj==="taal"?TAAL_DOMAINS:sj==="lezen"?LEZEN_DOMAINS.filter(d=>Rz.cats[d]):REKEN_DOMAINS.map(d=>d[1]);
   app.innerHTML=`<div class="card"><div class="resgrid">
     <div style="text-align:center"><div class="grade" style="background:${bg}"><div><div class="g">${cijferTxt(Rz.cijfer)}</div><small>${Rz.correct} van ${Rz.total} goed</small></div></div>
-      <p style="margin:14px 0 6px"><span class="pill ${nv.c}">${nv.t}</span></p><p class="muted" style="font-size:.85rem;margin:0">${SUBJ[sj].n} · Q${T.q} · indicatie referentieniveau</p></div>
+      <p style="margin:14px 0 6px"><span class="pill ${nv.c}">${nv.t}</span></p><p class="muted" style="font-size:.85rem;margin:0">${SUBJ[sj].n} · ${testLabel(T)} · indicatie referentieniveau</p></div>
     <div><h2>${Rz.cijfer>=8?"Super gedaan!":Rz.cijfer>=6.5?"Goed bezig!":Rz.cijfer>=5.5?"Voldoende, ga zo door!":"Blijf oefenen, je komt er wel!"}</h2>
      <h3 style="margin:16px 0 10px">Per onderdeel</h3><div class="bars">${doms.map(d=>{const c=Rz.cats[d]||{c:0,t:0};const p=c.t?c.c/c.t:0;return `<div class="bar"><span>${esc(d)}</span><span class="tr"><i style="width:${p*100}%;background:${barColor(p)}"></i></span><span class="v">${c.c}/${c.t}</span></div>`}).join("")}</div>
-     <div class="actions" style="justify-content:flex-start"><button class="btn ${sj==="taal"?"taal":"reken"}" id="again" type="button">Nieuwe toets Q${T.q}</button><button class="btn ghost" id="toBoard" type="button">Voortgang</button><button class="btn ghost" id="toHome" type="button">Naar start</button></div>
+     <div class="actions" style="justify-content:flex-start"><button class="btn ${clsOf(sj)}" id="again" type="button">${T.q?`Nieuwe toets Q${T.q}`:"Nog een keer trainen"}</button><button class="btn ghost" id="toBoard" type="button">Voortgang</button><button class="btn ghost" id="toHome" type="button">Naar start</button></div>
     </div></div></div>
    <div class="card" style="margin-top:18px"><h3>Nakijken</h3><p class="muted" style="margin:4px 0 0">Bekijk wat goed en fout ging, met uitleg.</p>
     <div class="review">${T.items.map((it,i)=>{const ok=Rz.ok[i];return `<div class="ri ${ok?"ok":"no"}"><span class="n">${i+1}</span><div class="p">${it.text?`<span class="muted">Tekst: ${esc(it.text.t)} · </span>`:""}${esc(strip(it.prompt))}
-      <div class="a">Jouw antwoord: <b>${esc(givenText(it,T.answers[i]))}</b>${ok?" ✓":` · Goed antwoord: <b>${esc(answerText(it))}</b>`}</div>${ok?"":`<div class="e">${it.explain}</div>`}</div></div>`}).join("")}</div></div>`;
-  app.querySelector("#again").onclick=()=>{S.mode=T.mode;startTest(sj,T.q)};
+      <div class="a">${T.first[i]!=null&&T.mode==="oefen"?"Je eerste antwoord":"Jouw antwoord"}: <b>${esc(givenText(it,T.sv(i)))}</b>${ok?" ✓":` · Goed antwoord: <b>${esc(answerText(it))}</b>`}</div>${ok?"":`<div class="e">${it.explain}</div>${it.ev?`<div class="ev">In de tekst: “${esc(it.ev)}”</div>`:""}${it.skill?`<div class="e"><b>Tip · ${esc(LSKILLS[it.skill].n)}:</b> ${esc(LSKILLS[it.skill].tip)}</div>`:""}`}</div></div>`}).join("")}</div></div>`;
+  app.querySelector("#again").onclick=()=>{S.mode=T.mode;startTest(sj,T.q,T.skill)};
   app.querySelector("#toBoard").onclick=()=>{S.view="board";render()};
   app.querySelector("#toHome").onclick=()=>{S.view="home";S.test=null;render()};
 }
@@ -852,9 +1113,9 @@ function renderBoard(){
   const cell=(sid,sj,q)=>{const b=best(sid,sj,q);return `<td><span class="sc ${scClass(b)}">${b==null?"–":cijferTxt(b)}</span></td>`};
   app.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><div><h2>Voortgangsbord</h2><p class="muted" style="margin:6px 0 0">Beste cijfer per periode. Klik op een leerling voor details.</p></div>
    <div class="row"><button class="btn ghost" id="addU" type="button">Leerling toevoegen</button><button class="btn" id="bHome" type="button">Naar start</button></div></div>
-   ${st.length?`<div class="tablewrap"><table class="board"><thead><tr><th class="l" rowspan="2">Leerling</th><th class="grp" colspan="4">Taal</th><th class="grp" colspan="4">Rekenen</th><th rowspan="2">Toetsen</th><th rowspan="2">Laatst</th></tr>
-    <tr>${[1,2,3,4].map(q=>`<th>Q${q}</th>`).join("")}${[1,2,3,4].map(q=>`<th>Q${q}</th>`).join("")}</tr></thead>
-    <tbody>${st.map(s=>`<tr class="click" data-sid="${esc(s.id)}" tabindex="0"><td class="l"><span class="who">${avatar(s)}${esc(s.name)}</span></td>${[1,2,3,4].map(q=>cell(s.id,"taal",q)).join("")}${[1,2,3,4].map(q=>cell(s.id,"rekenen",q)).join("")}<td>${resultsOf(s.id).length}</td><td>${last(s.id)}</td></tr>`).join("")}</tbody></table></div>
+   ${st.length?`<div class="tablewrap"><table class="board"><thead><tr><th class="l" rowspan="2">Leerling</th><th class="grp" colspan="4">Taal</th><th class="grp" colspan="4">Rekenen</th><th class="grp" colspan="4">Begr. lezen</th><th rowspan="2">Toetsen</th><th rowspan="2">Laatst</th></tr>
+    <tr>${[1,2,3,4].map(q=>`<th>Q${q}</th>`).join("").repeat(3)}</tr></thead>
+    <tbody>${st.map(s=>`<tr class="click" data-sid="${esc(s.id)}" tabindex="0"><td class="l"><span class="who">${avatar(s)}${esc(s.name)}</span></td>${[1,2,3,4].map(q=>cell(s.id,"taal",q)).join("")}${[1,2,3,4].map(q=>cell(s.id,"rekenen",q)).join("")}${[1,2,3,4].map(q=>cell(s.id,"lezen",q)).join("")}<td>${resultsOf(s.id).length}</td><td>${last(s.id)}</td></tr>`).join("")}</tbody></table></div>
     <p class="muted" style="font-size:.85rem;margin-top:12px"><span class="sc g">7,0+</span> goed &nbsp; <span class="sc w">5,5–6,9</span> voldoende &nbsp; <span class="sc b">&lt; 5,5</span> nog oefenen</p>`
    :`<div class="empty"><h3>Nog geen leerlingen</h3><p class="muted">Voeg de eerste leerling toe. Na elke toets verschijnt het cijfer hier.</p><button class="btn" id="addU2" type="button">Eerste leerling toevoegen</button></div>`}</div>`;
   const add=()=>openUsers(null,true);
@@ -876,15 +1137,16 @@ function renderStudent(){
   const rs=resultsOf(s.id); const avg=rs.length?rs.reduce((a,r)=>a+r.cijfer,0)/rs.length:null;
   const agg=sj=>{const o={};rs.filter(r=>r.subject===sj).forEach(r=>Object.entries(r.cats||{}).forEach(([k,v])=>{o[k]=o[k]||{c:0,t:0};o[k].c+=v.c;o[k].t+=v.t}));return o};
   const domBars=(sj,doms)=>{const a=agg(sj);return `<div class="bars">${doms.map(d=>{const c=a[d];const p=c&&c.t?c.c/c.t:null;return `<div class="bar"><span>${esc(d)}</span><span class="tr"><i style="width:${(p||0)*100}%;background:${p==null?"transparent":barColor(p)}"></i></span><span class="v">${p==null?"–":Math.round(p*100)+"%"}</span></div>`}).join("")}</div>`};
-  const weak=[...Object.entries(agg("taal")),...Object.entries(agg("rekenen"))].filter(([k,v])=>v.t>=3).sort((a,b)=>a[1].c/a[1].t-b[1].c/b[1].t)[0];
+  const weak=[...Object.entries(agg("taal")),...Object.entries(agg("rekenen")),...Object.entries(agg("lezen"))].filter(([k,v])=>v.t>=3).sort((a,b)=>a[1].c/a[1].t-b[1].c/b[1].t)[0];
   app.innerHTML=`<div class="card"><div class="row" style="justify-content:space-between"><div class="who">${avatar(s,true)}<div><h2>${esc(s.name)}</h2><span class="muted">${rs.length} toets${rs.length===1?"":"en"} gemaakt</span></div></div>
    <div class="row"><button class="btn" id="practice" type="button">Oefenen als ${esc(s.name)}</button><button class="btn ghost" id="bBack" type="button">Terug naar bord</button></div></div>
    <div class="stats"><div class="stat"><b>${avg==null?"–":cijferTxt(Math.round(avg*10)/10)}</b><span>Gemiddeld cijfer</span></div>
-    <div class="stat"><b>${rs.filter(r=>r.subject==="taal").length}</b><span>Taaltoetsen</span></div><div class="stat"><b>${rs.filter(r=>r.subject==="rekenen").length}</b><span>Rekentoetsen</span></div>
+    <div class="stat"><b>${rs.filter(r=>r.subject==="taal").length}</b><span>Taaltoetsen</span></div><div class="stat"><b>${rs.filter(r=>r.subject==="rekenen").length}</b><span>Rekentoetsen</span></div><div class="stat"><b>${rs.filter(r=>r.subject==="lezen").length}</b><span>Leestoetsen</span></div>
     <div class="stat"><b style="font-size:1.15rem;line-height:1.6">${weak?esc(weak[0]):"–"}</b><span>Oefen dit het meest</span></div></div>
    <div class="two"><div><h3 style="margin-bottom:10px">Taal per onderdeel</h3>${domBars("taal",TAAL_DOMAINS)}</div><div><h3 style="margin-bottom:10px">Rekenen per onderdeel</h3>${domBars("rekenen",REKEN_DOMAINS.map(d=>d[1]))}</div></div>
+   <div style="margin-top:18px"><h3 style="margin-bottom:10px">Begrijpend lezen per vaardigheid</h3><div class="two">${domBars("lezen",LEZEN_DOMAINS.slice(0,5))}${domBars("lezen",LEZEN_DOMAINS.slice(5))}</div></div>
    <h3 style="margin:22px 0 8px">Cijferverloop</h3>${spark(rs.slice().reverse().map(r=>r.cijfer))}
-   <h3 style="margin:22px 0 4px">Alle toetsen</h3><div class="hist">${rs.length?rs.map(r=>`<div class="hrow"><span class="sc ${scClass(r.cijfer)}">${cijferTxt(r.cijfer)}</span><span>${SUBJ[r.subject].n} · Q${r.q} · ${r.correct}/${r.total} goed <span class="muted">· ${r.mode==="toets"?"toets":"oefenen"}</span></span><span class="muted">${new Date(r.at).toLocaleDateString("nl-NL",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</span></div>`).join(""):`<p class="muted">Nog geen toetsen gemaakt.</p>`}</div>
+   <h3 style="margin:22px 0 4px">Alle toetsen</h3><div class="hist">${rs.length?rs.map(r=>`<div class="hrow"><span class="sc ${scClass(r.cijfer)}">${cijferTxt(r.cijfer)}</span><span>${SUBJ[r.subject].n} · ${r.q?"Q"+r.q:"Training"+(r.skill&&LSKILLS[r.skill]?": "+LSKILLS[r.skill].n:"")} · ${r.correct}/${r.total} goed <span class="muted">· ${r.mode==="toets"?"toets":"oefenen"}</span></span><span class="muted">${new Date(r.at).toLocaleDateString("nl-NL",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</span></div>`).join(""):`<p class="muted">Nog geen toetsen gemaakt.</p>`}</div>
    <div style="margin-top:22px">${S.confirmDel?`<div class="confirm">Leerling ${esc(s.name)} en alle ${rs.length} resultaten verwijderen? Dit kan niet ongedaan worden. <button class="btn danger" id="delYes" type="button">Ja, verwijderen</button><button class="btn ghost" id="delNo" type="button">Annuleren</button></div>`:`<button class="btn ghost" id="del" type="button">Leerling verwijderen</button>`}</div>
   </div>`;
   app.querySelector("#bBack").onclick=()=>{S.view="board";render()};
